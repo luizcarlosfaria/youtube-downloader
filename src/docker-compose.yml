@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  devweekwebapp:
+    image: devweekwebapp
+    build:
+      context: .
+      dockerfile: DevWeekWebApp/Dockerfile
+
+  devweekworker:
+    image: devweekworker
+    build:
+      context: .
+      dockerfile: DevWeekWorker/Dockerfile
+
