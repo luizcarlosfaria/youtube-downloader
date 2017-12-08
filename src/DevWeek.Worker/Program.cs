@@ -7,7 +7,7 @@ using System.IO;
 using System.Diagnostics;
 using Minio;
 
-namespace DevWeekWorker
+namespace DevWeek
 {
     class Program
     {

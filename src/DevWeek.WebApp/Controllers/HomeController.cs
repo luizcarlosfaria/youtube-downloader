@@ -4,9 +4,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using DevWeekWebApp.Models;
+using DevWeek.Models;
 
-namespace DevWeekWebApp.Controllers
+namespace DevWeek.Controllers
 {
     public class HomeController : Controller
     {

@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace DevWeekWorker
+namespace DevWeek
 {
     public class ContextBuilder
     {
@@ -56,7 +56,7 @@ namespace DevWeekWorker
             {
                 CaseSensitive = true,
                 Name = "root",
-                ConfigurationLocations = new[] { "assembly://DevWeekWorker/DevWeekWorker/Container.Config.xml" },
+                ConfigurationLocations = new[] { "assembly://DevWeek.Worker/DevWeek/Container.Config.xml" },
                 ParentContext = configurationContext
             };
             var appContext = new Spring.Context.Support.XmlApplicationContext(containerArgs);

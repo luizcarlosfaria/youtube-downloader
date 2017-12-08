@@ -4,7 +4,7 @@
   <!--RabbitMQ-->
   <!--###############################################-->
   <object name="RabbitMQ_ConnectionFactory" type="RabbitMQ.Client.ConnectionFactory, RabbitMQ.Client">
-    <property name="Uri" ref="CONFIG:DevWeekWorker:RabbitMQ:ConnectionString" />
+    <property name="Uri" ref="CONFIG:DevWeek:RabbitMQ:ConnectionString" />
     <property name="AutomaticRecoveryEnabled" value="true"  />
     <property name="NetworkRecoveryInterval" value="00:00:10"  />
   </object>
@@ -15,7 +15,7 @@
   <!--Redis-->
   <!--###############################################-->
   <object name="RedisClient" type="StackExchange.Redis.ConnectionMultiplexer, StackExchange.Redis.StrongName" factory-method="Connect">
-    <constructor-arg name="configuration" ref="CONFIG:DevWeekWorker:Redis:ConnectionString" />
+    <constructor-arg name="configuration" ref="CONFIG:DevWeek:Redis:ConnectionString" />
     <constructor-arg name="log" >
       <null />
     </constructor-arg>
@@ -27,16 +27,16 @@
   <!--S3-->
   <!--###############################################-->
   <object type="Minio.MinioClient, Minio">
-    <constructor-arg name="endpoint" ref="CONFIG:DevWeekWorker:S3:Endpoint" />
-    <constructor-arg name="accessKey" ref="CONFIG:DevWeekWorker:S3:AccessKey" />
-    <constructor-arg name="secretKey" ref="CONFIG:DevWeekWorker:S3:SecretKey" />
+    <constructor-arg name="endpoint" ref="CONFIG:DevWeek:S3:Endpoint" />
+    <constructor-arg name="accessKey" ref="CONFIG:DevWeek:S3:AccessKey" />
+    <constructor-arg name="secretKey" ref="CONFIG:DevWeek:S3:SecretKey" />
     <constructor-arg name="region" value="" />
   </object>
 
   <!--Business-->
   <!--###############################################-->
   <!--<object name="GoogleGeoCodeService" type="Ebix.Wbot.Services.GoogleGeoCodeService">
-    <constructor-arg name="geoCodeApiKey" ref="CONFIG:DevWeekWorker:Services:Google:geocode:key" />
+    <constructor-arg name="geoCodeApiKey" ref="CONFIG:DevWeek:Services:Google:geocode:key" />
     <constructor-arg name="restClient" ref="RESTClient" />
   </object>
   <object type="Ebix.Wbot.Services.AccountService" autowire="constructor"></object>

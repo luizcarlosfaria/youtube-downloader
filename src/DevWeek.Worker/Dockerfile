@@ -6,10 +6,10 @@ RUN curl -L https://yt-dl.org/downloads/latest/youtube-dl -o /usr/local/bin/yout
 FROM microsoft/dotnet:2.0-sdk AS build
 WORKDIR /src
 COPY *.sln ./
-COPY DevWeekWorker/DevWeekWorker.csproj DevWeekWorker/
+COPY DevWeek.Worker/DevWeek.Worker.csproj DevWeek.Worker/
 RUN dotnet restore
 COPY . .
-WORKDIR /src/DevWeekWorker
+WORKDIR /src/DevWeek.Worker
 RUN dotnet build -c Release -o /app
 
 FROM build AS publish
@@ -19,4 +19,4 @@ FROM base AS final
 WORKDIR /app
 VOLUME /shared
 COPY --from=publish /app .
-ENTRYPOINT ["dotnet", "DevWeekWorker.dll"]
+ENTRYPOINT ["dotnet", "DevWeek.Worker.dll"]

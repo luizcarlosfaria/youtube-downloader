@@ -15,7 +15,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "DevWeekWebApp": {
+    "DevWeek.WebApp": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {
