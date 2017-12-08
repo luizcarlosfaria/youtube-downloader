@@ -16,19 +16,21 @@ namespace DevWeekWorker
             var outputFileName = $"/shared/{Guid.NewGuid().ToString("N")}.mp4";
             string videoUrl = "https://www.youtube.com/watch?v=qfNmyxV2Ncw";
 
-            await DownloadVideo(videoUrl, outputFileName);
+            await DownloadMedia(videoUrl, outputFileName);
             await UploadToS3("videos", outputFileName);
-            DropLocalOutputFile(outputFileName);
+            DeleteLocalFile(outputFileName);
 
 
             Console.WriteLine("Hello World!");
         }
 
+
+
         
 
-        public static async Task DownloadVideo(string videoUrl, string outputFileName)
+        public static async Task DownloadMedia(string mediaUrl, string outputFileName)
         {
-            var process = System.Diagnostics.Process.Start(new ProcessStartInfo("youtube-dl", $"-o {outputFileName} {videoUrl}")
+            var process = System.Diagnostics.Process.Start(new ProcessStartInfo("youtube-dl", $"-o {outputFileName} {mediaUrl}")
             {
                 RedirectStandardOutput = true,
                 RedirectStandardError = true
@@ -60,7 +62,7 @@ namespace DevWeekWorker
             await minio.PutObjectAsync(bucketName, System.IO.Path.GetFileName(fileName), fileName);
         }
 
-        private static void DropLocalOutputFile(string outputFileName)
+        private static void DeleteLocalFile(string outputFileName)
         {
             System.IO.File.Delete(outputFileName);
         }
