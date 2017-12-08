@@ -1,41 +1,39 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <objects xmlns="http://www.springframework.net" xmlns:aop="http://www.springframework.net/aop">
 
-  <!--RabbitMQ-->
-  <!--###############################################-->
-  <object name="RabbitMQ_ConnectionFactory" type="RabbitMQ.Client.ConnectionFactory, RabbitMQ.Client">
-    <property name="Uri" ref="CONFIG:DevWeek:RabbitMQ:ConnectionString" />
-    <property name="AutomaticRecoveryEnabled" value="true"  />
-    <property name="NetworkRecoveryInterval" value="00:00:10"  />
-  </object>
-  <object name="RabbitMQ_Connection" factory-object="RabbitMQ_ConnectionFactory" factory-method="CreateConnection" singleton="false" ></object>
-  <object name="RabbitMQ_Model" type="RabbitMQ.Client.IModel, RabbitMQ.Client" factory-object="RabbitMQ_Connection" factory-method="CreateModel" singleton="false"></object>
+    <!--RabbitMQ-->
+    <!--###############################################-->
+    <object name="RabbitMQ_ConnectionFactory" type="RabbitMQ.Client.ConnectionFactory, RabbitMQ.Client">
+        <property name="Uri" ref="CONFIG:DevWeek:RabbitMQ:ConnectionString" />
+        <property name="AutomaticRecoveryEnabled" value="true"  />
+        <property name="NetworkRecoveryInterval" value="00:00:10"  />
+    </object>
+    <object name="RabbitMQ_Connection" factory-object="RabbitMQ_ConnectionFactory" factory-method="CreateConnection" singleton="false" ></object>
+    <object name="RabbitMQ_Model" type="RabbitMQ.Client.IModel, RabbitMQ.Client" factory-object="RabbitMQ_Connection" factory-method="CreateModel" singleton="false"></object>
 
 
-  <!--Redis-->
-  <!--###############################################-->
-  <object name="RedisClient" type="StackExchange.Redis.ConnectionMultiplexer, StackExchange.Redis.StrongName" factory-method="Connect">
-    <constructor-arg name="configuration" ref="CONFIG:DevWeek:Redis:ConnectionString" />
-    <constructor-arg name="log" >
-      <null />
-    </constructor-arg>
-  </object>
+    <!--Redis-->
+    <!--###############################################-->
+    <object name="RedisClient" type="StackExchange.Redis.ConnectionMultiplexer, StackExchange.Redis.StrongName" factory-method="Connect">
+        <constructor-arg name="configuration" ref="CONFIG:DevWeek:Redis:ConnectionString" />
+        <constructor-arg name="log" >
+            <null />
+        </constructor-arg>
+    </object>
 
 
+    <!--S3-->
+    <!--###############################################-->
+    <object type="Minio.MinioClient, Minio">
+        <constructor-arg name="endpoint" ref="CONFIG:DevWeek:S3:Endpoint" />
+        <constructor-arg name="accessKey" ref="CONFIG:DevWeek:S3:AccessKey" />
+        <constructor-arg name="secretKey" ref="CONFIG:DevWeek:S3:SecretKey" />
+        <constructor-arg name="region" value="" />
+    </object>
 
-
-  <!--S3-->
-  <!--###############################################-->
-  <object type="Minio.MinioClient, Minio">
-    <constructor-arg name="endpoint" ref="CONFIG:DevWeek:S3:Endpoint" />
-    <constructor-arg name="accessKey" ref="CONFIG:DevWeek:S3:AccessKey" />
-    <constructor-arg name="secretKey" ref="CONFIG:DevWeek:S3:SecretKey" />
-    <constructor-arg name="region" value="" />
-  </object>
-
-  <!--Business-->
-  <!--###############################################-->
-  <!--<object name="GoogleGeoCodeService" type="Ebix.Wbot.Services.GoogleGeoCodeService">
+    <!--Business-->
+    <!--###############################################-->
+    <!--<object name="GoogleGeoCodeService" type="Ebix.Wbot.Services.GoogleGeoCodeService">
     <constructor-arg name="geoCodeApiKey" ref="CONFIG:DevWeek:Services:Google:geocode:key" />
     <constructor-arg name="restClient" ref="RESTClient" />
   </object>
@@ -45,6 +43,26 @@
   <object type="Ebix.Wbot.Services.DBWarmUpService" autowire="constructor"></object>
   <object type="Ebix.Wbot.Services.ChatbotManagerService" autowire="constructor"></object>
   <object type="Ebix.Wbot.Data.DataProcess" autowire="constructor"></object>-->
+
+    <object type="DevWeek.Services.Downloader.DownloadPipeline, DevWeek.Services">
+        <property name="Activities">
+            <list element-type="DevWeek.Services.Downloader.IPipelineActivity, DevWeek.Contracts" >
+                <object type="DevWeek.Services.Downloader.PathCombinePipelineActivity, DevWeek.Services" autowire="constructor">
+                    <property name="Keys" value="localTemporaryFolder,outputFileName" />
+                    <property name="OutputKey" value="outputFilePath" />
+                </object>
+                <object type="DevWeek.Services.Downloader.MediaDownloaderPipelineActivity, DevWeek.Services" autowire="constructor"></object>
+                <object type="DevWeek.Services.Downloader.S3MediaUploaderPipelineActivity, DevWeek.Services" autowire="constructor"></object>
+                <object type="DevWeek.Services.Downloader.CleanupPipelineActivity, DevWeek.Services"  autowire="constructor"></object>
+            </list>
+        </property>
+        <property name="Context">
+            <dictionary  key-type="string" value-type="string">
+                <entry key="localTemporaryFolder" value-ref="CONFIG:DevWeek:LocalTemporaryFolder" />
+                <entry key="defaultBucketName" value-ref="CONFIG:DevWeek:S3:DefaultBucketName" />
+            </dictionary>
+        </property>
+    </object>
 
 
 </objects>

@@ -20,4 +20,9 @@
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\DevWeek.Contracts\DevWeek.Contracts.csproj" />
+    <ProjectReference Include="..\DevWeek.Services\DevWeek.Services.csproj" />
+  </ItemGroup>
+
 </Project>

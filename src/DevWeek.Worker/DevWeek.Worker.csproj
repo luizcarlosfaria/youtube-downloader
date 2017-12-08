@@ -29,4 +29,9 @@
     <PackageReference Include="Summer.Core" Version="1.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\DevWeek.Contracts\DevWeek.Contracts.csproj" />
+    <ProjectReference Include="..\DevWeek.Services\DevWeek.Services.csproj" />
+  </ItemGroup>
+
 </Project>
