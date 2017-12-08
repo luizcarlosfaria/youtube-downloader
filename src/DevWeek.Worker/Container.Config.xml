@@ -42,7 +42,13 @@
   <object type="Ebix.Wbot.Services.PlatformApiService" autowire="constructor"></object>
   <object type="Ebix.Wbot.Services.DBWarmUpService" autowire="constructor"></object>
   <object type="Ebix.Wbot.Services.ChatbotManagerService" autowire="constructor"></object>
-  <object type="Ebix.Wbot.Data.DataProcess" autowire="constructor"></object>-->
+  -->
+    <object type="DevWeek.Services.ResourceBootstrapService" autowire="constructor" init-method="Check">
+        <property name="MinioBucketName" ref="CONFIG:DevWeek:S3:DefaultBucketName" />
+        <property name="DownloadPipelineQueue"    ref="CONFIG:DevWeek:RabbitMQ:DownloadPipeline:Queue" />
+        <property name="DownloadPipelineRouteKey" ref="CONFIG:DevWeek:RabbitMQ:DownloadPipeline:RouteKey" />
+        <property name="DownloadPipelineExchange" ref="CONFIG:DevWeek:RabbitMQ:DownloadPipeline:Exchange" />
+    </object>
 
     <object type="DevWeek.Services.Downloader.DownloadPipeline, DevWeek.Services">
         <property name="Activities">

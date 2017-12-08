@@ -20,11 +20,7 @@ namespace DevWeek.Services.Downloader
             string bucketName = context["defaultBucketName"];
             string fileName = context["outputFilePath"];
 
-            bool exists = await minio.BucketExistsAsync(bucketName);
-            if (exists == false)
-            {
-                await minio.MakeBucketAsync(bucketName);
-            }
+            
             await minio.PutObjectAsync(bucketName, System.IO.Path.GetFileName(fileName), fileName);
         }
     }
