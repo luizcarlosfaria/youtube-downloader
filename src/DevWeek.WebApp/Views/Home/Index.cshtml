@@ -1,37 +1,40 @@
 ﻿@{
     ViewData["Title"] = "Home";
 }
-
-<div class="container">
-    <div class="row">
-        <div class="col-sm">
-            <form class="">
-                <div class="input-group">
-                    <input class="form-control" type="url" placeholder="https://www.youtube.com/watch?v=L3wKzyIN1yk" aria-label="Enfileirar">
-                    <span class="input-group-btn">
-                        <button class="btn btn-secondary" type="button">Baixar!</button>
-                    </span>
+<div ng-controller="HomeController">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm">
+                <form class="">
+                    <div class="input-group">
+                        <input class="form-control" type="url" placeholder="https://www.youtube.com/watch?v=L3wKzyIN1yk" aria-label="Enfileirar" ng-model="url">
+                        <span class="input-group-btn">
+                            <button class="btn" type="button" ng-click="enqueue()" ng-disabled="!url" ng-class="{'btn-primary': url}">Baixar!</button>
+                        </span>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <br />
+    <div class="container">
+        <div class="row">
+            <div class="col-sm" ng-repeat="item in list">
+                <div class="card" style="width: 20rem;">
+                    <img class="card-img-top" src="{{item.thumbnailUrl}}" alt="Card image cap">
+                    <div class="card-body">
+                        <h4 class="card-title">{{item.title}}</h4>
+                        <p class="card-text text-truncate">{{item.description}}</p>
+                        
+                        <div class="embed-responsive embed-responsive-16by9" ng-if="item.downloadUrl">
+                            <video class="embed-responsive-item" src="{{item.downloadUrl}}" controls="controls" poster="{{item.thumbnailUrl}}"></video>
+                        </div>
+                        <br />
+                        <a target="_blank" href="{{item.originalMediaUrl}}" class="btn btn-primary">Ir para o vídeo</a>
+                    </div>
                 </div>
-            </form>
+            </div>
         </div>
+
     </div>
-
-</div>
-
-<div class="container">
-    <div class="row">
-        <div class="col-sm">
-            1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0
-        </div>
-        <div class="col-sm">
-            1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0
-        </div>
-        <div class="col-sm">
-            1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0
-        </div>
-        <div class="col-sm">
-            1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0
-        </div>
-    </div>
-
 </div>

@@ -7,11 +7,9 @@ namespace DevWeek.Services.Downloader
 {
     public class CleanupPipelineActivity : IPipelineActivity
     {
-        public Task ExecuteAsync(Dictionary<string, string> context)
+        public Task ExecuteAsync(DownloadContext context)
         {
-            string fileName = context["outputFilePath"];
-
-            System.IO.File.Delete(fileName);
+            System.IO.File.Delete(context.OutputFileName);
 
             return Task.CompletedTask;
         }

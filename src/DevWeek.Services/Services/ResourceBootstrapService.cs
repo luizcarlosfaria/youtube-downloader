@@ -41,7 +41,7 @@ namespace DevWeek.Services
         {
             model.QueueDeclare(this.DownloadPipelineQueue, true, false, false, null);
             model.ExchangeDeclare(this.DownloadPipelineExchange, "topic", true, false, null);
-            model.ExchangeBind(this.DownloadPipelineQueue, this.DownloadPipelineExchange, this.DownloadPipelineRouteKey, null);
+            model.QueueBind(this.DownloadPipelineQueue, this.DownloadPipelineExchange, this.DownloadPipelineRouteKey, null);
         }
     }
 }

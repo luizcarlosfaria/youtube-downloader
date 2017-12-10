@@ -9,19 +9,28 @@ namespace DevWeek.Services.Downloader
     public class S3MediaUploaderPipelineActivity : IPipelineActivity
     {
         private readonly MinioClient minio;
-        
-        public S3MediaUploaderPipelineActivity(MinioClient minio)
+
+        private readonly DownloadUpdateService metadataUpdater;
+
+        public S3MediaUploaderPipelineActivity(MinioClient minio, DownloadUpdateService metadataUpdater)
         {
+            this.metadataUpdater = metadataUpdater;
             this.minio = minio;
         }
 
-        public async Task ExecuteAsync(Dictionary<string, string> context)
+        public async Task ExecuteAsync(DownloadContext context)
         {
-            string bucketName = context["defaultBucketName"];
-            string fileName = context["outputFilePath"];
+            string bucketName = (string)context["defaultBucketName"];
 
-            
-            await minio.PutObjectAsync(bucketName, System.IO.Path.GetFileName(fileName), fileName);
+            await minio.PutObjectAsync(bucketName, System.IO.Path.GetFileName(context.OutputFileName), context.OutputFilePath);
+
+            string url = await minio.PresignedGetObjectAsync(bucketName, System.IO.Path.GetFileName(context.OutputFileName), (int)TimeSpan.FromHours(1).TotalSeconds);
+
+            this.metadataUpdater.Update(context.MediaUrl, (download) =>
+            {
+                download.DownloadUrl = url;
+                download.Finished = DateTime.Now;
+            });
         }
     }
 }

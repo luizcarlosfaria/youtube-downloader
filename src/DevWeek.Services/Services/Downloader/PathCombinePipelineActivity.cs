@@ -12,9 +12,9 @@ namespace DevWeek.Services.Downloader
 
         public string OutputKey { get; set; }
 
-        public Task ExecuteAsync(Dictionary<string, string> context)
+        public Task ExecuteAsync(DownloadContext context)
         {
-            string[] contextValues = this.Keys.Select(key => context[key]).ToArray();
+            string[] contextValues = this.Keys.Select(key => (string)context[key]).ToArray();
 
             context[this.OutputKey] = System.IO.Path.Combine(contextValues);
 

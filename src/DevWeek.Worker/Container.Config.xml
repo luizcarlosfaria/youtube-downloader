@@ -53,6 +53,8 @@
     <object type="DevWeek.Services.Downloader.DownloadPipeline, DevWeek.Services">
         <property name="Activities">
             <list element-type="DevWeek.Services.Downloader.IPipelineActivity, DevWeek.Contracts" >
+                <object type="DevWeek.Services.Downloader.RepoInserPipelineActivity, DevWeek.Services" autowire="constructor"></object>
+                <object type="DevWeek.Services.Downloader.MetadataDiscoveryPipelineActivity, DevWeek.Services" autowire="constructor"></object>
                 <object type="DevWeek.Services.Downloader.PathCombinePipelineActivity, DevWeek.Services" autowire="constructor">
                     <property name="Keys" value="localTemporaryFolder,outputFileName" />
                     <property name="OutputKey" value="outputFilePath" />
@@ -63,12 +65,17 @@
             </list>
         </property>
         <property name="Context">
-            <dictionary  key-type="string" value-type="string">
+            <dictionary  key-type="string" value-type="object">
                 <entry key="localTemporaryFolder" value-ref="CONFIG:DevWeek:LocalTemporaryFolder" />
                 <entry key="defaultBucketName" value-ref="CONFIG:DevWeek:S3:DefaultBucketName" />
             </dictionary>
         </property>
     </object>
 
+
+    <object type="DevWeek.Services.Downloader.DownloadUpdateService, DevWeek.Services"  autowire="constructor">
+        <constructor-arg name="redis" ref="RedisClient"/>
+        <constructor-arg name="redisDownloadListKey" ref="CONFIG:DevWeek:Redis:DownloadListKey"/>
+    </object>
 
 </objects>

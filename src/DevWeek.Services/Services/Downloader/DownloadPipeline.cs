@@ -10,11 +10,11 @@ namespace DevWeek.Services.Downloader
     {
         public List<IPipelineActivity> Activities { get; set; }
 
-        public Dictionary<string, string> Context { get; set; }
+        public Dictionary<string,object> Context { get; set; }
 
-        public async Task Run(Dictionary<string, string> contextOverrides = null)
+        public async Task Run(Dictionary<string, object> contextOverrides = null)
         {
-            Dictionary<string, string> currentContext = this.BuildContext(this.Context, contextOverrides);
+            DownloadContext currentContext = this.BuildContext(this.Context, contextOverrides);
             
             foreach (IPipelineActivity pipelineActivity in this.Activities)
             {
@@ -23,11 +23,11 @@ namespace DevWeek.Services.Downloader
 
         }
 
-        private Dictionary<string, string> BuildContext(Dictionary<string, string> context, Dictionary<string, string> contextOverrides)
+        private DownloadContext BuildContext(Dictionary<string, object> context, Dictionary<string, object> contextOverrides)
         {
-            var currentContext = new Dictionary<string, string>();
+            var currentContext = new DownloadContext();
 
-            Action<KeyValuePair<string, string>> addItemTtoContext = (KeyValuePair<string, string> item) =>
+            Action<KeyValuePair<string, object>> addItemTtoContext = (KeyValuePair<string, object> item) =>
             {
                 if (currentContext.ContainsKey(item.Key))
                     currentContext[item.Key] = item.Value;
