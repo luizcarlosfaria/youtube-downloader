@@ -6,7 +6,7 @@
     <ProjectGuid>6e90e1c5-1884-4d3c-b1c1-f74ed6ac7506</ProjectGuid>
     <DockerLaunchBrowser>True</DockerLaunchBrowser>
     <DockerServiceUrl>http://localhost:{ServicePort}</DockerServiceUrl>
-    <DockerServiceName>devweekwebapp</DockerServiceName>
+    <DockerServiceName>devweek_webapp</DockerServiceName>
   </PropertyGroup>
   <ItemGroup>
     <None Include="docker-compose.override.yml">
