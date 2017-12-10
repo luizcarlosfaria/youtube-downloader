@@ -58,11 +58,19 @@ namespace DevWeek.WebApp.Controllers
                     var instance = Newtonsoft.Json.JsonConvert.DeserializeObject<Download>(download);
                     if (string.IsNullOrWhiteSpace(instance.DownloadUrl) == false)
                     {
-                        UriBuilder uriBuilder = new UriBuilder(instance.DownloadUrl);
-                        uriBuilder.Host = this.Request.Host.Host;
-                        uriBuilder.Port = this.Request.Host.Port ?? 80;
-                        uriBuilder.Path = uriBuilder.Path.Insert(0, "/api/stream");
-                        instance.DownloadUrl = uriBuilder.ToString();
+                        string originalDownloadUrl = instance.DownloadUrl;
+
+                        UriBuilder streamUriBuilder = new UriBuilder(originalDownloadUrl);
+                        streamUriBuilder.Host = this.Request.Host.Host;
+                        streamUriBuilder.Port = this.Request.Host.Port ?? 80;
+                        streamUriBuilder.Path = streamUriBuilder.Path.Insert(0, "/api/video/stream");
+                        instance.PlayUrl = streamUriBuilder.ToString();
+
+                        UriBuilder downloadUriBuilder = new UriBuilder(originalDownloadUrl);
+                        downloadUriBuilder.Host = this.Request.Host.Host;
+                        downloadUriBuilder.Port = this.Request.Host.Port ?? 80;
+                        downloadUriBuilder.Path = downloadUriBuilder.Path.Insert(0, "/api/video/download");
+                        instance.DownloadUrl = downloadUriBuilder.ToString();
                     }
                     return instance;
                 })

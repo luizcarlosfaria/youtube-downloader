@@ -14,9 +14,10 @@ app.controller('HomeController', ['$scope', '$http', '$interval', '$sce', ($scop
                 OriginalMediaUrl: $scope.url
             }
         }).then(function successCallback(response) {
-            alert(1)
+            alert("Ok! Seu vídeo está em processamento...");
+            $scope.url = "";
         }, function errorCallback(response) {
-            alert(2)
+            alert("Algo não deu muito certo!");
         });
     };
 
