@@ -1,12 +1,22 @@
 pipeline {
-    agent any
+    agent none
 
     stages {
         stage('Build') {
+			agent any
             steps {
-                echo 'Building..'
+                dir('./src/') {
+                    sh 'sudo docker-compose -f docker-compose.ci.build.yml up'
+                    sh 'sudo docker-compose -f docker-compose.ci.build.yml down --remove-orphans'
+                }
             }
         }
+		// stage('BuildWebApp') {
+		// 	agent { dockerfile true }
+        //     steps {
+        //         echo 'Building..'
+        //     }
+        // }		
         stage('Test') {
             steps {
                 echo 'Testing..'
