@@ -6,8 +6,6 @@ services:
     build:
       context: .
       dockerfile: DevWeek.WebApp/Dockerfile
-    networks:
-      - devweek-net
     ports:
       - "80:80"
     depends_on:
@@ -24,8 +22,6 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - shared_data:/shared
-    networks:
-      - devweek-net
     depends_on:
       - s3
       - rabbitmq
@@ -35,8 +31,6 @@ services:
     image: rabbitmq:3-management-alpine
     volumes:
       - mq_data:/var/lib/rabbitmq/mnesia
-    networks:
-      - devweek-net
 #    ports:
 #      - "15672:15672"
     environment:
@@ -50,8 +44,6 @@ services:
       - s3_data:/data
       - s3_config:/root/.minio
     command: server /data
-    networks:
-      - devweek-net
 #    ports:
 #      - "9000:9000"
     environment:
@@ -60,8 +52,6 @@ services:
 
   redis:
     image: redis:alpine
-    networks:
-      - devweek-net
 #    ports:
 #      - "6379:6379"
 
@@ -70,7 +60,3 @@ volumes:
   s3_data:
   s3_config:
   shared_data:
-
-networks: 
-  devweek-net: 
-    driver: overlay 
