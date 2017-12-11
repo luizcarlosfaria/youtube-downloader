@@ -73,4 +73,4 @@ volumes:
 
 networks: 
   devweek-net: 
-    driver: bridge
+    driver: overlay 
