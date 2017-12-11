@@ -29,8 +29,7 @@ services:
     depends_on:
       - s3
       - rabbitmq
-      - redis
-    target_num_containers: 3
+      - redis    
 
   rabbitmq:
     image: rabbitmq:3-management-alpine
