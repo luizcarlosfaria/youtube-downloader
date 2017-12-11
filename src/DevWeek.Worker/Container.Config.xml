@@ -53,7 +53,7 @@
     <object type="DevWeek.Services.Downloader.DownloadPipeline, DevWeek.Services">
         <property name="Activities">
             <list element-type="DevWeek.Services.Downloader.IPipelineActivity, DevWeek.Contracts" >
-                <object type="DevWeek.Services.Downloader.RepoInserPipelineActivity, DevWeek.Services" autowire="constructor"></object>
+                <object type="DevWeek.Services.Downloader.EntryPointRegisterPipelineActivity, DevWeek.Services" autowire="constructor"></object>
                 <object type="DevWeek.Services.Downloader.MetadataDiscoveryPipelineActivity, DevWeek.Services" autowire="constructor"></object>
                 <object type="DevWeek.Services.Downloader.PathCombinePipelineActivity, DevWeek.Services" autowire="constructor">
                     <property name="Keys" value="localTemporaryFolder,outputFileName" />
