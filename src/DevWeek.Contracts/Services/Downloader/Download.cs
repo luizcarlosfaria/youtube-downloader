@@ -18,5 +18,6 @@ namespace DevWeek.Services.Downloader
         public string Description { get; set; }
         public TimeSpan Duration { get; set; }
         public string DownloadUrl { get; set; }
+        public string PlayUrl { get; set; }
     }
 }
