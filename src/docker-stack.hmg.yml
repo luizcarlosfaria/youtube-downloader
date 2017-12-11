@@ -3,13 +3,10 @@ version: '3'
 services:
   devweek_webapp:
     image: devweek_webapp
-    build:
-      context: .
-      dockerfile: DevWeek.WebApp/Dockerfile
     networks:
       - devweek-net
     ports:
-      - "80:80"
+      - "81:80"
     depends_on:
       - s3
       - rabbitmq
@@ -18,9 +15,6 @@ services:
 
   devweek_worker:
     image: devweek_worker
-    build:
-      context: .
-      dockerfile: DevWeek.Worker/Dockerfile
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - shared_data:/shared

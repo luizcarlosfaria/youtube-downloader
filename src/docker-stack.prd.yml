@@ -30,6 +30,7 @@ services:
       - s3
       - rabbitmq
       - redis
+    target_num_containers: 3
 
   rabbitmq:
     image: rabbitmq:3-management-alpine
