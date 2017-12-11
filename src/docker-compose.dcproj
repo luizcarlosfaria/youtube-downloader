@@ -13,6 +13,8 @@
       <DependentUpon>docker-compose.yml</DependentUpon>
     </None>
     <None Include="docker-compose.yml" />
+    <None Include="docker-stack.hmg.yml" />
+	<None Include="docker-stack.prd.yml" />
     <None Include=".dockerignore" />
     <None Include="docker-compose.ci.build.yml" />
   </ItemGroup>
