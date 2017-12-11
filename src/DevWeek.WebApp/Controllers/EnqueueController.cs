@@ -42,8 +42,8 @@ namespace DevWeek.WebApp.Controllers
             this.rabbitMQ.BasicPublish(
                 exchange: configuration.GetSection("DevWeek:RabbitMQ:DownloadPipeline:Exchange").Get<string>(),
                 routingKey: configuration.GetSection("DevWeek:RabbitMQ:DownloadPipeline:RouteKey").Get<string>(),
-                null,
-                objectInByteArray
+                basicProperties: null,
+                body: objectInByteArray
                 );
 
         }
