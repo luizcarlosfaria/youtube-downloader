@@ -6,7 +6,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
     ports: 
-      - "20201:80"
+      - "80:80"
     deploy:
       placement:
         constraints: 
