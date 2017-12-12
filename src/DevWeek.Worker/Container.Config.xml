@@ -31,18 +31,7 @@
         <constructor-arg name="region" value="" />
     </object>
 
-    <!--Business-->
-    <!--###############################################-->
-    <!--<object name="GoogleGeoCodeService" type="Ebix.Wbot.Services.GoogleGeoCodeService">
-    <constructor-arg name="geoCodeApiKey" ref="CONFIG:DevWeek:Services:Google:geocode:key" />
-    <constructor-arg name="restClient" ref="RESTClient" />
-  </object>
-  <object type="Ebix.Wbot.Services.AccountService" autowire="constructor"></object>
-  <object type="Ebix.Wbot.Services.AuthenticationService" autowire="constructor"></object>
-  <object type="Ebix.Wbot.Services.PlatformApiService" autowire="constructor"></object>
-  <object type="Ebix.Wbot.Services.DBWarmUpService" autowire="constructor"></object>
-  <object type="Ebix.Wbot.Services.ChatbotManagerService" autowire="constructor"></object>
-  -->
+
     <object type="DevWeek.Services.ResourceBootstrapService" autowire="constructor" init-method="Check">
         <property name="MinioBucketName" ref="CONFIG:DevWeek:S3:DefaultBucketName" />
         <property name="DownloadPipelineQueue"    ref="CONFIG:DevWeek:RabbitMQ:DownloadPipeline:Queue" />
