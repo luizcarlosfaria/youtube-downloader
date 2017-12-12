@@ -1,0 +1,24 @@
+version: '3'
+
+services:
+  devweek_webapp:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports: 
+      - "20001:80"
+
+  devweek_worker:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+
+  rabbitmq:
+    ports: 
+      - "20002:15672"
+
+  s3:
+    ports: 
+      - "20003:15672"
+
+  redis:
+    ports:
+      - "20004:6379"

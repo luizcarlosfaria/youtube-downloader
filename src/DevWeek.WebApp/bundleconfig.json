@@ -16,7 +16,7 @@
     // Optionally specify minification options
     "minify": {
       "enabled": true,
-      "renameLocals": true
+      "renameLocals": false
     },
     // Optionally generate .map file
     "sourceMap": false
