@@ -2,14 +2,14 @@ version: '3'
 
 services:
   devweek_webapp:
-    image: devweek_webapp:latest
+    image: luizcarlosfaria/devweek_webapp:latest
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
     ports: 
       - "20201:80"
 
   devweek_worker:
-    image: devweek_worker:latest
+    image: luizcarlosfaria/devweek_worker:latest
     deploy:
       mode: replicated
       replicas: 3
