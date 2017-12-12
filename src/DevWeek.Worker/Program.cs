@@ -14,7 +14,7 @@ namespace DevWeek
     {
         static void Main(string[] args)
         {
-            System.Threading.Thread.Sleep(TimeSpan.FromSeconds(5));
+            System.Threading.Thread.Sleep(TimeSpan.FromSeconds(10));
 
             var appContext = ContextBuilder.BuildContext();
 

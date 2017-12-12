@@ -9,12 +9,19 @@
     <DockerServiceName>devweek_webapp</DockerServiceName>
   </PropertyGroup>
   <ItemGroup>
+    <None Include="docker-compose.dev.yml" >
+      <DependentUpon>docker-compose.yml</DependentUpon>
+    </None>
+    <None Include="docker-compose.hmg.yml">
+      <DependentUpon>docker-compose.yml</DependentUpon>
+    </None>
     <None Include="docker-compose.override.yml">
       <DependentUpon>docker-compose.yml</DependentUpon>
     </None>
+    <None Include="docker-compose.prd.yml" >
+      <DependentUpon>docker-compose.yml</DependentUpon>
+    </None>
     <None Include="docker-compose.yml" />
-    <None Include="docker-stack.hmg.yml" />
-	<None Include="docker-stack.prd.yml" />
     <None Include=".dockerignore" />
     <None Include="docker-compose.ci.build.yml" />
   </ItemGroup>
