@@ -10,6 +10,16 @@ services:
 
   devweek_worker:
     image: devweek_worker:latest
+    deploy:
+      mode: replicated
+      replicas: 3
+      restart_policy:
+        condition: on-failure
+        delay: 10s
+        max_attempts: 3
+        window: 600s
+      placement:
+        constraints: [node.labels.appenv == prd]
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
 
