@@ -11,7 +11,9 @@
   {
     "outputFileName": "wwwroot/js/site.min.js",
     "inputFiles": [
-      "wwwroot/js/*.js"
+        "wwwroot/js/site.js",
+        "wwwroot/js/HomeController.js",
+        "wwwroot/js/NavController.js"
     ],
     // Optionally specify minification options
     "minify": {
