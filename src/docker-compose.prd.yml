@@ -7,9 +7,16 @@ services:
       - ASPNETCORE_ENVIRONMENT=Production
     ports: 
       - "20201:80"
+    deploy:
+      placement:
+        constraints: 
+          - node.labels.appenv == prd
+      
 
   devweek_worker:
     image: luizcarlosfaria/devweek_worker:latest
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
     deploy:
       mode: replicated
       replicas: 3
@@ -19,18 +26,30 @@ services:
         max_attempts: 3
         window: 600s
       placement:
-        constraints: [node.labels.appenv == prd]
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Production
+        constraints: 
+          - node.labels.appenv == prd
+
 
   rabbitmq:
     ports: 
       - "20202:15672"
+    deploy:
+      placement:
+        constraints: 
+          - node.labels.appenv == prd
 
   s3:
     ports: 
       - "20203:15672"
+    deploy:
+      placement:
+        constraints: 
+          - node.labels.appenv == prd
 
   redis:
     ports:
       - "20204:6379"
+    deploy:
+      placement:
+        constraints: 
+          - node.labels.appenv == prd
