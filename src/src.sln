@@ -6,6 +6,10 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevWeek.WebApp", "DevWeek.WebApp\DevWeek.WebApp.csproj", "{2E0B73BB-35AE-4166-B572-2791DFD417D7}"
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{6E90E1C5-1884-4D3C-B1C1-F74ED6AC7506}"
+	ProjectSection(ProjectDependencies) = postProject
+		{2E0B73BB-35AE-4166-B572-2791DFD417D7} = {2E0B73BB-35AE-4166-B572-2791DFD417D7}
+		{4A8CE7CD-E994-4A6B-B3B5-CEE4FA4B683A} = {4A8CE7CD-E994-4A6B-B3B5-CEE4FA4B683A}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevWeek.Worker", "DevWeek.Worker\DevWeek.Worker.csproj", "{4A8CE7CD-E994-4A6B-B3B5-CEE4FA4B683A}"
 EndProject
