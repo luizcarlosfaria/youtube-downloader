@@ -11,10 +11,7 @@
   <ItemGroup>
     <None Include="docker-compose.dev.yml" >
       <DependentUpon>docker-compose.yml</DependentUpon>
-    </None>
-    <None Include="docker-compose.hmg.yml">
-      <DependentUpon>docker-compose.yml</DependentUpon>
-    </None>
+    </None>   
     <None Include="docker-compose.override.yml">
       <DependentUpon>docker-compose.yml</DependentUpon>
     </None>

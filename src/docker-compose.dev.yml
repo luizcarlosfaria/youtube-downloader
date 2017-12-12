@@ -2,12 +2,14 @@ version: '3'
 
 services:
   devweek_webapp:
+    image: devweek_webapp:dev-latest
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
     ports: 
       - "20001:80"
 
   devweek_worker:
+    image: devweek_worker:dev-latest
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
 
