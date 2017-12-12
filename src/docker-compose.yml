@@ -8,6 +8,8 @@ services:
       dockerfile: DevWeek.WebApp/Dockerfile
     networks:
       - devweek-net
+    ports:
+      - "80"
     depends_on:
       - s3
       - rabbitmq
