@@ -51,7 +51,7 @@ services:
     networks:
       - devweek-net
     ports:
-      - "9000:9000"
+      - "7000:9000"
     environment:
       MINIO_ACCESS_KEY: Zu8VgBoZMU2xcmOEeS70
       MINIO_SECRET_KEY: xvnjYyFQyFs44iuUagi4kTHiOGvlK1PiX64LiwOy
