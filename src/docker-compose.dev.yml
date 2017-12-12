@@ -7,6 +7,10 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
     ports: 
       - "20001:80"
+    deploy:
+      placement:
+        constraints: 
+          - node.labels.appenv == dev
 
   devweek_worker:
     image: devweek_worker:dev-latest
@@ -21,16 +25,29 @@ services:
         max_attempts: 3
         window: 600s
       placement:
-        constraints: [node.labels.appenv == dev]
-        
+        constraints: 
+          - node.labels.appenv == dev
+
   rabbitmq:
     ports: 
       - "20002:15672"
+    deploy:
+      placement:
+        constraints: 
+          - node.labels.appenv == dev
 
   s3:
     ports: 
       - "20003:15672"
+    deploy:
+      placement:
+        constraints: 
+          - node.labels.appenv == dev
 
   redis:
     ports:
       - "20004:6379"
+    deploy:
+      placement:
+        constraints: 
+          - node.labels.appenv == dev
