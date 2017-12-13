@@ -36,7 +36,7 @@ app.controller('HomeController', ['$scope', '$http', '$interval', '$sce', ($scop
         }, function errorCallback(response) {
         });
 
-    }, 500)
+    }, 1500)
 
 
 }]);
