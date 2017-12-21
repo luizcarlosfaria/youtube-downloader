@@ -40,7 +40,7 @@ services:
 
   s3:
     ports: 
-      - "20203:15672"
+      - "20203:9000"
     deploy:
       placement:
         constraints: 
