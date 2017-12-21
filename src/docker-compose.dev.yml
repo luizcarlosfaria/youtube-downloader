@@ -38,7 +38,7 @@ services:
 
   s3:
     ports: 
-      - "20003:15672"
+      - "20003:9000"
     deploy:
       placement:
         constraints: 
