@@ -7,6 +7,7 @@ using System.IO;
 using System.Diagnostics;
 using Minio;
 using DevWeek.Services.Downloader;
+using Polly;
 
 namespace DevWeek
 {
@@ -14,10 +15,19 @@ namespace DevWeek
     {
         static void Main(string[] args)
         {
-            System.Threading.Thread.Sleep(TimeSpan.FromSeconds(10));
+            Spring.Context.Support.AbstractApplicationContext appContext = null;
 
-            var appContext = ContextBuilder.BuildContext();
-
+            var retryOnStartupPolicy = Policy
+               //.HandleInner<StackExchange.Redis.RedisConnectionException>()
+               .Handle<Exception>()
+               .WaitAndRetry(9, retryAttempt =>
+                    TimeSpan.FromSeconds(Math.Pow(2, retryAttempt))
+                );
+            //2^9=512 segundos (8,53333 minutos)
+            retryOnStartupPolicy.Execute(() =>
+            {
+                appContext = ContextBuilder.BuildContext();
+            });
 
 
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
