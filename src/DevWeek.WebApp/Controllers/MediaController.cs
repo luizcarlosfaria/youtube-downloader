@@ -34,7 +34,9 @@ namespace DevWeek.WebApp.Controllers
         [HttpGet("{bucket}/{target}/{*address}")]
         public async Task<IActionResult> GetMedia(string target, string bucket, string address)
         {
-            
+            this.Response.Headers.Add("Accept-Ranges", "bytes"); 
+        
+
             string type = null;
             if (target == "stream")
                 type = "video/mp4";
