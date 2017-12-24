@@ -68,9 +68,9 @@ namespace DevWeek
 
                             rabbitMQ.BasicAck(result.DeliveryTag, false);
                         }
-                        catch (InvalidOperationException ex) when (ex.Message.Contains("#invalidUrl"))
+                        catch (InvalidOperationException ex) when (ex.Message.Contains("#invalidUrl") || ex.Message.Contains("#invalidId"))
                         {
-                            rabbitMQ.BasicAck(result.DeliveryTag, false);
+                            rabbitMQ.BasicNack(result.DeliveryTag, false, false);
                         }
                         catch (Exception ex)
                         {

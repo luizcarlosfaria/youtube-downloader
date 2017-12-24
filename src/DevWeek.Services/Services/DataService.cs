@@ -41,7 +41,7 @@ namespace DevWeek.Services
             }
             else
             {
-                throw new InvalidOperationException($"Download with id '{id}' can not found!");
+                throw new InvalidOperationException($"Download with id '{id}' can not found! #invalidId");
             }
         }
 
@@ -54,12 +54,15 @@ namespace DevWeek.Services
                 await this.GetDownloadCollection().InsertOneAsync(downloadToInsert);
                 await this.RebuildCache(downloadCollection);
             }
+            else
+            {
+                downloadToInsert.Id = downloadItemOnDB.Id;
+            }
         }
 
         public async Task RebuildCache(IMongoCollection<Download> downloadCollection = null)
         {
             downloadCollection = downloadCollection ?? this.GetDownloadCollection();
-
 
             using (this.distributedLockService.Acquire(0, $"{this.redisDownloadListKey}-key", TimeSpan.FromSeconds(15)))
             {
