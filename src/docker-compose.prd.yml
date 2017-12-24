@@ -57,3 +57,11 @@ services:
       placement:
         constraints: 
           - node.labels.appenv == prd
+
+  mongodb:
+    ports:
+      - "20205:27017"
+    deploy:
+      placement:
+        constraints: 
+          - node.labels.appenv == prd

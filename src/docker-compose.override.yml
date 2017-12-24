@@ -18,3 +18,7 @@ services:
   redis:
     ports:
       - "6379"
+
+  mongodb:
+    ports:
+      - "27017"

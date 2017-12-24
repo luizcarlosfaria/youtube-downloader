@@ -9,7 +9,11 @@ services:
     restart: unless-stopped
     networks: 
       - devweek_net
-      
+    depends_on: 
+      - rabbitmq
+      - s3
+      - redis
+      - mongodb      
 
   devweek_worker:
     image: devweek_worker
@@ -21,7 +25,12 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - shared_data:/shared
     networks: 
-      - devweek_net    
+      - devweek_net
+    depends_on: 
+      - rabbitmq
+      - s3
+      - redis
+      - mongodb
 
   rabbitmq:
     image: rabbitmq:3-management-alpine
@@ -51,11 +60,25 @@ services:
     networks: 
       - devweek_net
 
+  mongodb:
+    image: mongo:3.4
+    volumes:
+      - mongo_data:/data/db
+    restart: always
+    command: --storageEngine wiredTiger
+    environment: 
+      MONGO_INITDB_ROOT_USERNAME: mongouser
+      MONGO_INITDB_ROOT_PASSWORD: eprPs2UEJ239RvH7SicPkcFbkTQoa8
+    networks: 
+      - devweek_net
+
+
 volumes:  
   mq_data:
   s3_data:
   s3_config:
   shared_data:
+  mongo_data:
 
 
 networks:

@@ -55,3 +55,11 @@ services:
       placement:
         constraints: 
           - node.labels.appenv == dev
+
+  mongodb:
+    ports:
+      - "20005:27017"
+    deploy:
+      placement:
+        constraints: 
+          - node.labels.appenv == dev
