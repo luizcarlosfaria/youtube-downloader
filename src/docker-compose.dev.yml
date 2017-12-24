@@ -1,4 +1,4 @@
-version: '3'
+version: '3.4'
 
 services:
   devweek_webapp:
@@ -26,8 +26,8 @@ services:
         window: 600s
       update_config:
         parallelism: 1
-          delay: 10s
-          order: start-first
+        delay: 10s
+        order: start-first
       placement:
         constraints: 
           - node.labels.appenv == dev
