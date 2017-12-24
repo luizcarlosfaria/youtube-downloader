@@ -22,7 +22,8 @@ namespace DevWeek.Services.Downloader
             string title = await RunAsync("--get-title", context.MediaUrl);
             string thumbnail = await RunAsync("--get-thumbnail", context.MediaUrl);
             string description = await RunAsync("--get-description", context.MediaUrl);
-            TimeSpan duration = TimeSpan.Parse(await RunAsync("--get-duration", context.MediaUrl));
+            string durationRaw = await RunAsync("--get-duration", context.MediaUrl);
+            TimeSpan duration = this.ParseDuration(durationRaw);
 
             await this.dataService.Update(context.Download.Id, (update) =>
                  update.Combine(new[] {
@@ -32,6 +33,16 @@ namespace DevWeek.Services.Downloader
                     update.Set(it => it.Duration, duration)
                  })
              );
+        }
+
+        private TimeSpan ParseDuration(string durationRaw)
+        {
+            int foundSplitters = durationRaw.ToArray().Count(it => it == ':');
+            for (int i = foundSplitters; i < 2; i++)
+            {
+                durationRaw = "00:" + durationRaw;
+            }
+            return TimeSpan.Parse(durationRaw);
         }
 
         private async Task<string> RunAsync(string action, string mediaUrl)
