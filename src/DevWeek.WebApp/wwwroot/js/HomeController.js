@@ -25,7 +25,7 @@ app.controller('HomeController', ['$scope', '$http', '$interval', '$sce', ($scop
     $interval(() => {
         $http({
             method: 'GET',
-            url: '/api/Enqueue',
+            url: '/api/downloads',
             data: {}
         }).then(function successCallback(response) {
             Enumerable.From(privList).ForEach(it => { delete it.$$hashKey; });

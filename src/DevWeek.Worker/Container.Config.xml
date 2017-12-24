@@ -21,6 +21,11 @@
         </constructor-arg>
     </object>
 
+    <!--MongoDB-->
+    <!--###############################################-->
+    <object name="MongoClient" type="MongoDB.Driver.MongoClient, MongoDB.Driver">
+        <constructor-arg name="connectionString" ref="CONFIG:DevWeek:MongoDB:ConnectionString" />
+    </object>
 
     <!--S3-->
     <!--###############################################-->
@@ -37,6 +42,13 @@
         <property name="DownloadPipelineQueue"    ref="CONFIG:DevWeek:RabbitMQ:DownloadPipeline:Queue" />
         <property name="DownloadPipelineRouteKey" ref="CONFIG:DevWeek:RabbitMQ:DownloadPipeline:RouteKey" />
         <property name="DownloadPipelineExchange" ref="CONFIG:DevWeek:RabbitMQ:DownloadPipeline:Exchange" />
+        <property name="MongoRequiredCollections" value="media_download" />
+        <property name="LockTimeout" value="00:00:30" />
+        <property name="DistributedLockKey" value="init-infrastructure-lock" />
+    </object>
+
+    <object name="DistributedLockService" type="DevWeek.Services.DistributedLockService, DevWeek.Services" autowire="constructor">
+        <property name="WaitingLockCycle" value="00:00:00.200"></property>
     </object>
 
     <object type="DevWeek.Services.Downloader.DownloadPipeline, DevWeek.Services">
@@ -62,9 +74,12 @@
     </object>
 
 
-    <object type="DevWeek.Services.Downloader.DownloadUpdateService, DevWeek.Services"  autowire="constructor">
+    <object type="DevWeek.Services.DataService, DevWeek.Services"  autowire="constructor">
         <constructor-arg name="redis" ref="RedisClient"/>
+        <constructor-arg name="mongoClient" ref="MongoClient"/>
+        <constructor-arg name="distributedLockService" ref="DistributedLockService"/>
         <constructor-arg name="redisDownloadListKey" ref="CONFIG:DevWeek:Redis:DownloadListKey"/>
+        <constructor-arg name="mongoDownloadCollectionName" ref="CONFIG:DevWeek:MongoDB:MongoDownloadCollectionName"/>
     </object>
 
 </objects>

@@ -9,24 +9,23 @@ namespace DevWeek.Services.Downloader
     public class EntryPointRegisterPipelineActivity : IPipelineActivity
     {
 
-        private readonly DownloadUpdateService metadataUpdater;
+        private readonly DataService metadataUpdater;
 
-        public EntryPointRegisterPipelineActivity(DownloadUpdateService metadataUpdater)
+        public EntryPointRegisterPipelineActivity(DataService metadataUpdater)
         {
             this.metadataUpdater = metadataUpdater;
         }
 
 
-        public Task ExecuteAsync(DownloadContext context)
+        public async Task ExecuteAsync(DownloadContext context)
         {
             if (context.Download.OriginalMediaUrl == null)
                 throw new ArgumentNullException($"The url '{context.Download.OriginalMediaUrl}' is null #invalidUrl");
 
             this.ValidateUrl(context.Download.OriginalMediaUrl);
 
-            metadataUpdater.InsertOrUpdate(context.Download);
+            await metadataUpdater.Insert(context.Download);
 
-            return Task.CompletedTask;
         }
 
         private void ValidateUrl(string url)

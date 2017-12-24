@@ -10,11 +10,11 @@ namespace DevWeek.Services.Downloader
     {
         private readonly MinioClient minio;
 
-        private readonly DownloadUpdateService metadataUpdater;
+        private readonly DataService dataService;
 
-        public S3MediaUploaderPipelineActivity(MinioClient minio, DownloadUpdateService metadataUpdater)
+        public S3MediaUploaderPipelineActivity(MinioClient minio, DataService dataService)
         {
-            this.metadataUpdater = metadataUpdater;
+            this.dataService = dataService;
             this.minio = minio;
         }
 
@@ -26,11 +26,12 @@ namespace DevWeek.Services.Downloader
 
             string url = await minio.PresignedGetObjectAsync(bucketName, System.IO.Path.GetFileName(context.OutputFileName), (int)TimeSpan.FromHours(1).TotalSeconds);
 
-            this.metadataUpdater.Update(context.MediaUrl, (download) =>
-            {
-                download.DownloadUrl = url;
-                download.Finished = DateTime.Now;
-            });
+            await this.dataService.Update(context.Download.Id, (update) =>
+                update.Combine(new[] {
+                    update.Set(it => it.DownloadUrl, url),
+                    update.Set(it => it.Finished, DateTime.Now)
+                })
+            );
         }
     }
 }

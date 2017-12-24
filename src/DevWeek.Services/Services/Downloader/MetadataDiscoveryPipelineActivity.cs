@@ -10,10 +10,11 @@ namespace DevWeek.Services.Downloader
 {
     public class MetadataDiscoveryPipelineActivity : IPipelineActivity
     {
-        private readonly DownloadUpdateService metadataUpdater;
+        private readonly DataService dataService;
 
-        public MetadataDiscoveryPipelineActivity(DownloadUpdateService metadataUpdater) {
-            this.metadataUpdater = metadataUpdater;
+        public MetadataDiscoveryPipelineActivity(DataService dataService)
+        {
+            this.dataService = dataService;
         }
 
         public async Task ExecuteAsync(DownloadContext context)
@@ -23,13 +24,14 @@ namespace DevWeek.Services.Downloader
             string description = await RunAsync("--get-description", context.MediaUrl);
             TimeSpan duration = TimeSpan.Parse(await RunAsync("--get-duration", context.MediaUrl));
 
-            this.metadataUpdater.Update(context.MediaUrl, (download) =>
-            {
-                download.Title = title;
-                download.ThumbnailUrl = thumbnail;
-                download.Description = description;
-                download.Duration = duration;
-            });
+            await this.dataService.Update(context.Download.Id, (update) =>
+                 update.Combine(new[] {
+                    update.Set(it => it.Title, title),
+                    update.Set(it => it.ThumbnailUrl, thumbnail),
+                    update.Set(it => it.Description, description),
+                    update.Set(it => it.Duration, duration)
+                 })
+             );
         }
 
         private async Task<string> RunAsync(string action, string mediaUrl)

@@ -52,10 +52,7 @@ namespace DevWeek
                 return StackExchange.Redis.ConnectionMultiplexer.Connect(this.Configuration.GetSection("DevWeek:Redis:ConnectionString").Get<string>(), null);
             });
 
-            services.AddSingleton((sp) =>
-            {
-                return new DevWeek.Services.Downloader.DownloadUpdateService(sp.GetRequiredService<StackExchange.Redis.ConnectionMultiplexer>(), this.Configuration.GetSection("DevWeek:Redis:DownloadListKey").Get<string>());
-            });
+            
 
             services.AddSingleton((sp) =>
             {

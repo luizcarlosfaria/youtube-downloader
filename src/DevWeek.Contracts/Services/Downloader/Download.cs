@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -6,6 +8,10 @@ namespace DevWeek.Services.Downloader
 {
     public class Download
     {
+        [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string Id { get; set; }
+
         public string OriginalMediaUrl { get; set; }
 
         public string MinioAddress { get; set; }

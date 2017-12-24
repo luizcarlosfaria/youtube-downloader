@@ -12,15 +12,15 @@ using StackExchange.Redis;
 namespace DevWeek.WebApp.Controllers
 {
     [Produces("application/json")]
-    [Route("api/Enqueue")]
-    public class EnqueueController : Controller
+    //[Route("api/Enqueue")]
+    public class DataController : Controller
     {
         private readonly IModel rabbitMQ;
         private readonly ConnectionMultiplexer redis;
         private readonly IConfiguration configuration;
         private readonly string downloadListKey;
 
-        public EnqueueController(IModel rabbitMQ, ConnectionMultiplexer redis, IConfiguration configuration)
+        public DataController(IModel rabbitMQ, ConnectionMultiplexer redis, IConfiguration configuration)
         {
             this.rabbitMQ = rabbitMQ;
             this.redis = redis;
@@ -29,7 +29,7 @@ namespace DevWeek.WebApp.Controllers
         }
 
 
-        [HttpPost]
+        [HttpPost("api/Enqueue")]
         public void Post([FromBody] Download download)
         {
             download.MinioAddress = null;
@@ -48,7 +48,7 @@ namespace DevWeek.WebApp.Controllers
 
         }
 
-        [HttpGet]
+        [HttpGet("api/downloads")]
         public IEnumerable<Download> Get()
         {
             var result = redis.GetDatabase(0)
