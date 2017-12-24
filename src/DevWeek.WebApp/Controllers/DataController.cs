@@ -56,22 +56,6 @@ namespace DevWeek.WebApp.Controllers
                 .Select(download =>
                 {
                     var instance = Newtonsoft.Json.JsonConvert.DeserializeObject<Download>(download);
-                    if (string.IsNullOrWhiteSpace(instance.DownloadUrl) == false)
-                    {
-                        string originalDownloadUrl = instance.DownloadUrl;
-
-                        UriBuilder streamUriBuilder = new UriBuilder(originalDownloadUrl);
-                        streamUriBuilder.Host = this.Request.Host.Host;
-                        streamUriBuilder.Port = this.Request.Host.Port ?? 80;
-                        streamUriBuilder.Path = streamUriBuilder.Path.Insert(0, "/api/video/stream");
-                        instance.PlayUrl = streamUriBuilder.ToString();
-
-                        UriBuilder downloadUriBuilder = new UriBuilder(originalDownloadUrl);
-                        downloadUriBuilder.Host = this.Request.Host.Host;
-                        downloadUriBuilder.Port = this.Request.Host.Port ?? 80;
-                        downloadUriBuilder.Path = downloadUriBuilder.Path.Insert(0, "/api/video/download");
-                        instance.DownloadUrl = downloadUriBuilder.ToString();
-                    }
                     return instance;
                 })
                 .ToArray();

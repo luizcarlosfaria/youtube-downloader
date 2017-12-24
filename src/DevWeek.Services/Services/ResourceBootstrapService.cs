@@ -20,7 +20,7 @@ namespace DevWeek.Services
         private readonly RabbitMQ.Client.IModel model;
 
         public string[] MongoRequiredCollections { get; set; }
-        public string MinioBucketName { get; set; }
+        public string[] MinioBucketNames { get; set; }
         public string DownloadPipelineQueue { get; set; }
         public string DownloadPipelineRouteKey { get; set; }
         public string DownloadPipelineExchange { get; set; }
@@ -61,10 +61,13 @@ namespace DevWeek.Services
         /// </summary>
         private void CheckMinioServer()
         {
-            bool exists = minio.BucketExistsAsync(this.MinioBucketName).GetAwaiter().GetResult();
-            if (exists == false)
+            foreach (string minioBucketName in this.MinioBucketNames)
             {
-                minio.MakeBucketAsync(this.MinioBucketName).GetAwaiter();
+                bool exists = minio.BucketExistsAsync(minioBucketName).GetAwaiter().GetResult();
+                if (exists == false)
+                {
+                    minio.MakeBucketAsync(minioBucketName).GetAwaiter();
+                }
             }
         }
 

@@ -15,7 +15,7 @@ namespace DevWeek.Services.Downloader
         public string OriginalMediaUrl { get; set; }
 
         public string MinioAddress { get; set; }
-        
+
         public DateTime Created { get; set; }
 
         public DateTime? Finished { get; set; }
@@ -23,7 +23,8 @@ namespace DevWeek.Services.Downloader
         public string ThumbnailUrl { get; set; }
         public string Description { get; set; }
         public TimeSpan Duration { get; set; }
-        public string DownloadUrl { get; set; }
+        public string VideoDownloadUrl { get; set; }
+        public string AudioDownloadUrl { get; set; }
         public string PlayUrl { get; set; }
     }
 }

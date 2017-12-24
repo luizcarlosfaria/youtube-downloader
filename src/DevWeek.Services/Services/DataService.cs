@@ -51,7 +51,7 @@ namespace DevWeek.Services
             if (downloadItemOnDB == null)
             {
                 var downloadCollection = this.GetDownloadCollection();
-                await this.GetDownloadCollection().InsertOneAsync(downloadToInsert);
+                await this.GetDownloadCollection().InsertOneAsync(downloadToInsert);                
                 await this.RebuildCache(downloadCollection);
             }
             else

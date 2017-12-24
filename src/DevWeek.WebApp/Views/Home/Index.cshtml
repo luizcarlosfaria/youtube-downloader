@@ -31,7 +31,8 @@
                         <p class="card-text text-truncate">{{item.description}}</p>
                         <br />
                         <a target="_blank" href="{{item.originalMediaUrl}}" class="card-link">Ver original</a>
-                        <a target="_blank" ng-if="item.downloadUrl" href="{{item.downloadUrl}}" class="btn btn-primary">Download</a>
+                        <a target="_blank" ng-if="item.audioDownloadUrl" href="{{item.audioDownloadUrl}}" class="btn btn-primary btn-sm">Baixar MP3</a>
+                        <a target="_blank" ng-if="item.videoDownloadUrl" href="{{item.videoDownloadUrl}}" class="btn btn-primary btn-sm">Baixar MP4</a>
                     </div>
                 </div>
             </div>

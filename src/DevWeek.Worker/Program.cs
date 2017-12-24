@@ -60,7 +60,6 @@ namespace DevWeek
                             var context = new DownloadContext()
                             {
                                 MediaUrl = messageObject.OriginalMediaUrl,
-                                OutputFileName = $"{Guid.NewGuid().ToString("N")}.mp4",
                                 Download = messageObject
                             };
 

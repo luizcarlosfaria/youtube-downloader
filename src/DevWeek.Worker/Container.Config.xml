@@ -38,12 +38,18 @@
 
 
     <object type="DevWeek.Services.ResourceBootstrapService" autowire="constructor" init-method="Check">
-        <property name="MinioBucketName" ref="CONFIG:DevWeek:S3:DefaultBucketName" />
         <property name="DownloadPipelineQueue"    ref="CONFIG:DevWeek:RabbitMQ:DownloadPipeline:Queue" />
         <property name="DownloadPipelineRouteKey" ref="CONFIG:DevWeek:RabbitMQ:DownloadPipeline:RouteKey" />
         <property name="DownloadPipelineExchange" ref="CONFIG:DevWeek:RabbitMQ:DownloadPipeline:Exchange" />
-        <property name="MongoRequiredCollections" value="media_download" />
         <property name="LockTimeout" value="00:00:30" />
+        <property name="MongoRequiredCollections" value="media_download" />
+        <property name="MinioBucketNames" >
+            <object type="string[]" >
+                <constructor-arg value="2" />
+                <property name="[0]" ref="CONFIG:DevWeek:S3:AudioBucketName" />
+                <property name="[1]" ref="CONFIG:DevWeek:S3:VideoBucketName" />
+            </object>
+        </property>
         <property name="DistributedLockKey" value="init-infrastructure-lock" />
     </object>
 
@@ -56,10 +62,6 @@
             <list element-type="DevWeek.Services.Downloader.IPipelineActivity, DevWeek.Contracts" >
                 <object type="DevWeek.Services.Downloader.EntryPointRegisterPipelineActivity, DevWeek.Services" autowire="constructor"></object>
                 <object type="DevWeek.Services.Downloader.MetadataDiscoveryPipelineActivity, DevWeek.Services" autowire="constructor"></object>
-                <object type="DevWeek.Services.Downloader.PathCombinePipelineActivity, DevWeek.Services" autowire="constructor">
-                    <property name="Keys" value="localTemporaryFolder,outputFileName" />
-                    <property name="OutputKey" value="outputFilePath" />
-                </object>
                 <object type="DevWeek.Services.Downloader.MediaDownloaderPipelineActivity, DevWeek.Services" autowire="constructor"></object>
                 <object type="DevWeek.Services.Downloader.S3MediaUploaderPipelineActivity, DevWeek.Services" autowire="constructor"></object>
                 <object type="DevWeek.Services.Downloader.CleanupPipelineActivity, DevWeek.Services"  autowire="constructor"></object>
@@ -68,7 +70,8 @@
         <property name="Context">
             <dictionary  key-type="string" value-type="object">
                 <entry key="localTemporaryFolder" value-ref="CONFIG:DevWeek:LocalTemporaryFolder" />
-                <entry key="defaultBucketName" value-ref="CONFIG:DevWeek:S3:DefaultBucketName" />
+                <entry key="audioBucketName" value-ref="CONFIG:DevWeek:S3:AudioBucketName" />
+                <entry key="videoBucketName" value-ref="CONFIG:DevWeek:S3:VideoBucketName" />
             </dictionary>
         </property>
     </object>

@@ -20,15 +20,21 @@ namespace DevWeek.Services.Downloader
 
         public async Task ExecuteAsync(DownloadContext context)
         {
-            string bucketName = (string)context["defaultBucketName"];
+            string audioBucketName = (string)context["audioBucketName"];
+            string audioFileName = System.IO.Path.GetFileName(context.AudioOutputFilePath);
+            await minio.PutObjectAsync(audioBucketName, audioFileName, context.AudioOutputFilePath);
 
-            await minio.PutObjectAsync(bucketName, System.IO.Path.GetFileName(context.OutputFileName), context.OutputFilePath);
 
-            string url = await minio.PresignedGetObjectAsync(bucketName, System.IO.Path.GetFileName(context.OutputFileName), (int)TimeSpan.FromHours(1).TotalSeconds);
+            string videobucketName = (string)context["videoBucketName"];
+            string videoFileName = System.IO.Path.GetFileName(context.VideoOutputFilePath);
+            await minio.PutObjectAsync(videobucketName, videoFileName, context.VideoOutputFilePath);
+
 
             await this.dataService.Update(context.Download.Id, (update) =>
                 update.Combine(new[] {
-                    update.Set(it => it.DownloadUrl, url),
+                    update.Set(it => it.AudioDownloadUrl, $"/api/media/{audioBucketName}/download/{audioFileName}"),
+                    update.Set(it => it.VideoDownloadUrl, $"/api/media/{videobucketName}/download/{videoFileName}"),
+                    update.Set(it => it.PlayUrl, $"/api/media/{videobucketName}/stream/{videoFileName}"),
                     update.Set(it => it.Finished, DateTime.Now)
                 })
             );

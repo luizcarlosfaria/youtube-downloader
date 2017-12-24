@@ -9,22 +9,20 @@ using Microsoft.Extensions.Configuration;
 namespace DevWeek.WebApp.Controllers
 {
     [Produces("application/json")]
-    [Route("api/video")]
-    public class VideoController : Controller
+    [Route("api/media")]
+    public class MediaController : Controller
     {
         private readonly Minio.MinioClient minioClient;
-        private string defaultBucketName;
 
-        public VideoController(Minio.MinioClient minioClient, IConfiguration configuration)
+        public MediaController(Minio.MinioClient minioClient, IConfiguration configuration)
         {
             this.minioClient = minioClient;
-            this.defaultBucketName = configuration.GetSection("DevWeek:S3:DefaultBucketName").Get<string>();
         }
 
-        private async Task<System.IO.MemoryStream> GetVideo(string url)
+        private async Task<System.IO.MemoryStream> GetMedia(string bucket, string url)
         {
             System.IO.MemoryStream streamToReturn = new System.IO.MemoryStream();
-            await minioClient.GetObjectAsync(this.defaultBucketName, System.IO.Path.GetFileName(url), (stream) =>
+            await minioClient.GetObjectAsync(bucket, System.IO.Path.GetFileName(url), (stream) =>
             {
                 stream.CopyTo(streamToReturn);
             });
@@ -33,8 +31,8 @@ namespace DevWeek.WebApp.Controllers
         }
 
 
-        [HttpGet("{target}/{*address}")]
-        public async Task<IActionResult> Stream(string target, string address)
+        [HttpGet("{bucket}/{target}/{*address}")]
+        public async Task<IActionResult> GetMedia(string target, string bucket, string address)
         {
             
             string type = null;
@@ -45,7 +43,7 @@ namespace DevWeek.WebApp.Controllers
             else
                 return this.NotFound();
 
-            System.IO.MemoryStream streamToReturn = await this.GetVideo(address);
+            System.IO.MemoryStream streamToReturn = await this.GetMedia(bucket, address);
             var response = File(streamToReturn, type);
             return response;
         }
