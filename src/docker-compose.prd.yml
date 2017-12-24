@@ -21,10 +21,14 @@ services:
       mode: replicated
       replicas: 3
       restart_policy:
-        condition: on-failure
+        condition: any
         delay: 10s
         max_attempts: 3
         window: 600s
+      update_config:
+        parallelism: 1
+          delay: 10s
+          order: start-first
       placement:
         constraints: 
           - node.labels.appenv == prd
