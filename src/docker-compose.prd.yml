@@ -2,8 +2,11 @@ version: '3.4'
 
 services:
   devweek_webapp:
+    image: luizcarlosfaria/devweek_webapp:${BUILD_VERSION_NUMBER}
+    ports: 
+      - "${DEPLOY_PORT_PREFIX}00:80"
     environment:
-      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_ENVIRONMENT=${DEPLOY_LENV}
 #    deploy:
 #      placement:
 #        constraints: 
@@ -16,8 +19,9 @@ services:
   
   
   devweek_worker:
+    image: luizcarlosfaria/devweek_worker:${BUILD_VERSION_NUMBER}
     environment:
-      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_ENVIRONMENT=${DEPLOY_LENV}
     deploy:
       mode: replicated
       replicas: 3
@@ -34,10 +38,9 @@ services:
 #        constraints: 
 #          - node.labels.appenv == prd
 
-
   rabbitmq:
     ports: 
-      - "20202:15672"
+      - "${DEPLOY_PORT_PREFIX}01:15672"
 #    deploy:
 #      placement:
 #        constraints: 
@@ -45,7 +48,7 @@ services:
 
   s3:
     ports: 
-      - "20203:9000"
+      - "${DEPLOY_PORT_PREFIX}02:9000"
 #    deploy:
 #      placement:
 #        constraints: 
@@ -53,7 +56,7 @@ services:
 
   redis:
     ports:
-      - "20204:6379"
+      - "${DEPLOY_PORT_PREFIX}03:6379"
 #    deploy:
 #      placement:
 #        constraints: 
@@ -61,7 +64,7 @@ services:
 
   mongodb:
     ports:
-      - "20205:27017"
+      - "${DEPLOY_PORT_PREFIX}04:27017"
 #    deploy:
 #      placement:
 #        constraints: 
