@@ -2,19 +2,20 @@ version: '3.4'
 
 services:
   devweek_webapp:
-    image: luizcarlosfaria/devweek_webapp:latest
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
-    ports: 
-      - "80:80"
-    deploy:
-      placement:
-        constraints: 
-          - node.labels.appenv == prd
+#    deploy:
+#      placement:
+#        constraints: 
+#          - node.labels.appenv == prd
       
 
+  
+  
+  
+  
+  
   devweek_worker:
-    image: luizcarlosfaria/devweek_worker:latest
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
     deploy:
@@ -29,39 +30,39 @@ services:
         parallelism: 1
         delay: 10s
         order: start-first
-      placement:
-        constraints: 
-          - node.labels.appenv == prd
+#      placement:
+#        constraints: 
+#          - node.labels.appenv == prd
 
 
   rabbitmq:
     ports: 
       - "20202:15672"
-    deploy:
-      placement:
-        constraints: 
-          - node.labels.appenv == prd
+#    deploy:
+#      placement:
+#        constraints: 
+#          - node.labels.appenv == prd
 
   s3:
     ports: 
       - "20203:9000"
-    deploy:
-      placement:
-        constraints: 
-          - node.labels.appenv == prd
+#    deploy:
+#      placement:
+#        constraints: 
+#          - node.labels.appenv == prd
 
   redis:
     ports:
       - "20204:6379"
-    deploy:
-      placement:
-        constraints: 
-          - node.labels.appenv == prd
+#    deploy:
+#      placement:
+#        constraints: 
+#          - node.labels.appenv == prd
 
   mongodb:
     ports:
       - "20205:27017"
-    deploy:
-      placement:
-        constraints: 
-          - node.labels.appenv == prd
+#    deploy:
+#      placement:
+#        constraints: 
+#          - node.labels.appenv == prd

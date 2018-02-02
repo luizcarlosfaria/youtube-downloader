@@ -2,10 +2,7 @@ version: '3.4'
 
 services:
   devweek_webapp:
-    image: devweek_webapp
-    build:
-      context: .
-      dockerfile: DevWeek.WebApp/Dockerfile
+    image: luizcarlosfaria/devweek_webapp:latest
     restart: unless-stopped
     networks: 
       - devweek_net
@@ -15,8 +12,11 @@ services:
       - redis
       - mongodb      
 
+  
+  
+  
   devweek_worker:
-    image: devweek_worker
+    image: luizcarlosfaria/devweek_worker:latest
     build:
       context: .
       dockerfile: DevWeek.Worker/Dockerfile

@@ -2,18 +2,20 @@ version: '3.4'
 
 services:
   devweek_webapp:
-    image: devweek_webapp:dev-latest
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-    ports: 
-      - "20001:80"
-    deploy:
-      placement:
-        constraints: 
-          - node.labels.appenv == dev
+#    deploy:
+#      placement:
+#        constraints: 
+#          - node.labels.appenv == dev
+
+
+
+
+
+
 
   devweek_worker:
-    image: devweek_worker:dev-latest
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
     deploy:
@@ -28,38 +30,38 @@ services:
         parallelism: 1
         delay: 10s
         order: start-first
-      placement:
-        constraints: 
-          - node.labels.appenv == dev
+#      placement:
+#        constraints: 
+#          - node.labels.appenv == dev
 
   rabbitmq:
     ports: 
       - "20002:15672"
-    deploy:
-      placement:
-        constraints: 
-          - node.labels.appenv == dev
+#    deploy:
+#      placement:
+#        constraints: 
+#          - node.labels.appenv == dev
 
   s3:
     ports: 
       - "20003:9000"
-    deploy:
-      placement:
-        constraints: 
-          - node.labels.appenv == dev
+#    deploy:
+#      placement:
+#        constraints: 
+#          - node.labels.appenv == dev
 
   redis:
     ports:
       - "20004:6379"
-    deploy:
-      placement:
-        constraints: 
-          - node.labels.appenv == dev
+#    deploy:
+#      placement:
+#        constraints: 
+#          - node.labels.appenv == dev
 
   mongodb:
     ports:
       - "20005:27017"
-    deploy:
-      placement:
-        constraints: 
-          - node.labels.appenv == dev
+#    deploy:
+#      placement:
+#        constraints: 
+#          - node.labels.appenv == dev
