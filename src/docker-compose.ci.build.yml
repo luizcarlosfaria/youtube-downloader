@@ -5,5 +5,7 @@ services:
     image: microsoft/aspnetcore-build:2.0
     volumes:
       - .:/src
+#    extra_hosts:
+#      nuget.org: 191.236.146.247
     working_dir: /src
-    command: /bin/bash -c "dotnet sln ./src.sln remove docker-compose.dcproj &&  dotnet restore ./src.sln && dotnet test ./DevWeek.Services.Tests/DevWeek.Services.Tests.csproj --logger \"trx;LogFileName=unit_tests.xml\" && dotnet publish ./src.sln -c Release -o ./obj/Docker/publish"
+    command: /bin/bash -c "dotnet sln ./src-ci.sln remove docker-compose.dcproj &&  dotnet restore ./src-ci.sln && dotnet test ./DevWeek.Services.Tests/DevWeek.Services.Tests.csproj --logger \"trx;LogFileName=unit_tests.xml\" && dotnet publish ./src-ci.sln -c Release -o ./obj/Docker/publish"
