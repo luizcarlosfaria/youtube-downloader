@@ -4,17 +4,17 @@ using System.Text;
 
 namespace DevWeek.Services.Downloader
 {
-    public class DownloadContext : Dictionary<string, object>
+    public class DownloadContext
     {
-        public string MediaUrl { get { return (string)this["mediaUrl"]; } set { this["mediaUrl"] = value; } }
+        const String LocalTemporaryFolder = "//shared//";
 
 
         public string VideoOutputFileName => $"{this.Download.Id}.mp4";
         public string AudioOutputFileName => $"{this.Download.Id}.mp3";
 
-        public string VideoOutputFilePath => $"{System.IO.Path.Combine((string)this["localTemporaryFolder"], this.VideoOutputFileName)}";
-        public string AudioOutputFilePath => $"{System.IO.Path.Combine((string)this["localTemporaryFolder"], this.AudioOutputFileName)}";
+        public string VideoOutputFilePath => $"{System.IO.Path.Combine(LocalTemporaryFolder, this.VideoOutputFileName)}";
+        public string AudioOutputFilePath => $"{System.IO.Path.Combine(LocalTemporaryFolder , this.AudioOutputFileName)}";
 
-        public Download Download { get { return (Download)this["downloadObject"]; } set { this["downloadObject"] = value; } }
+        public Download Download { get; set; }
     }
 }

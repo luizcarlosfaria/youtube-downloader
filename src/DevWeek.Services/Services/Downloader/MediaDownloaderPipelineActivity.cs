@@ -17,7 +17,7 @@ namespace DevWeek.Services.Downloader
 
         private static async Task VideoDownload(DownloadContext context)
         {
-            var process = System.Diagnostics.Process.Start(new ProcessStartInfo("youtube-dl", $"-o {context.VideoOutputFilePath} {context.MediaUrl}")
+            var process = System.Diagnostics.Process.Start(new ProcessStartInfo("youtube-dl", $"-o {context.VideoOutputFilePath} {context.Download.OriginalMediaUrl}")
             {
                 RedirectStandardOutput = true,
                 RedirectStandardError = true

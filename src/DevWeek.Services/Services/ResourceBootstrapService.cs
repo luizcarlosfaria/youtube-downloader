@@ -17,13 +17,10 @@ namespace DevWeek.Services
         private readonly MinioClient minio;
         private readonly MongoClient mongoClient;
         private readonly DistributedLockService distributedLockService;
-        private readonly RabbitMQ.Client.IModel model;
 
         public string[] MongoRequiredCollections { get; set; }
         public string[] MinioBucketNames { get; set; }
-        public string DownloadPipelineQueue { get; set; }
-        public string DownloadPipelineRouteKey { get; set; }
-        public string DownloadPipelineExchange { get; set; }
+       
 
         public TimeSpan LockTimeout { get; set; }
         public string DistributedLockKey { get; set; }
@@ -35,12 +32,11 @@ namespace DevWeek.Services
         /// <param name="minio">S3</param>
         /// <param name="mongoClient">MongoDB</param>
         /// <param name="model">RabbitMQ</param>
-        public ResourceBootstrapService(DistributedLockService distributedLockService, MinioClient minio, MongoClient mongoClient, RabbitMQ.Client.IModel model)
+        public ResourceBootstrapService(DistributedLockService distributedLockService, MinioClient minio, MongoClient mongoClient)
         {
             this.minio = minio;
             this.mongoClient = mongoClient;
             this.distributedLockService = distributedLockService;
-            this.model = model;
         }
 
         /// <summary>
@@ -51,7 +47,6 @@ namespace DevWeek.Services
             using (this.distributedLockService.Acquire(0, this.DistributedLockKey, this.LockTimeout))
             {
                 this.CheckMinioServer();
-                this.CheckAMQPServer();
                 this.CkeckMongoDB();
             }
         }
@@ -87,14 +82,6 @@ namespace DevWeek.Services
         }
 
 
-        /// <summary>
-        /// Check RabbitMQ virtual host overiding Queue, Exchange and Bind between Exchange and Queue
-        /// </summary>
-        private void CheckAMQPServer()
-        {
-            model.QueueDeclare(this.DownloadPipelineQueue, true, false, false, null);
-            model.ExchangeDeclare(this.DownloadPipelineExchange, "topic", true, false, null);
-            model.QueueBind(this.DownloadPipelineQueue, this.DownloadPipelineExchange, this.DownloadPipelineRouteKey, null);
-        }
+       
     }
 }

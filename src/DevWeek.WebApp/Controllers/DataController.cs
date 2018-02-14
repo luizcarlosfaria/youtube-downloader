@@ -36,7 +36,12 @@ namespace DevWeek.WebApp.Controllers
             download.Finished = null;
             download.Created = DateTime.Now;
 
-            string objectInJson = Newtonsoft.Json.JsonConvert.SerializeObject(download);
+            var downloadContext = new DownloadContext()
+            {
+                Download = download
+            };
+
+            string objectInJson = Newtonsoft.Json.JsonConvert.SerializeObject(downloadContext);
             byte[] objectInByteArray = System.Text.Encoding.UTF8.GetBytes(objectInJson);
 
             this.rabbitMQ.BasicPublish(

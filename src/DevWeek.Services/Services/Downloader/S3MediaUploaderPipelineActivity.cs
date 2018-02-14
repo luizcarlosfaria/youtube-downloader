@@ -12,6 +12,11 @@ namespace DevWeek.Services.Downloader
 
         private readonly DataService dataService;
 
+        public string AudioBucketName { get; set; }
+
+        public string VideoBucketName { get; set; }
+
+
         public S3MediaUploaderPipelineActivity(MinioClient minio, DataService dataService)
         {
             this.dataService = dataService;
@@ -20,21 +25,19 @@ namespace DevWeek.Services.Downloader
 
         public async Task ExecuteAsync(DownloadContext context)
         {
-            string audioBucketName = (string)context["audioBucketName"];
             string audioFileName = System.IO.Path.GetFileName(context.AudioOutputFilePath);
-            await minio.PutObjectAsync(audioBucketName, audioFileName, context.AudioOutputFilePath);
+            await minio.PutObjectAsync(this.AudioBucketName, audioFileName, context.AudioOutputFilePath);
 
 
-            string videobucketName = (string)context["videoBucketName"];
             string videoFileName = System.IO.Path.GetFileName(context.VideoOutputFilePath);
-            await minio.PutObjectAsync(videobucketName, videoFileName, context.VideoOutputFilePath);
+            await minio.PutObjectAsync(this.VideoBucketName, videoFileName, context.VideoOutputFilePath);
 
 
             await this.dataService.Update(context.Download.Id, (update) =>
                 update.Combine(new[] {
-                    update.Set(it => it.AudioDownloadUrl, $"/api/media/{audioBucketName}/download/{audioFileName}"),
-                    update.Set(it => it.VideoDownloadUrl, $"/api/media/{videobucketName}/download/{videoFileName}"),
-                    update.Set(it => it.PlayUrl, $"/api/media/{videobucketName}/stream/{videoFileName}"),
+                    update.Set(it => it.AudioDownloadUrl, $"/api/media/{this.AudioBucketName}/download/{audioFileName}"),
+                    update.Set(it => it.VideoDownloadUrl, $"/api/media/{this.VideoBucketName}/download/{videoFileName}"),
+                    update.Set(it => it.PlayUrl, $"/api/media/{this.VideoBucketName}/stream/{videoFileName}"),
                     update.Set(it => it.Finished, DateTime.Now)
                 })
             );

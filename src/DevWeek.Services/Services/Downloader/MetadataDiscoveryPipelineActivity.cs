@@ -19,10 +19,10 @@ namespace DevWeek.Services.Downloader
 
         public async Task ExecuteAsync(DownloadContext context)
         {
-            string title = await RunAsync("--get-title", context.MediaUrl);
-            string thumbnail = await RunAsync("--get-thumbnail", context.MediaUrl);
-            string description = await RunAsync("--get-description", context.MediaUrl);
-            string durationRaw = await RunAsync("--get-duration", context.MediaUrl);
+            string title = await RunAsync("--get-title", context.Download.OriginalMediaUrl);
+            string thumbnail = await RunAsync("--get-thumbnail", context.Download.OriginalMediaUrl);
+            string description = await RunAsync("--get-description", context.Download.OriginalMediaUrl);
+            string durationRaw = await RunAsync("--get-duration", context.Download.OriginalMediaUrl);
             TimeSpan duration = this.ParseDuration(durationRaw);
 
             await this.dataService.Update(context.Download.Id, (update) =>

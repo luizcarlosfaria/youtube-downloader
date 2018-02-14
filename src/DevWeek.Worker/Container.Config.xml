@@ -1,6 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <objects xmlns="http://www.springframework.net" xmlns:aop="http://www.springframework.net/aop">
 
+    <!--###############################################-->
+    <!--Providers Nativos-->
+    <!--###############################################-->
+
     <!--RabbitMQ-->
     <!--###############################################-->
     <object name="RabbitMQ_ConnectionFactory" type="RabbitMQ.Client.ConnectionFactory, RabbitMQ.Client">
@@ -36,11 +40,10 @@
         <constructor-arg name="region" value="" />
     </object>
 
-
+    <!--###############################################-->
+    <!--Pipeline (simples)-->
+    <!--###############################################-->
     <object type="DevWeek.Services.ResourceBootstrapService" autowire="constructor" init-method="Check">
-        <property name="DownloadPipelineQueue"    ref="CONFIG:DevWeek:RabbitMQ:DownloadPipeline:Queue" />
-        <property name="DownloadPipelineRouteKey" ref="CONFIG:DevWeek:RabbitMQ:DownloadPipeline:RouteKey" />
-        <property name="DownloadPipelineExchange" ref="CONFIG:DevWeek:RabbitMQ:DownloadPipeline:Exchange" />
         <property name="LockTimeout" value="00:00:30" />
         <property name="MongoRequiredCollections" value="media_download" />
         <property name="MinioBucketNames" >
@@ -57,25 +60,6 @@
         <property name="WaitingLockCycle" value="00:00:00.200"></property>
     </object>
 
-    <object type="DevWeek.Services.Downloader.DownloadPipeline, DevWeek.Services">
-        <property name="Activities">
-            <list element-type="DevWeek.Services.Downloader.IPipelineActivity, DevWeek.Contracts" >
-                <object type="DevWeek.Services.Downloader.EntryPointRegisterPipelineActivity, DevWeek.Services" autowire="constructor"></object>
-                <object type="DevWeek.Services.Downloader.MetadataDiscoveryPipelineActivity, DevWeek.Services" autowire="constructor"></object>
-                <object type="DevWeek.Services.Downloader.MediaDownloaderPipelineActivity, DevWeek.Services" autowire="constructor"></object>
-                <object type="DevWeek.Services.Downloader.S3MediaUploaderPipelineActivity, DevWeek.Services" autowire="constructor"></object>
-                <object type="DevWeek.Services.Downloader.CleanupPipelineActivity, DevWeek.Services"  autowire="constructor"></object>
-            </list>
-        </property>
-        <property name="Context">
-            <dictionary  key-type="string" value-type="object">
-                <entry key="localTemporaryFolder" value-ref="CONFIG:DevWeek:LocalTemporaryFolder" />
-                <entry key="audioBucketName" value-ref="CONFIG:DevWeek:S3:AudioBucketName" />
-                <entry key="videoBucketName" value-ref="CONFIG:DevWeek:S3:VideoBucketName" />
-            </dictionary>
-        </property>
-    </object>
-
 
     <object type="DevWeek.Services.DataService, DevWeek.Services"  autowire="constructor">
         <constructor-arg name="redis" ref="RedisClient"/>
@@ -83,6 +67,135 @@
         <constructor-arg name="distributedLockService" ref="DistributedLockService"/>
         <constructor-arg name="redisDownloadListKey" ref="CONFIG:DevWeek:Redis:DownloadListKey"/>
         <constructor-arg name="mongoDownloadCollectionName" ref="CONFIG:DevWeek:MongoDB:MongoDownloadCollectionName"/>
+    </object>
+
+    <object name="Local:RabbitMQClient" type="DevWeek.Architecture.MessageQueuing.RabbitMQClient, DevWeek.Services">
+        <property name="ConnectionPool">
+            <object type="DevWeek.Architecture.MessageQueuing.RabbitMQConnectionPool, DevWeek.Services">
+                <constructor-arg index="0" ref="RabbitMQ_ConnectionFactory" />
+            </object>
+        </property>
+    </object>
+
+
+    <object name="IngestionPipeline" type="DevWeek.Architecture.Workflow.QueuedWorkFlow.QueuedStateMachine, DevWeek.Services" >
+        <property name="QueueClient" ref="Local:RabbitMQClient" />
+        <property name="CreateZombieQueues" value="true" />
+        <property name="MessageRejectionHandler" >
+            <object type="DevWeek.Architecture.MessageQueuing.MessageDeserializationRejectionHandler, DevWeek.Services">
+                <property name="RabbitMQClient" ref="Local:RabbitMQClient"/>
+                <property name="ExchangeName" ref="CONFIG:DevWeek:RabbitMQ:DownloadPipeline:Exchange" />
+                <property name="RejectionRoutingKey" value="MessageRejected" />
+            </object>
+        </property>
+        <property name="Transitions">
+            <list element-type="DevWeek.Architecture.Workflow.QueuedWorkFlow.QueuedTransition, DevWeek.Services">
+
+                <object type="DevWeek.Architecture.Workflow.QueuedWorkFlow.QueuedTransition, DevWeek.Services">
+                    <property name="Origin" value="DownloadRequest" />
+                    <property name="Destination" value="RequestStored" />
+                    <property name="LogicalQueueName" value="RequestStore" />
+                    <property name="ExchangeName" ref="CONFIG:DevWeek:RabbitMQ:DownloadPipeline:Exchange" />
+                    <property name="ConsumerCountManager" >
+                        <object type="DevWeek.Architecture.MessageQueuing.ConsumerCountManager, DevWeek.Services">
+                            <property name="MinConcurrentConsumers" value="1" />
+                            <property name="MaxConcurrentConsumers" value="10" />
+                            <property name="AutoscaleFrequency" value="00:01:00" />
+                            <property name="MessagesPerConsumerWorkerRatio" value="1" />
+                        </object>
+                    </property>
+                    <property name="ServiceMethod" value="ExecuteAsync" />
+                    <property name="Service"  >
+                        <object type="DevWeek.Services.Downloader.EntryPointRegisterPipelineActivity, DevWeek.Services" autowire="constructor"></object>
+                    </property>
+                    <property name="ErrorFlowStrategy" value="SendToErrorQueue" />
+                </object>
+
+                <object type="DevWeek.Architecture.Workflow.QueuedWorkFlow.QueuedTransition, DevWeek.Services">
+                    <property name="Origin" value="RequestStored" />
+                    <property name="Destination" value="MetadataDownloaded" />
+                    <property name="LogicalQueueName" value="MetadataDownloader" />
+                    <property name="ExchangeName" ref="CONFIG:DevWeek:RabbitMQ:DownloadPipeline:Exchange" />
+                    <property name="ConsumerCountManager" >
+                        <object type="DevWeek.Architecture.MessageQueuing.ConsumerCountManager, DevWeek.Services">
+                            <property name="MinConcurrentConsumers" value="1" />
+                            <property name="MaxConcurrentConsumers" value="10" />
+                            <property name="AutoscaleFrequency" value="00:01:00" />
+                            <property name="MessagesPerConsumerWorkerRatio" value="1" />
+                        </object>
+                    </property>
+                    <property name="ServiceMethod" value="ExecuteAsync" />
+                    <property name="Service">
+                        <object type="DevWeek.Services.Downloader.MetadataDiscoveryPipelineActivity, DevWeek.Services" autowire="constructor"></object>
+                    </property>
+                    <property name="ErrorFlowStrategy" value="SendToErrorQueue" />
+                </object>
+
+                <object type="DevWeek.Architecture.Workflow.QueuedWorkFlow.QueuedTransition, DevWeek.Services">
+                    <property name="Origin" value="MetadataDownloaded" />
+                    <property name="Destination" value="MediaDownloaded" />
+                    <property name="LogicalQueueName" value="MediaDownloader" />
+                    <property name="ExchangeName" ref="CONFIG:DevWeek:RabbitMQ:DownloadPipeline:Exchange" />
+                    <property name="ConsumerCountManager" >
+                        <object type="DevWeek.Architecture.MessageQueuing.ConsumerCountManager, DevWeek.Services">
+                            <property name="MinConcurrentConsumers" value="1" />
+                            <property name="MaxConcurrentConsumers" value="10" />
+                            <property name="AutoscaleFrequency" value="00:01:00" />
+                            <property name="MessagesPerConsumerWorkerRatio" value="1" />
+                        </object>
+                    </property>
+                    <property name="ServiceMethod" value="ExecuteAsync" />
+                    <property name="Service">
+                        <object type="DevWeek.Services.Downloader.MediaDownloaderPipelineActivity, DevWeek.Services" autowire="constructor"></object>
+                    </property>
+                    <property name="ErrorFlowStrategy" value="SendToErrorQueue" />
+                </object>
+
+                <object type="DevWeek.Architecture.Workflow.QueuedWorkFlow.QueuedTransition, DevWeek.Services">
+                    <property name="Origin" value="MediaDownloaded" />
+                    <property name="Destination" value="MediaStored" />
+                    <property name="LogicalQueueName" value="MediaStore" />
+                    <property name="ExchangeName" ref="CONFIG:DevWeek:RabbitMQ:DownloadPipeline:Exchange" />
+                    <property name="ConsumerCountManager" >
+                        <object type="DevWeek.Architecture.MessageQueuing.ConsumerCountManager, DevWeek.Services">
+                            <property name="MinConcurrentConsumers" value="1" />
+                            <property name="MaxConcurrentConsumers" value="10" />
+                            <property name="AutoscaleFrequency" value="00:01:00" />
+                            <property name="MessagesPerConsumerWorkerRatio" value="1" />
+                        </object>
+                    </property>
+                    <property name="ServiceMethod" value="ExecuteAsync" />
+                    <property name="Service">
+                        <object type="DevWeek.Services.Downloader.S3MediaUploaderPipelineActivity, DevWeek.Services" autowire="constructor">
+                            <property name="AudioBucketName" ref="CONFIG:DevWeek:S3:AudioBucketName" />
+                            <property name="VideoBucketName" ref="CONFIG:DevWeek:S3:VideoBucketName" />
+                        </object>
+                    </property>
+                    <property name="ErrorFlowStrategy" value="SendToErrorQueue" />
+                </object>
+
+                <object type="DevWeek.Architecture.Workflow.QueuedWorkFlow.QueuedTransition, DevWeek.Services">
+                    <property name="Origin" value="MediaStored" />
+                    <property name="Destination" value="Finished" />
+                    <property name="LogicalQueueName" value="Cleanup" />
+                    <property name="ExchangeName" ref="CONFIG:DevWeek:RabbitMQ:DownloadPipeline:Exchange" />
+                    <property name="ConsumerCountManager" >
+                        <object type="DevWeek.Architecture.MessageQueuing.ConsumerCountManager, DevWeek.Services">
+                            <property name="MinConcurrentConsumers" value="1" />
+                            <property name="MaxConcurrentConsumers" value="10" />
+                            <property name="AutoscaleFrequency" value="00:01:00" />
+                            <property name="MessagesPerConsumerWorkerRatio" value="1" />
+                        </object>
+                    </property>
+                    <property name="ServiceMethod" value="ExecuteAsync" />
+                    <property name="Service">
+                        <object type="DevWeek.Services.Downloader.CleanupPipelineActivity, DevWeek.Services"  autowire="constructor"></object>
+                    </property>
+                    <property name="ErrorFlowStrategy" value="SendToErrorQueue" />
+                </object>
+
+            </list>
+        </property>
     </object>
 
 </objects>

@@ -5,9 +5,14 @@
     <div class="container">
         <div class="row">
             <div class="col-sm">
+
+                <div class="alert alert-success" role="alert" ng-repeat="notificationMessage in notificationQueue">
+                    {{notificationMessage}}
+                </div>
+
                 <form class="">
                     <div class="input-group">
-                        <input class="form-control" type="url" placeholder="https://www.youtube.com/watch?v=L3wKzyIN1yk" aria-label="Enfileirar" ng-model="url">
+                        <textarea class="form-control" placeholder="https://www.youtube.com/watch?v=L3wKzyIN1yk" aria-label="Enfileirar" ng-model="url" rows="1"></textarea>
                         <span class="input-group-btn">
                             <button class="btn" type="button" ng-click="enqueue()" ng-disabled="!url" ng-class="{'btn-primary': url}">Baixar!</button>
                         </span>
