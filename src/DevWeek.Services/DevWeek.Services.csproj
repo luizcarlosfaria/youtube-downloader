@@ -10,21 +10,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Architecture\Extensions\**" />
-    <EmbeddedResource Remove="Architecture\Extensions\**" />
-    <None Remove="Architecture\Extensions\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Include="Architecture\Extensions\System.Collections.Generic.IEnumerable\IEnumerable.ForEach.cs" />
-    <Compile Include="Architecture\Extensions\System.Object\Object.IsNotNull.cs" />
-    <Compile Include="Architecture\Extensions\System.Object\Object.To.cs" />
-    <Compile Include="Architecture\Extensions\System.Object\Object.ToInt.cs" />
-    <Compile Include="Architecture\Extensions\System.Reflection.MethodInfo\MethodInfo.GetReturnValueType.cs" />
-    <Compile Include="Architecture\Extensions\System.Reflection.MethodInfo\MethodInfo.GetUniqueAndExpectedInputParameterType.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Minio.NetCore" Version="1.0.7" />
     <PackageReference Include="MongoDB.Driver" Version="2.5.0" />
     <PackageReference Include="RabbitMQ.Client" Version="5.0.1" />
