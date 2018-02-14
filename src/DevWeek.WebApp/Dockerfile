@@ -9,10 +9,10 @@ COPY DevWeek.WebApp/DevWeek.WebApp.csproj DevWeekWebApp/
 RUN dotnet restore ./src-ci.sln
 COPY . .
 WORKDIR /src/DevWeek.WebApp
-RUN dotnet build ./src-ci.sln -c Release -o /app
+RUN dotnet build -c Release -o /app
 
 FROM build AS publish
-RUN dotnet publish ./src-ci.sln -c Release -o /app
+RUN dotnet publish -c Release -o /app
 
 FROM base AS final
 WORKDIR /app

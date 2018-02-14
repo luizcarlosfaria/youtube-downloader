@@ -11,10 +11,10 @@ COPY DevWeek.Worker/DevWeek.Worker.csproj DevWeek.Worker/
 RUN dotnet restore ./src-ci.sln
 COPY . .
 WORKDIR /src/DevWeek.Worker
-RUN dotnet build ./src-ci.sln -c Release -o /app
+RUN dotnet build -c Release -o /app
 
 FROM build AS publish
-RUN dotnet publish ./src-ci.sln -c Release -o /app
+RUN dotnet publish -c Release -o /app
 
 FROM base AS final
 WORKDIR /app
