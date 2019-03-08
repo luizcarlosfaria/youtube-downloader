@@ -1,5 +1,5 @@
 ﻿using DevWeek.Architecture.MessageQueuing.Exceptions;
-using Spring.Objects.Support;
+using Oragon.Spring.Objects.Support;
 using System;
 using System.Collections.Generic;
 using System.Linq;

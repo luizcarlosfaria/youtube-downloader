@@ -2,7 +2,7 @@ version: '3.4'
 
 services:
   ci-build:
-    image: microsoft/aspnetcore-build:2.0
+    image: microsoft/dotnet:2.2-sdk-stretch
     volumes:
       - .:/src
 #    extra_hosts:

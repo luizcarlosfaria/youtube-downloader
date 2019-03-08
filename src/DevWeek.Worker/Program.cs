@@ -15,7 +15,7 @@ namespace DevWeek
     {
         static void Main(string[] args)
         {
-            Spring.Context.Support.AbstractApplicationContext appContext = null;
+            Oragon.Spring.Context.Support.AbstractApplicationContext appContext = null;
 
             var retryOnStartupPolicy = Policy
                //.HandleInner<StackExchange.Redis.RedisConnectionException>()

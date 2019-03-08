@@ -1,8 +1,8 @@
 ﻿using DevWeek.Architecture.Extensions;
 using DevWeek.Architecture.Services;
-using Spring.Objects.Factory;
-using Spring.Objects.Factory.Attributes;
-using Spring.Objects.Support;
+using Oragon.Spring.Objects.Factory;
+using Oragon.Spring.Objects.Factory.Attributes;
+using Oragon.Spring.Objects.Support;
 using System;
 using System.Reflection;
 

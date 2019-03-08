@@ -1,7 +1,7 @@
 ﻿using DevWeek.Architecture.Extensions;
 using DevWeek.Architecture.MessageQueuing;
 using DevWeek.Architecture.Services;
-using Spring.Objects.Factory;
+using Oragon.Spring.Objects.Factory;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,10 +43,10 @@ namespace DevWeek.Architecture.Workflow.QueuedWorkFlow
 		{
 			foreach (QueuedTransition queuedTransition in this.GetAvailableTransitions())
 			{
-				MethodInfo method = Spring.Util.ReflectionUtils.GetMethod(queuedTransition.Service.GetType(), "QueuedStateMachineInitialize", new Type[] { });
+				MethodInfo method = Oragon.Spring.Util.ReflectionUtils.GetMethod(queuedTransition.Service.GetType(), "QueuedStateMachineInitialize", new Type[] { });
 				if (method != null)
 				{
-					var safeMethod = new Spring.Reflection.Dynamic.SafeMethod(method);
+					var safeMethod = new Oragon.Spring.Reflection.Dynamic.SafeMethod(method);
 					safeMethod.Invoke(queuedTransition.Service, null);
 				}
 			}
@@ -56,7 +56,7 @@ namespace DevWeek.Architecture.Workflow.QueuedWorkFlow
 		{
 			if (queuedTransition.ConsumerCountManager.MaxConcurrentConsumers > 0)
 			{
-				MethodInfo methodInfo = Spring.Util.ReflectionUtils.GetMethod(queuedTransition.Service.GetType(), queuedTransition.ServiceMethod, new Type[] { });
+				MethodInfo methodInfo = Oragon.Spring.Util.ReflectionUtils.GetMethod(queuedTransition.Service.GetType(), queuedTransition.ServiceMethod, new Type[] { });
 				if (methodInfo == null)
 					throw new InvalidOperationException(string.Format("Service Method '{0}' of transition cannot be found", queuedTransition.ServiceMethod));
 

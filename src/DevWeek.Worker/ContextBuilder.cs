@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
-using Spring.Context.Support;
+using Oragon.Spring.Context.Support;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -38,7 +38,7 @@ namespace DevWeek
             StaticApplicationContext configContext = new StaticApplicationContext();
             foreach (var currentConfiguration in configurationRoot.AsEnumerable())
             {
-                Spring.Objects.Factory.Support.GenericObjectDefinition objectDefinition = new Spring.Objects.Factory.Support.GenericObjectDefinition
+                Oragon.Spring.Objects.Factory.Support.GenericObjectDefinition objectDefinition = new Oragon.Spring.Objects.Factory.Support.GenericObjectDefinition
                 {
                     ObjectType = typeof(String),
                     FactoryMethodName = "Copy"
@@ -59,7 +59,7 @@ namespace DevWeek
                 ConfigurationLocations = new[] { "assembly://DevWeek.Worker/DevWeek/Container.Config.xml" },
                 ParentContext = configurationContext
             };
-            var appContext = new Spring.Context.Support.XmlApplicationContext(containerArgs);
+            var appContext = new XmlApplicationContext(containerArgs);
             return appContext;
         }
 

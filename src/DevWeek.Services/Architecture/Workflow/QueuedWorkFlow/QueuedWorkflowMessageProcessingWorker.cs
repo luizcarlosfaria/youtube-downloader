@@ -221,7 +221,7 @@ namespace DevWeek.Architecture.Workflow.QueuedWorkFlow
             InvokeResult returnValue = new InvokeResult();
             try
             {
-                var safeMethod = new Spring.Reflection.Dynamic.SafeMethod(this._listenerMethod);
+                var safeMethod = new Oragon.Spring.Reflection.Dynamic.SafeMethod(this._listenerMethod);
                 var invocationResult = safeMethod.Invoke(this._listenerObject, requestObject);
                 if (this._listenerMethod.ReturnType.IsAssignableFrom(typeof(Task)))
                 {

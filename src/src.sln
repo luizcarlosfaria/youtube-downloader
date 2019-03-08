@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27128.1
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28705.295
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevWeek.WebApp", "DevWeek.WebApp\DevWeek.WebApp.csproj", "{2E0B73BB-35AE-4166-B572-2791DFD417D7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevWeek.WebApp", "DevWeek.WebApp\DevWeek.WebApp.csproj", "{2E0B73BB-35AE-4166-B572-2791DFD417D7}"
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{6E90E1C5-1884-4D3C-B1C1-F74ED6AC7506}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -11,17 +11,19 @@ Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-co
 		{4A8CE7CD-E994-4A6B-B3B5-CEE4FA4B683A} = {4A8CE7CD-E994-4A6B-B3B5-CEE4FA4B683A}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevWeek.Worker", "DevWeek.Worker\DevWeek.Worker.csproj", "{4A8CE7CD-E994-4A6B-B3B5-CEE4FA4B683A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevWeek.Worker", "DevWeek.Worker\DevWeek.Worker.csproj", "{4A8CE7CD-E994-4A6B-B3B5-CEE4FA4B683A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevWeek.Contracts", "DevWeek.Contracts\DevWeek.Contracts.csproj", "{6125A066-CA35-4AB7-9410-4D97D8C7986E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevWeek.Contracts", "DevWeek.Contracts\DevWeek.Contracts.csproj", "{6125A066-CA35-4AB7-9410-4D97D8C7986E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Service", "Service", "{4B169176-E55C-4CBC-938D-42C5C43913CA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevWeek.Services", "DevWeek.Services\DevWeek.Services.csproj", "{4685F5DD-9837-4EB7-BE66-1ABCEDAA30A1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevWeek.Services", "DevWeek.Services\DevWeek.Services.csproj", "{4685F5DD-9837-4EB7-BE66-1ABCEDAA30A1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevWeek.Services.Tests", "DevWeek.Services.Tests\DevWeek.Services.Tests.csproj", "{9DF89EF7-6646-4605-A4D8-A40DA4FD8284}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevWeek.Services.Tests", "DevWeek.Services.Tests\DevWeek.Services.Tests.csproj", "{9DF89EF7-6646-4605-A4D8-A40DA4FD8284}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{33153412-B3FD-42AD-959F-2AC49CEBD6B2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{B7ED0D07-2763-4EC9-9371-B18A1193E3B2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -58,9 +60,13 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{2E0B73BB-35AE-4166-B572-2791DFD417D7} = {B7ED0D07-2763-4EC9-9371-B18A1193E3B2}
+		{4A8CE7CD-E994-4A6B-B3B5-CEE4FA4B683A} = {B7ED0D07-2763-4EC9-9371-B18A1193E3B2}
 		{6125A066-CA35-4AB7-9410-4D97D8C7986E} = {4B169176-E55C-4CBC-938D-42C5C43913CA}
+		{4B169176-E55C-4CBC-938D-42C5C43913CA} = {B7ED0D07-2763-4EC9-9371-B18A1193E3B2}
 		{4685F5DD-9837-4EB7-BE66-1ABCEDAA30A1} = {4B169176-E55C-4CBC-938D-42C5C43913CA}
 		{9DF89EF7-6646-4605-A4D8-A40DA4FD8284} = {33153412-B3FD-42AD-959F-2AC49CEBD6B2}
+		{33153412-B3FD-42AD-959F-2AC49CEBD6B2} = {B7ED0D07-2763-4EC9-9371-B18A1193E3B2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C19A5D65-477A-4632-B517-109D267B6BF7}

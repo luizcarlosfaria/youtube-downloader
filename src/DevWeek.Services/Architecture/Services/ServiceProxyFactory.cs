@@ -1,7 +1,7 @@
 ﻿using AopAlliance.Intercept;
-using Spring.Aop.Framework;
-using Spring.Objects.Factory;
-using Spring.Objects.Factory.Config;
+using Oragon.Spring.Aop.Framework;
+using Oragon.Spring.Objects.Factory;
+using Oragon.Spring.Objects.Factory.Config;
 using System;
 
 namespace DevWeek.Architecture.Services
