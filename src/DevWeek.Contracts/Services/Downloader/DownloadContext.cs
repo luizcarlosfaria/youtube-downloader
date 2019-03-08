@@ -8,12 +8,8 @@ namespace DevWeek.Services.Downloader
     {
         const String LocalTemporaryFolder = "//shared//";
 
-
-        public string VideoOutputFileName => $"{this.Download.Id}.mp4";
-        public string AudioOutputFileName => $"{this.Download.Id}.mp3";
-
-        public string VideoOutputFilePath => $"{System.IO.Path.Combine(LocalTemporaryFolder, this.VideoOutputFileName)}";
-        public string AudioOutputFilePath => $"{System.IO.Path.Combine(LocalTemporaryFolder , this.AudioOutputFileName)}";
+        public string VideoOutputFilePath { get; set; }
+        public string AudioOutputFilePath { get; set; }
 
         public Download Download { get; set; }
     }

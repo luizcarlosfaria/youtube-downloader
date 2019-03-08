@@ -146,7 +146,31 @@
                     </property>
                     <property name="ServiceMethod" value="ExecuteAsync" />
                     <property name="Service">
-                        <object type="DevWeek.Services.Downloader.MediaDownloaderPipelineActivity, DevWeek.Services" autowire="constructor"></object>
+                        <object type="DevWeek.Services.Downloader.MediaDownloaderPipelineActivity, DevWeek.Services" autowire="constructor">
+                          <property name="SharedPath" value="/shared/" />
+                          <property name="MetadataExtractors">
+                            <list element-type="DevWeek.Services.Downloader.MediaDownloader.IMetadataExtractor, DevWeek.Services">
+                              <object type="DevWeek.Services.Downloader.MediaDownloader.GenericOutputMetadataExtractor, DevWeek.Services">
+                                <property name="StartsWith" value="[download] " />
+                                <property name="EndsWith" value=" has already been downloaded and merged" />
+                              </object>
+                              <object type="DevWeek.Services.Downloader.MediaDownloader.GenericOutputMetadataExtractor, DevWeek.Services">
+                                <property name="StartsWith">
+                                  <value><![CDATA[[ffmpeg] Merging formats into "]]></value>
+                                </property>
+                                <property name="EndsWith">
+                                  <value><![CDATA["]]></value>
+                                </property>
+                              </object>
+                              <object type="DevWeek.Services.Downloader.MediaDownloader.GenericOutputMetadataExtractor, DevWeek.Services">
+                                <property name="StartsWith" value="[ffmpeg] Merging formats into" />
+                                <property name="EndsWith">
+                                  <value><![CDATA[(["'])(?:(?=(\\?))\2.)*?\1]]></value>
+                                </property>
+                              </object>
+                            </list>
+                          </property>
+                        </object>
                     </property>
                     <property name="ErrorFlowStrategy" value="SendToErrorQueue" />
                 </object>

@@ -40,8 +40,9 @@ namespace DevWeek.Services.Downloader
                 throw new InvalidOperationException($"The url '{url}' is not valid #invalidUrl", ex);
             }
 
-            if (builder.Host == "www.youtube.com") { this.ValidateLongUrl(builder); }
-            else if (builder.Host == "youtu.be") { this.ValidateShortUrl(builder); }
+            if (builder.Host == "www.youtube.com") { this.ValidateYoutubeLongUrl(builder); }
+            else if (builder.Host == "youtu.be") { this.ValidateYoutubeShort(builder); }
+            else if (builder.Host == "www.facebook.com") { this.ValidateFacebookUrl(builder); }
             else throw new InvalidOperationException($"The url '{url}' is not valid #invalidUrl");
         }
 
@@ -54,12 +55,36 @@ namespace DevWeek.Services.Downloader
         ///     Example: https://youtu.be/AxRVUNtvbcc
         /// </remarks>
         /// <param name="builder"></param>
-        private void ValidateShortUrl(UriBuilder builder)
+        private void ValidateYoutubeShort(UriBuilder builder)
         {
             bool isValid = (builder.Host == "youtu.be");
             isValid &= string.IsNullOrWhiteSpace(builder.Query);
             isValid &= string.IsNullOrWhiteSpace(builder.Path) == false;
             isValid &= builder.Path.Split('/').Length == 2;
+
+            if (isValid == false)
+            {
+                throw new InvalidOperationException($"The url '{builder.ToString()}' is not valid #invalidUrl");
+            }
+        }
+
+
+        /// <summary>
+        /// Validate a url using rules for short youtube urls
+        /// </summary>
+        /// <remarks>
+        ///     Example: https://youtu.be/AxRVUNtvbcc
+        /// </remarks>
+        /// <param name="builder"></param>
+        private void ValidateFacebookUrl(UriBuilder builder)
+        {
+            bool isValid = (builder.Host == "www.facebook.com");
+            isValid &= string.IsNullOrWhiteSpace(builder.Path) == false;
+            string[] pathParts = builder.Path.Split(new char[] { '/' },  StringSplitOptions.RemoveEmptyEntries);
+            isValid &= pathParts.Length == 3;
+            isValid &= pathParts[1] == "videos";
+
+
 
             if (isValid == false)
             {
@@ -74,7 +99,7 @@ namespace DevWeek.Services.Downloader
         ///     Example: https://www.youtube.com/watch?v=SQJIDvirfp4
         /// </remarks>
         /// <param name="builder"></param>
-        private void ValidateLongUrl(UriBuilder builder)
+        private void ValidateYoutubeLongUrl(UriBuilder builder)
         {
             bool isValid = (builder.Host == "www.youtube.com");
             isValid &= builder.Query != null;

@@ -37,6 +37,7 @@ namespace DevWeek.Services.Downloader
 
         private TimeSpan ParseDuration(string durationRaw)
         {
+            if (string.IsNullOrWhiteSpace(durationRaw)) return TimeSpan.Zero;
             int foundSplitters = durationRaw.ToArray().Count(it => it == ':');
             for (int i = foundSplitters; i < 2; i++)
             {
