@@ -26,7 +26,7 @@
         <div class="row">
             <div class="col-sm-4" ng-repeat="item in list">
                 <div class="card">
-                    <img class="card-img-top" src="{{item.thumbnailUrl}}" alt="Aguarde..." ng-if="!item.playUrl">
+                    <img class="card-img-top" src="{{item.thumbnailUrl}}" alt="Aguarde..." ng-if="item.thumbnailUrl && !item.playUrl">
                     <div class="embed-responsive embed-responsive-16by9" ng-if="item.playUrl">
                         <video class="embed-responsive-item" src="{{item.playUrl}}" preload="none" controls="controls" poster="{{item.thumbnailUrl}}"></video>
                     </div>
@@ -36,8 +36,8 @@
                         <p class="card-text text-truncate">{{item.description}}</p>
                         <br />
                         <a target="_blank" href="{{item.originalMediaUrl}}" class="card-link">Ver original</a>
-                        <a target="_blank" ng-if="item.audioDownloadUrl" href="{{item.audioDownloadUrl}}" class="btn btn-primary btn-sm">Baixar MP3</a>
-                        <a target="_blank" ng-if="item.videoDownloadUrl" href="{{item.videoDownloadUrl}}" class="btn btn-primary btn-sm">Baixar MP4</a>
+                        <a target="_blank" ng-if="item.audioDownloadUrl" href="{{item.audioDownloadUrl}}" class="btn btn-primary btn-sm">Baixar Audio</a>
+                        <a target="_blank" ng-if="item.videoDownloadUrl" href="{{item.videoDownloadUrl}}" class="btn btn-primary btn-sm">Baixar Video</a>
                     </div>
                 </div>
             </div>
