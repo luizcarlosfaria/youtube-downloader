@@ -66,14 +66,13 @@ namespace DevWeek.Services
 
             using (this.distributedLockService.Acquire(0, $"{this.redisDownloadListKey}-key", TimeSpan.FromSeconds(15)))
             {
-                var redisDB = this.redis.GetDatabase(0);
-                redisDB.KeyDelete(this.redisDownloadListKey);
-
                 var list = (await downloadCollection.Find(Builders<Download>.Filter.Empty).ToListAsync()).Select(it =>
                 {
                     return (RedisValue)Newtonsoft.Json.JsonConvert.SerializeObject(it);
                 }).ToArray();
 
+                IDatabase redisDB = this.redis.GetDatabase(0);
+                redisDB.KeyDelete(this.redisDownloadListKey);
                 redisDB.ListLeftPush(this.redisDownloadListKey, list);
             };
         }
@@ -87,13 +86,13 @@ namespace DevWeek.Services
 
         private Download GetDownloadElementByUrl(string url)
         {
-            var downloadItemOnDB = this.GetDownloadCollection().AsQueryable().Where(it => it.OriginalMediaUrl.ToLowerInvariant() == url.ToLowerInvariant()).SingleOrDefault();
+            var downloadItemOnDB = this.GetDownloadCollection().AsQueryable().SingleOrDefault(it => it.OriginalMediaUrl.ToLowerInvariant() == url.ToLowerInvariant());
             return downloadItemOnDB;
         }
 
         private Download GetDownloadElementById(string id)
         {
-            var downloadItemOnDB = this.GetDownloadCollection().AsQueryable().Where(it => it.Id == id).SingleOrDefault();
+            var downloadItemOnDB = this.GetDownloadCollection().AsQueryable().SingleOrDefault(it => it.Id == id);
             return downloadItemOnDB;
         }
     }
