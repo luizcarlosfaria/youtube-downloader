@@ -10,7 +10,7 @@ namespace DevWeek.Services.Downloader
         public Task ExecuteAsync(DownloadContext context)
         {
             System.IO.File.Delete(context.AudioOutputFilePath);
-            System.IO.File.Delete(context.AudioOutputFilePath);
+            System.IO.File.Delete(context.VideoOutputFilePath);
 
             return Task.CompletedTask;
         }
