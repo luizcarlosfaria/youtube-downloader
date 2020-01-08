@@ -1,0 +1,39 @@
+version: '3.4'
+
+services:
+  devweek_webapp:
+    build:
+      context: .
+      dockerfile: DevWeek.WebApp/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "80"
+
+
+
+
+
+
+  devweek_worker:
+    build:
+      context: .
+      dockerfile: DevWeek.Worker/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+
+  rabbitmq:
+    ports:
+      - "15672:15672"
+
+  s3:
+    ports:
+      - "9000:9000"
+
+  redis:
+    ports:
+      - "6379:6379"
+
+  mongodb:
+    ports:
+      - "27017:27017"

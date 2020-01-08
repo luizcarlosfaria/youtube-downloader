@@ -8,6 +8,10 @@ FROM microsoft/dotnet:2.2-sdk-stretch AS build
 WORKDIR /src
 COPY *.sln ./
 COPY DevWeek.Worker/DevWeek.Worker.csproj DevWeek.Worker/
+COPY DevWeek.WebApp/DevWeek.WebApp.csproj DevWeek.WebApp/
+COPY DevWeek.Contracts/DevWeek.Contracts.csproj DevWeek.Contracts/
+COPY DevWeek.Services/DevWeek.Services.csproj DevWeek.Services/
+COPY DevWeek.Services.Tests/DevWeek.Services.Tests.csproj DevWeek.Services.Tests/
 RUN dotnet restore ./src-ci.sln
 COPY . .
 WORKDIR /src/DevWeek.Worker
