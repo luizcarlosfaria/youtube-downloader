@@ -4,6 +4,7 @@
 * FFMPEG
 * RabbitMQ
 * MongoDB
+* Redis
 * Polly
 * Spring .NET (now running over .NET Standard)
 
