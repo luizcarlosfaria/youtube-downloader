@@ -19,7 +19,7 @@ services:
     image: luizcarlosfaria/devweek_worker:latest
     restart: unless-stopped
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
+      #- /var/run/docker.sock:/var/run/docker.sock
       - shared_data:/shared
     networks: 
       - devweek_net
