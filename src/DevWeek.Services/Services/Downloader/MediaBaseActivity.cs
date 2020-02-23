@@ -9,44 +9,13 @@ using DevWeek.Services.Downloader.MediaDownloader;
 
 namespace DevWeek.Services.Downloader
 {
-    public class MediaDownloaderPipelineActivity : IPipelineActivity
+    public abstract class MediaBaseActivity
     {
         public string SharedPath { get; set; }
 
         public List<IMetadataExtractor> MetadataExtractors { get; set; }
 
-        public Task ExecuteAsync(DownloadContext context)
-        {
-            VideoDownload(context);
-
-            AudioDownload(context);
-
-            return Task.CompletedTask;
-        }
-
-        private void VideoDownload(DownloadContext context)
-        {
-            string defaultDownloadPath = Path.Combine(this.SharedPath, $"{context.Download.Id}.mp4");
-
-            var processStartInfo = new ProcessStartInfo("youtube-dl", $"-o {defaultDownloadPath} {context.Download.OriginalMediaUrl}");
-
-            (string standardOutput, _) = this.Run(processStartInfo);
-
-            context.VideoOutputFilePath = this.ExtractPath(defaultDownloadPath, standardOutput);
-        }
-
-        private void AudioDownload(DownloadContext context)
-        {
-            string defaultDownloadPath = Path.Combine(this.SharedPath, $"{context.Download.Id}.mp3");
-
-            var processStartInfo = new ProcessStartInfo("ffmpeg", $"-i {context.VideoOutputFilePath} {defaultDownloadPath}");
-
-            (string standardOutput, _) = this.Run(processStartInfo);
-
-            context.AudioOutputFilePath = this.ExtractPath(defaultDownloadPath, standardOutput);
-        }
-
-        private string ExtractPath(string defaultPath, string processExecutionOutput)
+        protected string ExtractPath(string defaultPath, string processExecutionOutput)
         {
             string returnValue = null;
 
@@ -77,7 +46,7 @@ namespace DevWeek.Services.Downloader
         }
 
 
-        private (string output, string error) Run(ProcessStartInfo processStartInfo)
+        protected (string output, string error) Run(ProcessStartInfo processStartInfo)
         {
             processStartInfo.RedirectStandardError = true;
             processStartInfo.RedirectStandardOutput = true;

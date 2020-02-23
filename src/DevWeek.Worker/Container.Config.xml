@@ -133,7 +133,7 @@
 
                 <object type="DevWeek.Architecture.Workflow.QueuedWorkFlow.QueuedTransition, DevWeek.Services">
                     <property name="Origin" value="MetadataDownloaded" />
-                    <property name="Destination" value="MediaDownloaded" />
+                    <property name="Destination" value="VideoDownloaded" />
                     <property name="LogicalQueueName" value="MediaDownloader" />
                     <property name="ExchangeName" ref="CONFIG:DevWeek:RabbitMQ:DownloadPipeline:Exchange" />
                     <property name="ConsumerCountManager" >
@@ -146,7 +146,7 @@
                     </property>
                     <property name="ServiceMethod" value="ExecuteAsync" />
                     <property name="Service">
-                        <object type="DevWeek.Services.Downloader.MediaDownloaderPipelineActivity, DevWeek.Services" autowire="constructor">
+                        <object type="DevWeek.Services.Downloader.VideoDownloaderPipelineActivity, DevWeek.Services" autowire="constructor">
                           <property name="SharedPath" value="/shared/" />
                           <property name="MetadataExtractors">
                             <list element-type="DevWeek.Services.Downloader.MediaDownloader.IMetadataExtractor, DevWeek.Services">
@@ -176,7 +176,51 @@
                 </object>
 
                 <object type="DevWeek.Architecture.Workflow.QueuedWorkFlow.QueuedTransition, DevWeek.Services">
-                    <property name="Origin" value="MediaDownloaded" />
+                    <property name="Origin" value="VideoDownloaded" />
+                    <property name="Destination" value="AudioEncoded" />
+                    <property name="LogicalQueueName" value="MediaDownloader" />
+                    <property name="ExchangeName" ref="CONFIG:DevWeek:RabbitMQ:DownloadPipeline:Exchange" />
+                    <property name="ConsumerCountManager" >
+                        <object type="DevWeek.Architecture.MessageQueuing.ConsumerCountManager, DevWeek.Services">
+                            <property name="MinConcurrentConsumers" value="1" />
+                            <property name="MaxConcurrentConsumers" value="10" />
+                            <property name="AutoscaleFrequency" value="00:01:00" />
+                            <property name="MessagesPerConsumerWorkerRatio" value="1" />
+                        </object>
+                    </property>
+                    <property name="ServiceMethod" value="ExecuteAsync" />
+                    <property name="Service">
+                        <object type="DevWeek.Services.Downloader.AudioEncoderPipelineActivity, DevWeek.Services" autowire="constructor">
+                            <property name="SharedPath" value="/shared/" />
+                            <property name="MetadataExtractors">
+                                <list element-type="DevWeek.Services.Downloader.MediaDownloader.IMetadataExtractor, DevWeek.Services">
+                                    <object type="DevWeek.Services.Downloader.MediaDownloader.GenericOutputMetadataExtractor, DevWeek.Services">
+                                        <property name="StartsWith" value="[download] " />
+                                        <property name="EndsWith" value=" has already been downloaded and merged" />
+                                    </object>
+                                    <object type="DevWeek.Services.Downloader.MediaDownloader.GenericOutputMetadataExtractor, DevWeek.Services">
+                                        <property name="StartsWith">
+                                            <value><![CDATA[[ffmpeg] Merging formats into "]]></value>
+                                        </property>
+                                        <property name="EndsWith">
+                                            <value><![CDATA["]]></value>
+                                        </property>
+                                    </object>
+                                    <object type="DevWeek.Services.Downloader.MediaDownloader.GenericOutputMetadataExtractor, DevWeek.Services">
+                                        <property name="StartsWith" value="[ffmpeg] Merging formats into" />
+                                        <property name="EndsWith">
+                                            <value><![CDATA[(["'])(?:(?=(\\?))\2.)*?\1]]></value>
+                                        </property>
+                                    </object>
+                                </list>
+                            </property>
+                        </object>
+                    </property>
+                    <property name="ErrorFlowStrategy" value="SendToErrorQueue" />
+                </object>
+
+                <object type="DevWeek.Architecture.Workflow.QueuedWorkFlow.QueuedTransition, DevWeek.Services">
+                    <property name="Origin" value="AudioEncoded" />
                     <property name="Destination" value="MediaStored" />
                     <property name="LogicalQueueName" value="MediaStore" />
                     <property name="ExchangeName" ref="CONFIG:DevWeek:RabbitMQ:DownloadPipeline:Exchange" />
