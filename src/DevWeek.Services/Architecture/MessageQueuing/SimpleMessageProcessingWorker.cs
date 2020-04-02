@@ -26,7 +26,7 @@ namespace DevWeek.Architecture.MessageQueuing
 		public string ServiceMethod { get; set; }
 
 		[Required]
-		public ConsumerCountManager ConsumerCountManager { get; set; }
+		public IConsumerCountManager ConsumerCountManager { get; set; }
 
 		[Required]
 		public IMessageRejectionHandler MessageRejectionHandler { get; set; }

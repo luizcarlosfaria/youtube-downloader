@@ -4,7 +4,7 @@ namespace DevWeek.Architecture.MessageQueuing
 {
 	public interface IQueueConsumer : IDisposable
 	{
-		ConsumerCountManager ConsumerCountManager { get; }
+		IConsumerCountManager ConsumerCountManager { get; }
 
 		void Start();
 

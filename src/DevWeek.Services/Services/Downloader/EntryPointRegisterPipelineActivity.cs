@@ -22,7 +22,7 @@ namespace DevWeek.Services.Downloader
         {
             if (context.Download.OriginalMediaUrl == null)
                 throw new ArgumentNullException($"The url '{context.Download.OriginalMediaUrl}' is null #invalidUrl");
-
+            
             this.ValidateUrl(context.Download.OriginalMediaUrl);
 
             await metadataUpdater.Insert(context.Download);

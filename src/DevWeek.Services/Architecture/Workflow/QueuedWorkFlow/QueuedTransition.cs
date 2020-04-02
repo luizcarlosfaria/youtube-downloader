@@ -16,7 +16,7 @@ namespace DevWeek.Architecture.Workflow.QueuedWorkFlow
 
 		public IQueueConsumer QueueConsumer { get; set; }
 
-		public ConsumerCountManager ConsumerCountManager { get; set; }
+		public IConsumerCountManager ConsumerCountManager { get; set; }
 
 		//TODO: Aidionar o Listener Aqui;
 

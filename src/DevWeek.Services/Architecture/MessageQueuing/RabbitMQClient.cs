@@ -167,7 +167,7 @@ namespace DevWeek.Architecture.MessageQueuing
 			}
 		}
 
-		public IQueueConsumer GetConsumer(string queueName, ConsumerCountManager consumerCountManager, IMessageProcessingWorker messageProcessingWorker, Type expectedType, IMessageRejectionHandler messageRejectionHandler)
+		public IQueueConsumer GetConsumer(string queueName, IConsumerCountManager consumerCountManager, IMessageProcessingWorker messageProcessingWorker, Type expectedType, IMessageRejectionHandler messageRejectionHandler)
 		{
 			return new RabbitMQConsumer(
 				connectionPool: this.ConnectionPool,

@@ -37,7 +37,7 @@ namespace DevWeek.Services
                 var downloadCollection = this.GetDownloadCollection();
                 var update = updateFunction(Builders<Download>.Update);
                 downloadCollection.FindOneAndUpdate(it => it.Id == id, update);
-                await this.RebuildCache(downloadCollection);
+                this.RebuildCache(downloadCollection);
             }
             else
             {
@@ -51,8 +51,8 @@ namespace DevWeek.Services
             if (downloadItemOnDB == null)
             {
                 var downloadCollection = this.GetDownloadCollection();
-                await downloadCollection.InsertOneAsync(downloadToInsert);                
-                await this.RebuildCache(downloadCollection);
+                await downloadCollection.InsertOneAsync(downloadToInsert);
+                this.RebuildCache(downloadCollection);
             }
             else
             {
@@ -60,20 +60,21 @@ namespace DevWeek.Services
             }
         }
 
-        public async Task RebuildCache(IMongoCollection<Download> downloadCollection = null)
+        public void RebuildCache(IMongoCollection<Download> downloadCollection = null)
         {
             downloadCollection = downloadCollection ?? this.GetDownloadCollection();
 
             using (this.distributedLockService.Acquire(0, $"{this.redisDownloadListKey}-key", TimeSpan.FromSeconds(15)))
             {
-                var list = (await downloadCollection.Find(Builders<Download>.Filter.Empty).ToListAsync()).Select(it =>
-                {
-                    return (RedisValue)Newtonsoft.Json.JsonConvert.SerializeObject(it);
-                }).ToArray();
+                var mongoList = downloadCollection.Find(Builders<Download>.Filter.Empty).ToList();
+
+                var list = mongoList.ConvertAll(it => { return (RedisValue)Newtonsoft.Json.JsonConvert.SerializeObject(it); });
 
                 IDatabase redisDB = this.redis.GetDatabase(0);
+
                 redisDB.KeyDelete(this.redisDownloadListKey);
-                redisDB.ListLeftPush(this.redisDownloadListKey, list);
+
+                redisDB.ListLeftPush(this.redisDownloadListKey, list.ToArray());
             };
         }
 

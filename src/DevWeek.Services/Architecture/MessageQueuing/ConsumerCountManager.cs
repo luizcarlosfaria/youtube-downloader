@@ -4,13 +4,13 @@ using System;
 
 namespace DevWeek.Architecture.MessageQueuing
 {
-	public class ConsumerCountManager
+	public class ConsumerCountManager : IConsumerCountManager
 	{
 		[Required]
 		public uint MinConcurrentConsumers { get; set; }
 
 		[Required]
-		public uint MaxConcurrentConsumers { get; set; }
+		public int MaxConcurrentConsumers { get; set; }
 
 		[Required]
 		public TimeSpan AutoscaleFrequency { get; set; }
@@ -18,7 +18,7 @@ namespace DevWeek.Architecture.MessageQueuing
 		[Required]
 		public uint MessagesPerConsumerWorkerRatio { get; set; }
 
-		public int GetScalingAmount(QueueInfo queueInfo, int consumersRunningCount)
+		public virtual int GetScalingAmount(QueueInfo queueInfo, int consumersRunningCount)
 		{
 			uint consumersByRatio = queueInfo.MessageCount / MessagesPerConsumerWorkerRatio;
 

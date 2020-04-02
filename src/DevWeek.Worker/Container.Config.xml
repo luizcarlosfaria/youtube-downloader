@@ -184,7 +184,7 @@
                         <object type="DevWeek.Architecture.MessageQueuing.ConsumerCountManager, DevWeek.Services">
                             <property name="MinConcurrentConsumers" value="1" />
                             <property name="MaxConcurrentConsumers" value="10" />
-                            <property name="AutoscaleFrequency" value="00:01:00" />
+                            <property name="AutoscaleFrequency" value="00:02:00" />
                             <property name="MessagesPerConsumerWorkerRatio" value="1" />
                         </object>
                     </property>
@@ -225,11 +225,11 @@
                     <property name="LogicalQueueName" value="MediaStore" />
                     <property name="ExchangeName" ref="CONFIG:DevWeek:RabbitMQ:DownloadPipeline:Exchange" />
                     <property name="ConsumerCountManager" >
-                        <object type="DevWeek.Architecture.MessageQueuing.ConsumerCountManager, DevWeek.Services">
-                            <property name="MinConcurrentConsumers" value="1" />
-                            <property name="MaxConcurrentConsumers" value="10" />
-                            <property name="AutoscaleFrequency" value="00:01:00" />
-                            <property name="MessagesPerConsumerWorkerRatio" value="1" />
+                        <object type="DevWeek.Architecture.MessageQueuing.StaticConsumerCountManager, DevWeek.Services">
+                            <!--<property name="MinConcurrentConsumers" value="1" />-->
+                            <property name="MaxConcurrentConsumers" value="50" />
+                            <!--<property name="AutoscaleFrequency" value="00:01:00" />-->
+                            <!--<property name="MessagesPerConsumerWorkerRatio" value="1" />-->
                         </object>
                     </property>
                     <property name="ServiceMethod" value="ExecuteAsync" />
@@ -250,7 +250,7 @@
                     <property name="ConsumerCountManager" >
                         <object type="DevWeek.Architecture.MessageQueuing.ConsumerCountManager, DevWeek.Services">
                             <property name="MinConcurrentConsumers" value="1" />
-                            <property name="MaxConcurrentConsumers" value="10" />
+                            <property name="MaxConcurrentConsumers" value="100" />
                             <property name="AutoscaleFrequency" value="00:01:00" />
                             <property name="MessagesPerConsumerWorkerRatio" value="1" />
                         </object>

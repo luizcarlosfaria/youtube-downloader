@@ -29,13 +29,14 @@ namespace DevWeek
                 appContext = ContextBuilder.BuildContext();
             });
 
-            Task.Run(async () => {
-                while(true)
+            Task.Run(() =>
+            {
+                while (true)
                 {
-                    await appContext.GetObject<Services.DataService>().RebuildCache();
+                    appContext.GetObject<Services.DataService>().RebuildCache();
                     System.Threading.Thread.Sleep(TimeSpan.FromMinutes(2));
                 }
-                
+
             });
 
             appContext.GetObject<DevWeek.Architecture.Workflow.QueuedWorkFlow.QueuedStateMachine>("IngestionPipeline").Start();

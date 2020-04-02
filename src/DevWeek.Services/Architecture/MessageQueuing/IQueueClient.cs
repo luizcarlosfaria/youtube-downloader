@@ -11,7 +11,7 @@ namespace DevWeek.Architecture.MessageQueuing
 
 		void BatchPublishTransactional<T>(string exchangeName, string routingKey, IEnumerable<T> contentList);
 
-		IQueueConsumer GetConsumer(string queueName, ConsumerCountManager consumerCountManager, IMessageProcessingWorker messageProcessingWorker, Type expectedType, IMessageRejectionHandler messageRejectionHandler);
+		IQueueConsumer GetConsumer(string queueName, IConsumerCountManager consumerCountManager, IMessageProcessingWorker messageProcessingWorker, Type expectedType, IMessageRejectionHandler messageRejectionHandler);
 
 		void QueueDeclare(string queueName, bool durable = true, bool exclusive = false, bool autoDelete = false, IDictionary<string, object> arguments = null);
 

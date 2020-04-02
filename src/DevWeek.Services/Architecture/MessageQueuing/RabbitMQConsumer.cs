@@ -17,16 +17,16 @@ namespace DevWeek.Architecture.MessageQueuing
 
 		public IMessageRejectionHandler MessageRejectionHandler { get; set; }
 
-		public ConsumerCountManager ConsumerCountManager { get { return this._consumerCountManager; } }
+		public IConsumerCountManager ConsumerCountManager { get { return this._consumerCountManager; } }
 
 		private readonly CancellationTokenSource _cancellationTokenSource;
 
 		private volatile int _scalingAmount;
 		private volatile bool _isStopped;
 		private volatile int _consumerWorkersCount;
-		private volatile ConsumerCountManager _consumerCountManager;
+		private volatile IConsumerCountManager _consumerCountManager;
 
-		public RabbitMQConsumer(RabbitMQConnectionPool connectionPool, string queueName, Type expectedType, IMessageProcessingWorker messageProcessingWorker, ConsumerCountManager consumerCountManager, IMessageRejectionHandler messageRejectionHandler)
+		public RabbitMQConsumer(RabbitMQConnectionPool connectionPool, string queueName, Type expectedType, IMessageProcessingWorker messageProcessingWorker, IConsumerCountManager consumerCountManager, IMessageRejectionHandler messageRejectionHandler)
 		{
 			//Set using constructor parameters
 			this.ConnectionPool = connectionPool;
