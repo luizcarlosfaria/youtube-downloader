@@ -17,7 +17,7 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.1" />
     <PackageReference Include="MongoDB.Driver" Version="2.7.3" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
-    <PackageReference Include="Oragon.Spring.Aop" Version="1.2.1" />
+    <PackageReference Include="Oragon.Spring.Aop" Version="2.0.3" />
     <PackageReference Include="Oragon.Spring.Core" Version="1.2.1" />
     <PackageReference Include="RabbitMQ.Client" Version="5.1.0" />
   </ItemGroup>
