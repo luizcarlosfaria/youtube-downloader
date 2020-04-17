@@ -19,7 +19,7 @@
         </PackageReference>
         <DotNetCliToolReference Include="dotnet-xunit" Version="2.3.1" />
         <PackageReference Include="Minio.NetCore" Version="1.1.1" />
-        <PackageReference Include="RabbitMQ.Client" Version="5.1.0" />
+        <PackageReference Include="RabbitMQ.Client" Version="6.0.0" />
         <PackageReference Include="StackExchange.Redis.StrongName" Version="1.2.6" />
     </ItemGroup>
 
