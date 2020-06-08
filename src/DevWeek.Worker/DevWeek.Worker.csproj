@@ -40,7 +40,7 @@
     <PackageReference Include="Oragon.Spring.Aop" Version="1.2.1" />
     <PackageReference Include="Oragon.Spring.Core" Version="1.2.1" />
     <PackageReference Include="Polly" Version="7.0.3" />
-    <PackageReference Include="RabbitMQ.Client" Version="5.1.0" />
+    <PackageReference Include="RabbitMQ.Client" Version="6.1.0" />
     <PackageReference Include="StackExchange.Redis.StrongName" Version="1.2.6" />
   </ItemGroup>
 
