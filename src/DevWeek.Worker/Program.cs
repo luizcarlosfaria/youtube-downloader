@@ -8,6 +8,7 @@ using System.Diagnostics;
 using Minio;
 using DevWeek.Services.Downloader;
 using Polly;
+using System.Security.Policy;
 
 namespace DevWeek
 {
@@ -29,6 +30,7 @@ namespace DevWeek
                 appContext = ContextBuilder.BuildContext();
             });
 
+          
             Task.Run(() =>
             {
                 while (true)
