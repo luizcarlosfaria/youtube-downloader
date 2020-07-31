@@ -11,7 +11,7 @@
 
   <ItemGroup>
     <PackageReference Include="Minio.NetCore" Version="1.1.1" />
-    <PackageReference Include="MongoDB.Driver" Version="2.7.3" />
+    <PackageReference Include="MongoDB.Driver" Version="2.11.0" />
     <PackageReference Include="Oragon.Spring.Aop" Version="1.2.1" />
     <PackageReference Include="Oragon.Spring.Core" Version="1.2.1" />
     <PackageReference Include="RabbitMQ.Client" Version="5.1.0" />
