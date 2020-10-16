@@ -15,7 +15,7 @@
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.4.4" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.1" />
-    <PackageReference Include="MongoDB.Driver" Version="2.7.3" />
+    <PackageReference Include="MongoDB.Driver" Version="2.11.3" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
     <PackageReference Include="Oragon.Spring.Aop" Version="1.2.1" />
     <PackageReference Include="Oragon.Spring.Core" Version="1.2.1" />
