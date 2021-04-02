@@ -8,7 +8,7 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.CodeCoverage" Version="16.0.1" />
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.0.1" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.4" />
         <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
         <PackageReference Include="Oragon.Spring.Aop" Version="1.2.1" />
         <PackageReference Include="Oragon.Spring.Core" Version="1.2.1" />
