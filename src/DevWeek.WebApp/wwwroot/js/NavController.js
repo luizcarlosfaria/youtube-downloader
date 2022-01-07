@@ -1,5 +1,5 @@
 ﻿
 app.controller('NavController', ['$scope', '$q', ($scope, $q) => {
 
-    $scope.title = "DevWeek 2017";
+    $scope.title = "Cloud Native .NET - 2022";
 }]);

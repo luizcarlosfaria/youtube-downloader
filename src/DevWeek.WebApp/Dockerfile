@@ -1,8 +1,8 @@
-FROM microsoft/dotnet:2.2-aspnetcore-runtime-stretch-slim  AS base
+FROM mcr.microsoft.com/dotnet/core/aspnet:2.2-stretch-slim AS base
 WORKDIR /app
 EXPOSE 80
 
-FROM microsoft/dotnet:2.2-sdk-stretch AS build
+FROM mcr.microsoft.com/dotnet/core/sdk:2.2.105  AS build
 WORKDIR /src
 COPY *.sln ./
 COPY DevWeek.Worker/DevWeek.Worker.csproj DevWeek.Worker/
