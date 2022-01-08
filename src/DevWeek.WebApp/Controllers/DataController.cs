@@ -41,7 +41,7 @@ namespace DevWeek.WebApp.Controllers
                 Download = download
             };
 
-            string objectInJson = Newtonsoft.Json.JsonConvert.SerializeObject(downloadContext);
+            string objectInJson = System.Text.Json.JsonSerializer.Serialize(downloadContext);
             byte[] objectInByteArray = System.Text.Encoding.UTF8.GetBytes(objectInJson);
 
             this.rabbitMQ.BasicPublish(
@@ -60,10 +60,10 @@ namespace DevWeek.WebApp.Controllers
                 .ListRange(this.downloadListKey)
                 .Select(download =>
                 {
-                    var instance = Newtonsoft.Json.JsonConvert.DeserializeObject<Download>(download);
+                    var instance = System.Text.Json.JsonSerializer.Deserialize<Download>(download);
                     return instance;
                 })
-                .ToArray();
+                .ToArray() ?? Array.Empty<Download>();
             return result;
         }
     }

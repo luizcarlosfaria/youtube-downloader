@@ -1,25 +1,70 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
+﻿using RabbitMQ.Client;
 
-namespace DevWeek
+var builder = WebApplication.CreateBuilder(args);
+
+
+
+// Add services to the container.
+builder.Services.AddControllersWithViews();
+
+builder.Services.AddScoped((sp) =>
 {
-    public class Program
+    return new RabbitMQ.Client.ConnectionFactory()
     {
-        public static void Main(string[] args)
-        {
-            BuildWebHost(args).Run();
-        }
+        Uri = new Uri(builder.Configuration.GetSection("DevWeek:RabbitMQ:ConnectionString").Get<string>())
+    };
+});
 
-        public static IWebHost BuildWebHost(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>()
-                .Build();
-    }
+builder.Services.AddScoped((sp) =>
+{
+    return sp.GetRequiredService<ConnectionFactory>().CreateConnection();
+});
+
+builder.Services.AddTransient((sp) =>
+{
+    return sp.GetRequiredService<IConnection>().CreateModel();
+});
+
+builder.Services.AddSingleton((sp) =>
+{
+    return builder.Configuration;
+});
+
+builder.Services.AddSingleton((sp) =>
+{
+    return StackExchange.Redis.ConnectionMultiplexer.Connect(builder.Configuration.GetSection("DevWeek:Redis:ConnectionString").Get<string>(), null);
+});
+
+
+
+builder.Services.AddSingleton((sp) =>
+{
+    return new Minio.MinioClient(
+        builder.Configuration.GetSection("DevWeek:S3:Endpoint").Get<string>(),
+        builder.Configuration.GetSection("DevWeek:S3:AccessKey").Get<string>(),
+        builder.Configuration.GetSection("DevWeek:S3:SecretKey").Get<string>());
+});
+
+
+var app = builder.Build();
+
+// Configure the HTTP request pipeline.
+if (!app.Environment.IsDevelopment())
+{
+    app.UseExceptionHandler("/Home/Error");
+    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+    app.UseHsts();
 }
+
+app.UseHttpsRedirection();
+app.UseStaticFiles();
+
+app.UseRouting();
+
+app.UseAuthorization();
+
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.Run();

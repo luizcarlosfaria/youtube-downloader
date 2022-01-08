@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <OutputType>Exe</OutputType>
-        <TargetFramework>netcoreapp5.0</TargetFramework>
+        <TargetFramework>net6.0</TargetFramework>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
         <AssemblyName>DevWeek.Worker</AssemblyName>
         <RootNamespace>DevWeek</RootNamespace>
@@ -32,15 +32,16 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.9" />
-        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.1" />
+        <PackageReference Include="Microsoft.Build.Framework" Version="17.0.0" />
+        <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.14.0" />
+        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.1" />
         <PackageReference Include="Minio.NetCore" Version="1.1.1" />
-        <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
-        <PackageReference Include="Oragon.Spring.Aop" Version="1.2.1" />
-        <PackageReference Include="Oragon.Spring.Core" Version="1.2.1" />
-        <PackageReference Include="Polly" Version="7.0.3" />
-        <PackageReference Include="RabbitMQ.Client" Version="5.1.0" />
-        <PackageReference Include="StackExchange.Redis.StrongName" Version="1.2.6" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+        <PackageReference Include="Oragon.Spring.Aop" Version="2.0.3" />
+        <PackageReference Include="Oragon.Spring.Core" Version="2.0.3" />
+        <PackageReference Include="Polly" Version="7.2.2" />
+        <PackageReference Include="RabbitMQ.Client" Version="6.2.2" />
+        <PackageReference Include="StackExchange.Redis" Version="2.2.88" />
     </ItemGroup>
 
     <ItemGroup>

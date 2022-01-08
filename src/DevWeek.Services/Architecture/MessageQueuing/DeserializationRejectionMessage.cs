@@ -12,6 +12,6 @@ namespace DevWeek.Architecture.MessageQueuing
 
 		public string SerializedDataString { get; set; }
 
-		public byte[] SerializedDataBinary { get; set; }
+		public ReadOnlyMemory<byte> SerializedDataBinary { get; set; }
 	}
 }

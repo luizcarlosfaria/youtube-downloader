@@ -34,7 +34,7 @@ namespace DevWeek.Services.Downloader
 
 
             await this.dataService.Update(context.Download.Id, (update) =>
-                update.Combine(new[] {
+                update.Combine(new[] {                
                     update.Set(it => it.AudioDownloadUrl, $"/api/media/{this.AudioBucketName}/download/{audioFileName}"),
                     update.Set(it => it.VideoDownloadUrl, $"/api/media/{this.VideoBucketName}/download/{videoFileName}"),
                     update.Set(it => it.PlayUrl, $"/api/media/{this.VideoBucketName}/stream/{videoFileName}"),

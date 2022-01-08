@@ -19,9 +19,9 @@ namespace DevWeek.Services.Downloader
 
             var processStartInfo = new ProcessStartInfo("youtube-dl", $"-o {defaultDownloadPath} {context.Download.OriginalMediaUrl}");
 
-            (string standardOutput, _) = this.Run(processStartInfo);
+            (string output, string error, int exitCode) = this.Run(processStartInfo);
 
-            context.VideoOutputFilePath = this.ExtractPath(defaultDownloadPath, standardOutput);
+            context.VideoOutputFilePath = this.ExtractPath(defaultDownloadPath, output);
 
             return Task.CompletedTask;
         }

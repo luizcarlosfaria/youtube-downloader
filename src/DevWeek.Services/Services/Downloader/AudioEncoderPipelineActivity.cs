@@ -19,9 +19,9 @@ namespace DevWeek.Services.Downloader
 
             var processStartInfo = new ProcessStartInfo("ffmpeg", $"-i {context.VideoOutputFilePath} {defaultDownloadPath}");
 
-            (string standardOutput, _) = this.Run(processStartInfo);
+            (string output, string error, int exitCode) = this.Run(processStartInfo);
 
-            context.AudioOutputFilePath = this.ExtractPath(defaultDownloadPath, standardOutput);
+            context.AudioOutputFilePath = this.ExtractPath(defaultDownloadPath, output);
 
             return Task.CompletedTask;
         }

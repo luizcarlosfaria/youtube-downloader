@@ -1,7 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
     <PropertyGroup>
-        <TargetFramework>netcoreapp5.0</TargetFramework>
+        <TargetFramework>net6.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
         <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
         <AssemblyName>DevWeek.WebApp</AssemblyName>
@@ -13,18 +15,16 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.9" />
-        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.1" />
-        <PackageReference Include="MongoDB.Driver" Version="2.7.3" />
-        <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
-        <PackageReference Include="Oragon.Spring.Aop" Version="1.2.1" />
-        <PackageReference Include="Oragon.Spring.Core" Version="1.2.1" />
-        <PackageReference Include="RabbitMQ.Client" Version="5.1.0" />
+        <PackageReference Include="Microsoft.Build.Framework" Version="17.0.0" />
+        <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.14.0" />
+        <PackageReference Include="MongoDB.Driver" Version="2.14.1" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+        <PackageReference Include="Oragon.Spring.Aop" Version="2.0.3" />
+        <PackageReference Include="Oragon.Spring.Core" Version="2.0.3" />
+        <PackageReference Include="RabbitMQ.Client" Version="6.2.2" />
     </ItemGroup>
 
-    <ItemGroup>
-        <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.1" />
-    </ItemGroup>
+    
 
     <ItemGroup>
         <ProjectReference Include="..\DevWeek.Contracts\DevWeek.Contracts.csproj" />
