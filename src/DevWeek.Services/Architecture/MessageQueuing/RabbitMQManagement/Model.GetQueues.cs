@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using DevWeek.Architecture.MessageQueuing.RabbitMQManagement.GetQueues.Model;
 using RestSharp;
-using Oragon.Spring.Objects.Factory.Attributes;
+using Spring.Objects.Factory.Attributes;
 
 
 namespace DevWeek.Architecture.MessageQueuing.RabbitMQManagement.GetQueues.Model

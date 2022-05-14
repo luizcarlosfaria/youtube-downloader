@@ -58,10 +58,10 @@ namespace DevWeek.Services
         {
             foreach (string minioBucketName in this.MinioBucketNames)
             {
-                bool exists = minio.BucketExistsAsync(minioBucketName).GetAwaiter().GetResult();
+                bool exists = this.minio.BucketExistsAsync(minioBucketName).GetAwaiter().GetResult();
                 if (exists == false)
                 {
-                    minio.MakeBucketAsync(minioBucketName).GetAwaiter();
+                    this.minio.MakeBucketAsync(minioBucketName).GetAwaiter();
                 }
             }
         }

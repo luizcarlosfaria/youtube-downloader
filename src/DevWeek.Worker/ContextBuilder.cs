@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
-using Oragon.Spring.Context.Support;
+using Spring.Context.Support;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,7 +8,7 @@ namespace DevWeek
 {
     public class ContextBuilder
     {
-        
+
         public static AbstractApplicationContext BuildContext()
         {
             var configurationRoot = BuildConfigurationRoot();
@@ -24,8 +24,8 @@ namespace DevWeek
         {
             var ASPNETCORE_ENVIRONMENT = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
             var builder = new ConfigurationBuilder()
-             .SetBasePath(System.IO.Directory.GetCurrentDirectory())
-             .AddEnvironmentVariables()
+            //.SetBasePath(System.IO.Directory.GetCurrentDirectory())
+            //.AddEnvironmentVariables()
              .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
              .AddJsonFile($"appsettings.{ASPNETCORE_ENVIRONMENT}.json", optional: true)
              .AddEnvironmentVariables();
@@ -38,7 +38,7 @@ namespace DevWeek
             StaticApplicationContext configContext = new StaticApplicationContext();
             foreach (var currentConfiguration in configurationRoot.AsEnumerable())
             {
-                Oragon.Spring.Objects.Factory.Support.GenericObjectDefinition objectDefinition = new Oragon.Spring.Objects.Factory.Support.GenericObjectDefinition
+                Spring.Objects.Factory.Support.GenericObjectDefinition objectDefinition = new Spring.Objects.Factory.Support.GenericObjectDefinition
                 {
                     ObjectType = typeof(String),
                     FactoryMethodName = "Copy"

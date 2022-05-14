@@ -1,10 +1,12 @@
 FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
 WORKDIR /app
-RUN apt-get update && apt-get install curl ffmpeg python2.7-minimal ca-certificates -y && cp /usr/bin/python2.7 /usr/bin/python
-RUN curl -L https://yt-dl.org/downloads/latest/youtube-dl -o /usr/local/bin/youtube-dl && chmod a+rx /usr/local/bin/youtube-dl
+RUN apt-get update && apt-get install curl ffmpeg python3.9-minimal ca-certificates -y && cp /usr/bin/python3.9 /usr/bin/python3 && chmod a+rx /usr/bin/python3
+RUN curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o /usr/local/bin/yt-dlp && chmod a+rx /usr/local/bin/yt-dlp
 
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+RUN apt-get update && apt-get install curl ffmpeg python3.9-minimal ca-certificates -y && cp /usr/bin/python3.9 /usr/bin/python3 && chmod a+rx /usr/bin/python3
+RUN curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o /usr/local/bin/yt-dlp && chmod a+rx /usr/local/bin/yt-dlp
 WORKDIR /src
 COPY *.sln ./
 COPY DevWeek.Worker/DevWeek.Worker.csproj DevWeek.Worker/

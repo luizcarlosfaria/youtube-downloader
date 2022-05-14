@@ -19,11 +19,11 @@ namespace DevWeek.Services.Downloader
 
         public async Task ExecuteAsync(DownloadContext context)
         {
-            string title = await RunAsync("--get-title", context.Download.OriginalMediaUrl);
-            string thumbnail = await RunAsync("--get-thumbnail", context.Download.OriginalMediaUrl);
-            string description = await RunAsync("--get-description", context.Download.OriginalMediaUrl);
-            string durationRaw = await RunAsync("--get-duration", context.Download.OriginalMediaUrl);
-            TimeSpan duration = this.ParseDuration(durationRaw);
+            string title = await this.RunAsync("--get-title", context.Download.OriginalMediaUrl);
+            string thumbnail = await this.RunAsync("--get-thumbnail", context.Download.OriginalMediaUrl);
+            string description = await this.RunAsync("--get-description", context.Download.OriginalMediaUrl);
+            string durationRaw = await this.RunAsync("--get-duration", context.Download.OriginalMediaUrl);
+            TimeSpan duration = ParseDuration(durationRaw);
 
             await this.dataService.Update(context.Download.Id, (update) =>
                  update.Combine(new[] {
@@ -35,7 +35,7 @@ namespace DevWeek.Services.Downloader
              );
         }
 
-        private TimeSpan ParseDuration(string durationRaw)
+        private static TimeSpan ParseDuration(string durationRaw)
         {
             if (string.IsNullOrWhiteSpace(durationRaw)) return TimeSpan.Zero;
             int foundSplitters = durationRaw.ToArray().Count(it => it == ':');
@@ -48,7 +48,7 @@ namespace DevWeek.Services.Downloader
 
         private async Task<string> RunAsync(string action, string mediaUrl)
         {
-            var process = System.Diagnostics.Process.Start(new ProcessStartInfo("youtube-dl", $"{action} {mediaUrl}")
+            var process = System.Diagnostics.Process.Start(new ProcessStartInfo("yt-dlp", $"{action} {mediaUrl}")
             {
                 RedirectStandardOutput = true,
                 RedirectStandardError = true

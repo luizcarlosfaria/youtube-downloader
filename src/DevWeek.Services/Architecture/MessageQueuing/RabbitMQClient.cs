@@ -1,5 +1,5 @@
 ﻿using RabbitMQ.Client;
-using Oragon.Spring.Objects.Factory.Attributes;
+using Spring.Objects.Factory.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Text;

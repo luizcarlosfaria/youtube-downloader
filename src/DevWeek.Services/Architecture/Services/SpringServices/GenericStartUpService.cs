@@ -74,7 +74,7 @@ namespace DevWeek.Architecture.Services.SpringServices
 
 			foreach (var currentObject in listToExecute)
 			{
-				Oragon.Spring.Expressions.ExpressionEvaluator.GetValue(currentObject, methodName + "()", null);
+				Spring.Expressions.ExpressionEvaluator.GetValue(currentObject, methodName + "()", null);
 			}
 		}
 

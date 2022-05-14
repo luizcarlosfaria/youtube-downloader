@@ -1,4 +1,4 @@
-﻿using Oragon.Spring.Objects.Factory.Attributes;
+﻿using Spring.Objects.Factory.Attributes;
 
 namespace DevWeek.Architecture.MessageQueuing
 {

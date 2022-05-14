@@ -31,6 +31,7 @@ services:
 
   rabbitmq:
     image: rabbitmq:3-management-alpine
+    container_name: rabbitmq
     volumes:
       - mq_data:/var/lib/rabbitmq/mnesia
       - ./rabbitmq.plugins:/etc/rabbitmq/enabled_plugins
@@ -59,7 +60,7 @@ services:
       - devweek_net
 
   mongodb:
-    image: mongo:3.4
+    image: mongo:5.0.8
     volumes:
       - mongo_data:/data/db
     restart: always

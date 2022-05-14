@@ -18,7 +18,7 @@
 
     <!--Redis-->
     <!--###############################################-->
-    <object name="RedisClient" type="StackExchange.Redis.ConnectionMultiplexer, StackExchange.Redis.StrongName" factory-method="Connect">
+    <object name="RedisClient" type="StackExchange.Redis.ConnectionMultiplexer, StackExchange.Redis" factory-method="Connect">
         <constructor-arg name="configuration" ref="CONFIG:DevWeek:Redis:ConnectionString" />
         <constructor-arg name="log" >
             <null />
@@ -111,6 +111,8 @@
                     <property name="ErrorFlowStrategy" value="SendToErrorQueue" />
                 </object>
 
+               
+
                 <object type="DevWeek.Architecture.Workflow.QueuedWorkFlow.QueuedTransition, DevWeek.Services">
                     <property name="Origin" value="RequestStored" />
                     <property name="Destination" value="MetadataDownloaded" />
@@ -160,6 +162,14 @@
                                 </property>
                                 <property name="EndsWith">
                                   <value><![CDATA["]]></value>
+                                </property>
+                              </object> 
+                                <object type="DevWeek.Services.Downloader.MediaDownloader.GenericOutputMetadataExtractor, DevWeek.Services">
+                                <property name="StartsWith">
+                                  <value><![CDATA[[download] ]]></value>                                    
+                                </property>
+                                <property name="EndsWith">
+                                  <value><![CDATA[ has already been downloaded]]></value>
                                 </property>
                               </object>
                               <object type="DevWeek.Services.Downloader.MediaDownloader.GenericOutputMetadataExtractor, DevWeek.Services">
@@ -226,10 +236,7 @@
                     <property name="ExchangeName" ref="CONFIG:DevWeek:RabbitMQ:DownloadPipeline:Exchange" />
                     <property name="ConsumerCountManager" >
                         <object type="DevWeek.Architecture.MessageQueuing.StaticConsumerCountManager, DevWeek.Services">
-                            <!--<property name="MinConcurrentConsumers" value="1" />-->
-                            <property name="MaxConcurrentConsumers" value="50" />
-                            <!--<property name="AutoscaleFrequency" value="00:01:00" />-->
-                            <!--<property name="MessagesPerConsumerWorkerRatio" value="1" />-->
+                            <property name="MaxConcurrentConsumers" value="1" />
                         </object>
                     </property>
                     <property name="ServiceMethod" value="ExecuteAsync" />
@@ -262,6 +269,8 @@
                     <property name="ErrorFlowStrategy" value="SendToErrorQueue" />
                 </object>
 
+                
+                
             </list>
         </property>
     </object>

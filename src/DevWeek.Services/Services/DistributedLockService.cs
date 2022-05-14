@@ -43,7 +43,7 @@ namespace DevWeek.Services
         /// <returns>Returns a DistributedLock to manage lock</returns>
         public DistributedLock Acquire(int databaseIndex, string key, TimeSpan lockTimeOut)
         {
-            return new DistributedLock(redisClient, databaseIndex, key, lockTimeOut, this.WaitingLockCycle, true);
+            return new DistributedLock(this.redisClient, databaseIndex, key, lockTimeOut, this.WaitingLockCycle, true);
         }
 
 
@@ -117,7 +117,7 @@ namespace DevWeek.Services
             /// </summary>
             public void Acquire()
             {
-                while (!this.db.LockTake(this.Key, this.LockId, lockTimeOut))
+                while (!this.db.LockTake(this.Key, this.LockId, this.lockTimeOut))
                 {
                     System.Threading.Thread.Sleep(this.waitingLockCycle);
                 }

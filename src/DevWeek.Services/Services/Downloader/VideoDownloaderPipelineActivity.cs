@@ -17,7 +17,7 @@ namespace DevWeek.Services.Downloader
         {
             string defaultDownloadPath = Path.Combine(this.SharedPath, $"{context.Download.Id}.mp4");
 
-            var processStartInfo = new ProcessStartInfo("youtube-dl", $"-o {defaultDownloadPath} {context.Download.OriginalMediaUrl}");
+            var processStartInfo = new ProcessStartInfo("yt-dlp", $"-o {defaultDownloadPath} {context.Download.OriginalMediaUrl}");
 
             (string output, string error, int exitCode) = this.Run(processStartInfo);
 

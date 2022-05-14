@@ -26,11 +26,11 @@ namespace DevWeek.Services.Downloader
         public async Task ExecuteAsync(DownloadContext context)
         {
             string audioFileName = System.IO.Path.GetFileName(context.AudioOutputFilePath);
-            await minio.PutObjectAsync(this.AudioBucketName, audioFileName, context.AudioOutputFilePath);
+            await this.minio.PutObjectAsync(this.AudioBucketName, audioFileName, context.AudioOutputFilePath);
 
 
             string videoFileName = System.IO.Path.GetFileName(context.VideoOutputFilePath);
-            await minio.PutObjectAsync(this.VideoBucketName, videoFileName, context.VideoOutputFilePath);
+            await this.minio.PutObjectAsync(this.VideoBucketName, videoFileName, context.VideoOutputFilePath);
 
 
             await this.dataService.Update(context.Download.Id, (update) =>

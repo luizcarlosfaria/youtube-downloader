@@ -7,7 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddScoped((sp) =>
+builder.Services.AddSingleton((sp) =>
 {
     return new RabbitMQ.Client.ConnectionFactory()
     {
@@ -15,7 +15,7 @@ builder.Services.AddScoped((sp) =>
     };
 });
 
-builder.Services.AddScoped((sp) =>
+builder.Services.AddSingleton((sp) =>
 {
     return sp.GetRequiredService<ConnectionFactory>().CreateConnection();
 });

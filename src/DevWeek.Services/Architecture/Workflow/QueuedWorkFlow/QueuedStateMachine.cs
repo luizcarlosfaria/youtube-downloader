@@ -1,7 +1,7 @@
 ﻿using DevWeek.Architecture.Extensions;
 using DevWeek.Architecture.MessageQueuing;
 using DevWeek.Architecture.Services;
-using Oragon.Spring.Objects.Factory;
+using Spring.Objects.Factory;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,20 +43,15 @@ namespace DevWeek.Architecture.Workflow.QueuedWorkFlow
 		{
 			foreach (QueuedTransition queuedTransition in this.GetAvailableTransitions())
 			{
-				MethodInfo method = Oragon.Spring.Util.ReflectionUtils.GetMethod(queuedTransition.Service.GetType(), "QueuedStateMachineInitialize", new Type[] { });
-				if (method != null)
-				{
-					var safeMethod = new Oragon.Spring.Reflection.Dynamic.SafeMethod(method);
-					safeMethod.Invoke(queuedTransition.Service, null);
-				}
-			}
+				queuedTransition.InitializeTransition();
+            }
 		}
 
 		private void ConfigureBroker(QueuedTransition queuedTransition)
 		{
 			if (queuedTransition.ConsumerCountManager.MaxConcurrentConsumers > 0)
 			{
-				MethodInfo methodInfo = Oragon.Spring.Util.ReflectionUtils.GetMethod(queuedTransition.Service.GetType(), queuedTransition.ServiceMethod, new Type[] { });
+				MethodInfo methodInfo = Spring.Util.ReflectionUtils.GetMethod(queuedTransition.Service.GetType(), queuedTransition.ServiceMethod, new Type[] { });
 				if (methodInfo == null)
 					throw new InvalidOperationException(string.Format("Service Method '{0}' of transition cannot be found", queuedTransition.ServiceMethod));
 

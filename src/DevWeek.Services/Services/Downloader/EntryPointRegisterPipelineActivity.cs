@@ -25,7 +25,7 @@ namespace DevWeek.Services.Downloader
             
             this.ValidateUrl(context.Download.OriginalMediaUrl);
 
-            await metadataUpdater.Insert(context.Download);
+            await this.metadataUpdater.Insert(context.Download);
 
         }
 

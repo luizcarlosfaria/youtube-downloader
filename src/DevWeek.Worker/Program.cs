@@ -16,7 +16,7 @@ namespace DevWeek
     {
         static void Main(string[] args)
         {
-            Oragon.Spring.Context.Support.AbstractApplicationContext appContext = null;
+            Spring.Context.Support.AbstractApplicationContext appContext = null;
 
             var retryOnStartupPolicy = Policy
                //.HandleInner<StackExchange.Redis.RedisConnectionException>()
@@ -41,8 +41,21 @@ namespace DevWeek
 
             });
 
-            appContext.GetObject<DevWeek.Architecture.Workflow.QueuedWorkFlow.QueuedStateMachine>("IngestionPipeline").Start();
+            AppDomain.CurrentDomain.ProcessExit += (sender, e) => {
+                Console.WriteLine("Fim!");
+            };
 
+            var statemachine = appContext.GetObject<DevWeek.Architecture.Workflow.QueuedWorkFlow.QueuedStateMachine>("IngestionPipeline");
+            statemachine.Start();
+
+
+            //new CancellationTokenSource()
+
+
+            while (true)
+            {
+                System.Threading.Thread.Sleep(TimeSpan.FromSeconds(1));
+            }
 
             Console.WriteLine("Hello World!");
         }

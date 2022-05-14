@@ -1,5 +1,5 @@
 ﻿using DevWeek.Architecture.Extensions;
-using Oragon.Spring.Objects.Factory.Attributes;
+using Spring.Objects.Factory.Attributes;
 using System;
 
 namespace DevWeek.Architecture.MessageQueuing
@@ -20,17 +20,17 @@ namespace DevWeek.Architecture.MessageQueuing
 
 		public virtual int GetScalingAmount(QueueInfo queueInfo, int consumersRunningCount)
 		{
-			uint consumersByRatio = queueInfo.MessageCount / MessagesPerConsumerWorkerRatio;
+			uint consumersByRatio = queueInfo.MessageCount / this.MessagesPerConsumerWorkerRatio;
 
 			int idealConsumerCount;
 
-			if (consumersByRatio < MinConcurrentConsumers)
+			if (consumersByRatio < this.MinConcurrentConsumers)
 			{
-				idealConsumerCount = MinConcurrentConsumers.ToInt();
+				idealConsumerCount = this.MinConcurrentConsumers.ToInt();
 			}
-			else if (consumersByRatio > MaxConcurrentConsumers)
+			else if (consumersByRatio > this.MaxConcurrentConsumers)
 			{
-				idealConsumerCount = MaxConcurrentConsumers.ToInt();
+				idealConsumerCount = this.MaxConcurrentConsumers.ToInt();
 			}
 			else
 			{

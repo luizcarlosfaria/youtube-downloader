@@ -4,6 +4,7 @@ namespace DevWeek.Architecture.Workflow
 {
 	public abstract class Transition
 	{
+
 	}
 
 	public abstract class Transition<StateType> : Transition
