@@ -17,15 +17,15 @@ namespace DevWeek.Services.Downloader
             this.dataService = dataService;
         }
 
-        public async Task ExecuteAsync(DownloadContext context)
+        public async Task ExecuteAsync(Download download)
         {
-            string title = await this.RunAsync("--get-title", context.Download.OriginalMediaUrl);
-            string thumbnail = await this.RunAsync("--get-thumbnail", context.Download.OriginalMediaUrl);
-            string description = await this.RunAsync("--get-description", context.Download.OriginalMediaUrl);
-            string durationRaw = await this.RunAsync("--get-duration", context.Download.OriginalMediaUrl);
+            string title = await this.RunAsync("--get-title", download.OriginalMediaUrl);
+            string thumbnail = await this.RunAsync("--get-thumbnail", download.OriginalMediaUrl);
+            string description = await this.RunAsync("--get-description", download.OriginalMediaUrl);
+            string durationRaw = await this.RunAsync("--get-duration", download.OriginalMediaUrl);
             TimeSpan duration = ParseDuration(durationRaw);
 
-            await this.dataService.Update(context.Download.Id, (update) =>
+            await this.dataService.Update(download.Id, (update) =>
                  update.Combine(new[] {
                     update.Set(it => it.Title, title),
                     update.Set(it => it.ThumbnailUrl, thumbnail),

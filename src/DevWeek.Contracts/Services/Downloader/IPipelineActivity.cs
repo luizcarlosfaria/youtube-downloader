@@ -7,6 +7,6 @@ namespace DevWeek.Services.Downloader
 {
     public interface IPipelineActivity
     {
-        Task ExecuteAsync(DownloadContext context);
+        Task ExecuteAsync(Download context);
     }
 }

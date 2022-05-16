@@ -18,14 +18,14 @@ namespace DevWeek.Services.Downloader
         }
 
 
-        public async Task ExecuteAsync(DownloadContext context)
+        public async Task ExecuteAsync(Download download)
         {
-            if (context.Download.OriginalMediaUrl == null)
-                throw new ArgumentNullException($"The url '{context.Download.OriginalMediaUrl}' is null #invalidUrl");
+            if (download.OriginalMediaUrl == null)
+                throw new ArgumentNullException($"The url '{download.OriginalMediaUrl}' is null #invalidUrl");
             
-            this.ValidateUrl(context.Download.OriginalMediaUrl);
+            this.ValidateUrl(download.OriginalMediaUrl);
 
-            await this.metadataUpdater.Insert(context.Download);
+            await this.metadataUpdater.Insert(download);
 
         }
 

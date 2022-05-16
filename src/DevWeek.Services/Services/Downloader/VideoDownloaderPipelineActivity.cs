@@ -5,26 +5,73 @@ using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
-using DevWeek.Services.Downloader.MediaDownloader;
+using Minio;
 
 namespace DevWeek.Services.Downloader
 {
     public class VideoDownloaderPipelineActivity : MediaBaseActivity, IPipelineActivity
     {
 
+        private readonly DataService dataService;
 
-        public Task ExecuteAsync(DownloadContext context)
+        public string VideoBucketName { get; set; }
+
+        public VideoDownloaderPipelineActivity(MinioClient minio, DataService dataService) : base(minio)
         {
-            string defaultDownloadPath = Path.Combine(this.SharedPath, $"{context.Download.Id}.mp4");
+            this.dataService = dataService;
+        }
 
-            var processStartInfo = new ProcessStartInfo("yt-dlp", $"-o {defaultDownloadPath} {context.Download.OriginalMediaUrl}");
+        public async Task ExecuteAsync(Download download)
+        {
+            string newDirectory = this.TryCreateDownloadDirectory(download);
+
+            string videoLocalFullPath = this.DownloadFromYoutubeToLocalFileSystem(download, newDirectory);
+
+            download.MinioVideoStorage = new()
+            {
+                BucketName = this.VideoBucketName,
+                ObjectName = Path.GetFileName(videoLocalFullPath)
+            };
+
+            await this.UploadToS3(download.MinioVideoStorage, videoLocalFullPath);
+
+            await this.UpdateMetadata(download);
+
+            Directory.Delete(newDirectory, true);
+        }
+
+        private async Task UpdateMetadata(Download download)
+        {
+            download.VideoDownloadUrl = $"/api/media/{download.MinioVideoStorage.BucketName}/download/{download.MinioVideoStorage.ObjectName}";
+            download.PlayUrl = $"/api/media/{download.MinioVideoStorage.BucketName}/stream/{download.MinioVideoStorage.ObjectName}";
+
+            await this.dataService.Update(download.Id, (update) =>
+               update.Combine(new[] {
+                    update.Set(it => it.VideoDownloadUrl, download.VideoDownloadUrl),
+                    update.Set(it => it.PlayUrl, download.PlayUrl),
+                    update.Set(it => it.MinioVideoStorage, download.MinioVideoStorage),
+               })
+           );
+        }
+
+        private string DownloadFromYoutubeToLocalFileSystem(Download download, string newDirectory)
+        {
+            string mediaFilePath = Path.Combine(newDirectory, $"{download.Id}.mp4");
+
+            StringBuilder args = new StringBuilder();
+            args.Append($"--output {mediaFilePath} ");
+            args.Append($"--format mp4 ");
+            args.Append($" {download.OriginalMediaUrl} ");
+
+            var processStartInfo = new ProcessStartInfo("yt-dlp", args.ToString());
 
             (string output, string error, int exitCode) = this.Run(processStartInfo);
 
-            context.VideoOutputFilePath = this.ExtractPath(defaultDownloadPath, output);
-
-            return Task.CompletedTask;
+            return Directory.GetFiles(newDirectory).Single();
         }
+
+
+
 
     }
 

@@ -6,14 +6,11 @@ namespace DevWeek.Services.Tests
 {
     public class EntryPointRegisterPipelineActivityTests
     {
-        private DownloadContext BuildContext(string url)
+        private Download BuildContext(string url)
         {
-            return new DownloadContext()
+            return new Download()
             {
-                Download = new Download()
-                {
-                    OriginalMediaUrl = url
-                }
+                OriginalMediaUrl = url
             };
         }
 
@@ -22,10 +19,10 @@ namespace DevWeek.Services.Tests
         public void GenericGoogleAddress()
         {
             IPipelineActivity activity = new EntryPointRegisterPipelineActivity(null);
-            DownloadContext context = BuildContext("https://www.google.com");
+            Download download = BuildContext("https://www.google.com");
 
             Assert.Throws<InvalidOperationException>(() => {
-                activity.ExecuteAsync(context).GetAwaiter().GetResult();
+                activity.ExecuteAsync(download).GetAwaiter().GetResult();
             });
         }
 
@@ -33,18 +30,18 @@ namespace DevWeek.Services.Tests
         public void NullAddress()
         {
             IPipelineActivity activity = new EntryPointRegisterPipelineActivity(null);
-            DownloadContext context = BuildContext(null);
+            Download download = BuildContext(null);
             Assert.Throws<ArgumentNullException>(() => {
-                activity.ExecuteAsync(context).GetAwaiter().GetResult();
+                activity.ExecuteAsync(download).GetAwaiter().GetResult();
             });
         }
         [Fact]
         public void Playlist()
         {
             IPipelineActivity activity = new EntryPointRegisterPipelineActivity(null);
-            DownloadContext context = BuildContext("https://www.youtube.com/watch?v=gFTE__qOMqI&t=306s&index=1&list=PLbDr6zG2yjZPD-FvY6cBQQAB8j7tjXD11");
+            Download download = BuildContext("https://www.youtube.com/watch?v=gFTE__qOMqI&t=306s&index=1&list=PLbDr6zG2yjZPD-FvY6cBQQAB8j7tjXD11");
             Assert.Throws<InvalidOperationException>(() => {
-                activity.ExecuteAsync(context).GetAwaiter().GetResult();
+                activity.ExecuteAsync(download).GetAwaiter().GetResult();
             });
         } 
         
@@ -52,9 +49,9 @@ namespace DevWeek.Services.Tests
         public void OkLongUrl()
         {
             IPipelineActivity activity = new EntryPointRegisterPipelineActivity(null);
-            DownloadContext context = BuildContext("https://www.youtube.com/watch?v=PH0SqgTSocs");
+            Download download = BuildContext("https://www.youtube.com/watch?v=PH0SqgTSocs");
             Assert.Throws<NullReferenceException>(() => {
-                activity.ExecuteAsync(context).GetAwaiter().GetResult();
+                activity.ExecuteAsync(download).GetAwaiter().GetResult();
             });
         }
 
@@ -63,9 +60,9 @@ namespace DevWeek.Services.Tests
         public void OkShortUrl()
         {
             IPipelineActivity activity = new EntryPointRegisterPipelineActivity(null);
-            DownloadContext context = BuildContext("https://youtu.be/PH0SqgTSocs");
+            Download download = BuildContext("https://youtu.be/PH0SqgTSocs");
             Assert.Throws<NullReferenceException>(() => {
-                activity.ExecuteAsync(context).GetAwaiter().GetResult();
+                activity.ExecuteAsync(download).GetAwaiter().GetResult();
             });
         }
     }

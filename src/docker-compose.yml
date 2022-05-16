@@ -1,4 +1,4 @@
-version: '3.4'
+version: '3.6'
 
 services:
   devweek_webapp:
@@ -20,7 +20,11 @@ services:
     restart: unless-stopped
     volumes:
       #- /var/run/docker.sock:/var/run/docker.sock
-      - shared_data:/shared
+      - type: tmpfs
+        target: /shared
+        #tmpfs:
+        #  size: 1000
+
     networks: 
       - devweek_net
     depends_on: 
@@ -76,7 +80,6 @@ volumes:
   mq_data:
   s3_data:
   s3_config:
-  shared_data:
   mongo_data:
 
 

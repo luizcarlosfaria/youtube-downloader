@@ -32,16 +32,10 @@ namespace DevWeek.WebApp.Controllers
         [HttpPost("api/Enqueue")]
         public void Post([FromBody] Download download)
         {
-            download.MinioAddress = null;
             download.Finished = null;
             download.Created = DateTime.Now;
-
-            var downloadContext = new DownloadContext()
-            {
-                Download = download
-            };
-
-            string objectInJson = System.Text.Json.JsonSerializer.Serialize(downloadContext);
+          
+            string objectInJson = System.Text.Json.JsonSerializer.Serialize(download);
             byte[] objectInByteArray = System.Text.Encoding.UTF8.GetBytes(objectInJson);
 
             this.rabbitMQ.BasicPublish(
