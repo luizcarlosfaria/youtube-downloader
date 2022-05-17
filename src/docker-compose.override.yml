@@ -30,6 +30,7 @@ services:
   s3:
     ports:
       - "9001:9000"
+      - "9002:9002"
 
   redis:
     ports:

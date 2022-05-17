@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DevWeek.Services.Downloader.Validators;
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
@@ -11,6 +12,7 @@ namespace DevWeek.Services.Downloader
     {
 
         private readonly DataService metadataUpdater;
+        public IList<IUrlValidator> Validators { get; set; }
 
         public EntryPointRegisterPipelineActivity(DataService metadataUpdater)
         {
@@ -41,109 +43,17 @@ namespace DevWeek.Services.Downloader
                 throw new InvalidOperationException($"The url '{url}' is not valid #invalidUrl", ex);
             }
 
-            switch (builder.Host)
+
+            if (this.Validators.Any(it => it.Validate(builder)) == false)
             {
-                case "www.youtube.com":
-                    this.ValidateYoutubeLongUrl(builder);
-                    break;
-                case "youtu.be":
-                    this.ValidateYoutubeShort(builder);
-                    break;
-                case "www.facebook.com":
-                    this.ValidateFacebookUrl(builder);
-                    break;
-                case "twitter.com":
-                    this.ValidateTwitterUrl(builder);
-                    break;
-                default:
-                    throw new InvalidOperationException($"The url '{url}' is not valid #invalidUrl");
+                throw new InvalidOperationException($"The url '{url}' is not valid #invalidUrl");
             }
+
         }
 
 
 
-        /// <summary>
-        /// Validate a url using rules for short youtube urls
-        /// </summary>
-        /// <remarks>
-        ///     Example: https://youtu.be/AxRVUNtvbcc
-        /// </remarks>
-        /// <param name="builder"></param>
-        private void ValidateYoutubeShort(UriBuilder builder)
-        {
-            bool isValid = (builder.Host == "youtu.be");
-            isValid &= string.IsNullOrWhiteSpace(builder.Query);
-            isValid &= string.IsNullOrWhiteSpace(builder.Path) == false;
-            isValid &= builder.Path.Split('/').Length == 2;
+       
 
-            if (isValid == false)
-            {
-                throw new InvalidOperationException($"The url '{builder.ToString()}' is not valid #invalidUrl");
-            }
-        }
-
-
-        /// <summary>
-        /// Validate a url using rules for short youtube urls
-        /// </summary>
-        /// <remarks>
-        ///     Example: https://youtu.be/AxRVUNtvbcc
-        /// </remarks>
-        /// <param name="builder"></param>
-        private void ValidateFacebookUrl(UriBuilder builder)
-        {
-            bool isValid = (builder.Host == "www.facebook.com");
-            isValid &= string.IsNullOrWhiteSpace(builder.Path) == false;
-            string[] pathParts = builder.Path.Split(new char[] { '/' },  StringSplitOptions.RemoveEmptyEntries);
-            isValid &= pathParts.Length == 3;
-            isValid &= pathParts[1] == "videos";
-
-
-
-            if (isValid == false)
-            {
-                throw new InvalidOperationException($"The url '{builder.ToString()}' is not valid #invalidUrl");
-            }
-        }
-
-        /// <summary>
-        /// Validate a url using rules for twitter urls
-        /// </summary>
-        /// <remarks>
-        ///     Example: https://youtu.be/AxRVUNtvbcc
-        /// </remarks>
-        /// <param name="builder"></param>
-        private void ValidateTwitterUrl(UriBuilder builder)
-        {
-            bool isValid = (builder.Host == "twitter.com");
-            isValid &= string.IsNullOrWhiteSpace(builder.Path) == false;
-            //isValid = builder.Path.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries).Contains("video");
-
-            if (isValid == false)
-            {
-                throw new InvalidOperationException($"The url '{builder.ToString()}' is not valid #invalidUrl");
-            }
-        }
-
-        /// <summary>
-        /// Validate a url using rules for long youtube urls
-        /// </summary>
-        /// <remarks>
-        ///     Example: https://www.youtube.com/watch?v=SQJIDvirfp4
-        /// </remarks>
-        /// <param name="builder"></param>
-        private void ValidateYoutubeLongUrl(UriBuilder builder)
-        {
-            bool isValid = (builder.Host == "www.youtube.com");
-            isValid &= builder.Query != null;
-            isValid &= builder.Query.Split('=').Length == 2;
-            NameValueCollection queryStringParams = System.Web.HttpUtility.ParseQueryString(builder.Query);
-            isValid &= queryStringParams.Count == 1;
-            isValid &= queryStringParams.AllKeys[0] == "v";
-            if (isValid == false)
-            {
-                throw new InvalidOperationException($"The url '{builder.ToString()}' is not valid #invalidUrl");
-            }
-        }
     }
 }

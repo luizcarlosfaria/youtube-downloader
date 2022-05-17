@@ -51,7 +51,7 @@ services:
     volumes:
       - s3_data:/data
       - s3_config:/root/.minio
-    command: server /data
+    command: server /data --console-address ":9002"
     environment:
       MINIO_ACCESS_KEY: Zu8VgBoZMU2xcmOEeS70
       MINIO_SECRET_KEY: xvnjYyFQyFs44iuUagi4kTHiOGvlK1PiX64LiwOy

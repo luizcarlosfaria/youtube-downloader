@@ -106,7 +106,20 @@
                     </property>
                     <property name="ServiceMethod" value="ExecuteAsync" />
                     <property name="Service"  >
-                        <object type="DevWeek.Services.Downloader.EntryPointRegisterPipelineActivity, DevWeek.Services" autowire="constructor"></object>
+                        <object type="DevWeek.Services.Downloader.EntryPointRegisterPipelineActivity, DevWeek.Services" autowire="constructor">
+                            <property name="Validators">
+
+                                <list element-type="DevWeek.Services.Downloader.Validators.IUrlValidator, DevWeek.Services">
+                                    <object type="DevWeek.Services.Downloader.Validators.FacebookValidator, DevWeek.Services" />
+                                    <object type="DevWeek.Services.Downloader.Validators.TwitterValidator, DevWeek.Services" />
+                                    <object type="DevWeek.Services.Downloader.Validators.YoutubeShortValidator, DevWeek.Services" />
+                                    <object type="DevWeek.Services.Downloader.Validators.YoutubeValidator, DevWeek.Services" />
+                                </list>
+                                
+                            </property>
+                            
+                            
+                        </object>
                     </property>
                     <property name="ErrorFlowStrategy" value="SendToErrorQueue" />
                 </object>
