@@ -1,6 +1,6 @@
 # youtube-downloader
 * .NET Core
-* Youtube-dl
+* yt-dlp
 * FFMPEG
 * RabbitMQ
 * MongoDB
