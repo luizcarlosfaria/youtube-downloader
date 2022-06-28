@@ -1,7 +1,7 @@
 ﻿using System;
 
-namespace DevWeek.Architecture.Workflow
-{
+namespace DevWeek.Architecture.Workflow;
+
 	public abstract class Transition
 	{
 
@@ -24,4 +24,3 @@ namespace DevWeek.Architecture.Workflow
 			return this.Origin;
 		}
 	}
-}

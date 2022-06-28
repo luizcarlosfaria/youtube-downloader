@@ -1,13 +1,12 @@
 ﻿using System;
 
-namespace DevWeek.Architecture.MessageQueuing
+namespace DevWeek.Architecture.MessageQueuing;
+
+public interface IConsumerCountManager
 {
-    public interface IConsumerCountManager
-    {
-        int MaxConcurrentConsumers { get; }
+    int MaxConcurrentConsumers { get; }
 
-        int GetScalingAmount(QueueInfo queueInfo, int consumersRunningCount);
+    int GetScalingAmount(QueueInfo queueInfo, int consumersRunningCount);
 
-        TimeSpan AutoscaleFrequency { get; }
-    }
+    TimeSpan AutoscaleFrequency { get; }
 }

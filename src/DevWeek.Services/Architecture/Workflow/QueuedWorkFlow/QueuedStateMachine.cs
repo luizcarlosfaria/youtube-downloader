@@ -7,8 +7,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace DevWeek.Architecture.Workflow.QueuedWorkFlow
-{
+namespace DevWeek.Architecture.Workflow.QueuedWorkFlow;
+
 	public class QueuedStateMachine : StateMachine<QueuedTransition, string>, IInitializingObject, IObjectNameAware, IService
 	{
 		protected IQueueClient QueueClient { get; set; }
@@ -44,7 +44,7 @@ namespace DevWeek.Architecture.Workflow.QueuedWorkFlow
 			foreach (QueuedTransition queuedTransition in this.GetAvailableTransitions())
 			{
 				queuedTransition.InitializeTransition();
-            }
+        }
 		}
 
 		private void ConfigureBroker(QueuedTransition queuedTransition)
@@ -97,4 +97,3 @@ namespace DevWeek.Architecture.Workflow.QueuedWorkFlow
 			get { return "QueuedStateMachine"; }
 		}
 	}
-}

@@ -1,7 +1,7 @@
 ﻿using System;
 
-namespace DevWeek.Architecture.Workflow.QueuedWorkFlow
-{
+namespace DevWeek.Architecture.Workflow.QueuedWorkFlow;
+
 	public class InvokeResult
 	{
 		public object ReturnedValue { get; set; }
@@ -32,4 +32,3 @@ namespace DevWeek.Architecture.Workflow.QueuedWorkFlow
 			}
 		}
 	}
-}

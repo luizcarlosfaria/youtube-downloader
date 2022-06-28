@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace DevWeek.Architecture.Workflow.QueuedWorkFlow
-{
+namespace DevWeek.Architecture.Workflow.QueuedWorkFlow;
+
 	[Serializable]
 	public class FlowRejectAndRequeueException : DevWeek.Architecture.Business.BusinessException
 	{
@@ -34,4 +34,3 @@ namespace DevWeek.Architecture.Workflow.QueuedWorkFlow
 		{
 		}
 	}
-}

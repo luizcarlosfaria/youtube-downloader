@@ -1,9 +1,8 @@
 ﻿using System.Runtime.Serialization;
 
-namespace DevWeek.Architecture.Business
-{
+namespace DevWeek.Architecture.Business;
+
 	[DataContract]
 	public abstract class Entity
 	{
 	}
-}

@@ -1,7 +1,7 @@
 ﻿using System;
 
-namespace DevWeek.Architecture.MessageQueuing
-{
+namespace DevWeek.Architecture.MessageQueuing;
+
 	public class DeserializationRejectionMessage
 	{
 		public string QueueName { get; set; }
@@ -14,4 +14,3 @@ namespace DevWeek.Architecture.MessageQueuing
 
 		public ReadOnlyMemory<byte> SerializedDataBinary { get; set; }
 	}
-}

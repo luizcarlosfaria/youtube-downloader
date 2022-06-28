@@ -4,36 +4,28 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace DevWeek.Services.Downloader
+namespace DevWeek.Services.Downloader;
+
+public class Download
 {
-    public class Download
-    {
-        [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
-        public string Id { get; set; }
+    [BsonId]
+    [BsonRepresentation(BsonType.ObjectId)]
+    public string Id { get; set; }
 
-        public string OriginalMediaUrl { get; set; }
+    public string OriginalMediaUrl { get; set; }
 
-        public DateTime Created { get; set; }
+    public DateTime Created { get; set; }
 
-        public DateTime? Finished { get; set; }
-        public string Title { get; set; }
-        public string ThumbnailUrl { get; set; }
-        public string Description { get; set; }
-        public TimeSpan Duration { get; set; }
-        public string VideoDownloadUrl { get; set; }
-        public string AudioDownloadUrl { get; set; }
-        public string PlayUrl { get; set; }
+    public DateTime? Finished { get; set; }
+    public string Title { get; set; }
+    public string ThumbnailUrl { get; set; }
+    public string Description { get; set; }
+    public TimeSpan Duration { get; set; }
+    public string VideoDownloadUrl { get; set; }
+    public string AudioDownloadUrl { get; set; }
+    public string PlayUrl { get; set; }
 
-        public MinioObject MinioVideoStorage { get; set; }
-        public MinioObject MinioAudioStorage { get; set; }
-    }
-
-    public class MinioObject
-    {
-        public string BucketName { get; set; }
-
-        public string ObjectName { get; set; }
-    }
+    public MinioObject MinioVideoStorage { get; set; }
+    public MinioObject MinioAudioStorage { get; set; }
 }
 

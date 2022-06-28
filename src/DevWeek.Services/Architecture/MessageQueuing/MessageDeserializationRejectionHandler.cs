@@ -1,8 +1,8 @@
 ﻿using Spring.Objects.Factory.Attributes;
 using System;
 
-namespace DevWeek.Architecture.MessageQueuing
-{
+namespace DevWeek.Architecture.MessageQueuing;
+
 	public class MessageDeserializationRejectionHandler : IMessageRejectionHandler
 	{
 		[Required]
@@ -50,4 +50,3 @@ namespace DevWeek.Architecture.MessageQueuing
 			this.RabbitMQClient.QueueBind(DefaultRejectionQueueName, this.ExchangeName, this.RejectionRoutingKey);
 		}
 	}
-}

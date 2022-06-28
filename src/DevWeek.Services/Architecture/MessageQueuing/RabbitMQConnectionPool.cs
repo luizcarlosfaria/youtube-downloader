@@ -5,72 +5,71 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace DevWeek.Architecture.MessageQueuing
+namespace DevWeek.Architecture.MessageQueuing;
+
+public class RabbitMQConnectionPool : IDisposable
 {
-    public class RabbitMQConnectionPool : IDisposable
+    [Required]
+    private ConnectionFactory ConnectionFactory { get; set; }
+
+    private List<IConnection> Connections { get; set; }
+
+    private uint PoolSize { get; set; }
+
+    public RabbitMQConnectionPool(ConnectionFactory connectionFactory)
     {
-        [Required]
-        private ConnectionFactory ConnectionFactory { get; set; }
+        this.ConnectionFactory = connectionFactory;
 
-        private List<IConnection> Connections { get; set; }
+        this.Connections = new List<IConnection>();
 
-        private uint PoolSize { get; set; }
+        if (this.PoolSize == 0) this.PoolSize = 1;
 
-        public RabbitMQConnectionPool(ConnectionFactory connectionFactory)
+        this.EnsurePoolSize();
+    }
+
+    public IConnection GetConnection(int depth = 0)
+    {
+        this.EnsurePoolSize();
+
+        IConnection connection = this.Connections.First(c => c.IsOpen);
+
+        try
         {
-            this.ConnectionFactory = connectionFactory;
+            using IModel model = connection.CreateModel();
 
-            this.Connections = new List<IConnection>();
+            model.Close();
+            
+        }
+        catch (Exception)
+        {
+            Console.WriteLine($"{nameof(RabbitMQConnectionPool)}.{nameof(GetConnection)} | Removendo conexão");
+            this.Connections.Remove(connection);
 
-            if (this.PoolSize == 0) this.PoolSize = 1;
-
-            this.EnsurePoolSize();
+            connection = this.GetConnection(depth++);
         }
 
-        public IConnection GetConnection(int depth = 0)
+        return connection;
+    }
+
+    private void EnsurePoolSize()
+    {
+        this.Connections.RemoveAll(c => c.IsOpen == false);
+
+        int newConnectionsNeeded = (this.PoolSize - this.Connections.Count).ToInt();
+
+        for (int i = 0; i < newConnectionsNeeded; i++)
         {
-            this.EnsurePoolSize();
-
-            IConnection connection = this.Connections.First(c => c.IsOpen);
-
-            try
-            {
-                using IModel model = connection.CreateModel();
-
-                model.Close();
-                
-            }
-            catch (Exception)
-            {
-                Console.WriteLine($"{nameof(RabbitMQConnectionPool)}.{nameof(GetConnection)} | Removendo conexão");
-                this.Connections.Remove(connection);
-
-                connection = this.GetConnection(depth++);
-            }
-
-            return connection;
+            Console.WriteLine($"{nameof(RabbitMQConnectionPool)}.{nameof(EnsurePoolSize)} | Adicionando conexão");
+            this.Connections.Add(this.ConnectionFactory.CreateConnection());
         }
+    }
 
-        private void EnsurePoolSize()
-        {
-            this.Connections.RemoveAll(c => c.IsOpen == false);
+    public void Dispose()
+    {
+        System.Diagnostics.Debug.WriteLine($"{nameof(RabbitMQConnectionPool)}.{nameof(Dispose)} | Encerrando tudo");
 
-            int newConnectionsNeeded = (this.PoolSize - this.Connections.Count).ToInt();
+        this.Connections.RemoveAll(c => c.IsOpen == false);
 
-            for (int i = 0; i < newConnectionsNeeded; i++)
-            {
-                Console.WriteLine($"{nameof(RabbitMQConnectionPool)}.{nameof(EnsurePoolSize)} | Adicionando conexão");
-                this.Connections.Add(this.ConnectionFactory.CreateConnection());
-            }
-        }
-
-        public void Dispose()
-        {
-            System.Diagnostics.Debug.WriteLine($"{nameof(RabbitMQConnectionPool)}.{nameof(Dispose)} | Encerrando tudo");
-
-            this.Connections.RemoveAll(c => c.IsOpen == false);
-
-            this.Connections.Where(c => c.IsOpen).ForEach(c => c.Close());
-        }
+        this.Connections.Where(c => c.IsOpen).ForEach(c => c.Close());
     }
 }

@@ -1,7 +1,7 @@
 ﻿using RabbitMQ.Client;
 
-namespace DevWeek.Architecture.MessageQueuing
-{
+namespace DevWeek.Architecture.MessageQueuing;
+
 	public class RabbitMQMessageFeedbackSender : IMessageFeedbackSender
 	{
 		private readonly IModel _model;
@@ -38,4 +38,3 @@ namespace DevWeek.Architecture.MessageQueuing
 			}
 		}
 	}
-}

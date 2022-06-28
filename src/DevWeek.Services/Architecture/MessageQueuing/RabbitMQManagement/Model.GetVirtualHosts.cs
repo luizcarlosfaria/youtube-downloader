@@ -8,8 +8,8 @@ using RestSharp;
 using Spring.Objects.Factory.Attributes;
 
 
-namespace DevWeek.Architecture.MessageQueuing.RabbitMQManagement.GetVirtualHosts.Model
-{
+namespace DevWeek.Architecture.MessageQueuing.RabbitMQManagement.GetVirtualHosts.Model;
+
 	public class AckDetails
 	{
 		public double rate { get; set; }
@@ -112,4 +112,3 @@ namespace DevWeek.Architecture.MessageQueuing.RabbitMQManagement.GetVirtualHosts
 		public SendOctDetails send_oct_details { get; set; }
 	}
 
-}

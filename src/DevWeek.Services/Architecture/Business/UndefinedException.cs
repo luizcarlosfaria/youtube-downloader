@@ -1,7 +1,7 @@
 using System;
 
-namespace DevWeek.Architecture.Business
-{
+namespace DevWeek.Architecture.Business;
+
 	/// <summary>
 	/// Define uma exception não gerenciada tratada pelo mecanismo de exception replacement
 	/// </summary>
@@ -27,4 +27,3 @@ namespace DevWeek.Architecture.Business
 		  System.Runtime.Serialization.StreamingContext context)
 			: base(info, context) { }
 	}
-}

@@ -7,8 +7,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace DevWeek.Architecture.Extensions
-{
+namespace DevWeek.Architecture.Extensions;
+
 	public static partial class OragonExtensions
 	{
 		/// <summary>
@@ -40,4 +40,3 @@ namespace DevWeek.Architecture.Extensions
 			return @this;
 		}
 	}
-}

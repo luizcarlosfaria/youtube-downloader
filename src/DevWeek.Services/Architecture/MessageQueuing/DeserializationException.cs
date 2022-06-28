@@ -1,7 +1,7 @@
 ﻿using System;
 
-namespace DevWeek.Architecture.MessageQueuing
-{
+namespace DevWeek.Architecture.MessageQueuing;
+
 	[Serializable]
 	public class DeserializationException : RejectionException
 	{
@@ -29,4 +29,3 @@ namespace DevWeek.Architecture.MessageQueuing
 
 		public ReadOnlyMemory<byte> SerializedDataBinary { get; set; }
 	}
-}

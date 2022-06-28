@@ -1,7 +1,7 @@
 using System;
 
-namespace DevWeek.Architecture.Business
-{
+namespace DevWeek.Architecture.Business;
+
 	/// <summary>
 	/// Classe base para exceções de negócio.
 	/// </summary>
@@ -27,4 +27,3 @@ namespace DevWeek.Architecture.Business
 		  System.Runtime.Serialization.StreamingContext context)
 			: base(info, context) { }
 	}
-}

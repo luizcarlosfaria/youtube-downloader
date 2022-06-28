@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace DevWeek.Architecture.Workflow
-{
+namespace DevWeek.Architecture.Workflow;
+
 	public class StateComprarer<StateType> : IEqualityComparer<StateType>
 		   where StateType : IComparable
 	{
@@ -23,4 +23,3 @@ namespace DevWeek.Architecture.Workflow
 			return obj.GetHashCode();
 		}
 	}
-}

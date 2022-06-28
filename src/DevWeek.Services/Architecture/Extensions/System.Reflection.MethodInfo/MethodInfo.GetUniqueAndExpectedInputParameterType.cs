@@ -6,8 +6,8 @@
 using System;
 using System.Linq;
 
-namespace DevWeek.Architecture.Extensions
-{
+namespace DevWeek.Architecture.Extensions;
+
 	public static partial class OragonExtensions
 	{
 		public static System.Type GetUniqueAndExpectedInputParameterType(this System.Reflection.MethodInfo methodInfo)
@@ -24,4 +24,3 @@ namespace DevWeek.Architecture.Extensions
 			return inType;
 		}
 	}
-}

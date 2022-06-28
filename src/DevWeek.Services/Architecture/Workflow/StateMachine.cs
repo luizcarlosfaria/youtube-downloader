@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace DevWeek.Architecture.Workflow
-{
+namespace DevWeek.Architecture.Workflow;
+
 	public class StateMachine<TransitionType, StateType>
 		where StateType : IComparable
 		where TransitionType : Transition<StateType>
@@ -84,4 +84,3 @@ namespace DevWeek.Architecture.Workflow
 
 		#endregion Queries
 	}
-}

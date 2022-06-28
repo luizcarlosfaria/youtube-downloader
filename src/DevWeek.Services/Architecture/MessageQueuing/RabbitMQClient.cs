@@ -4,8 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace DevWeek.Architecture.MessageQueuing
-{
+namespace DevWeek.Architecture.MessageQueuing;
+
 	public class RabbitMQClient : IQueueClient
 	{
 
@@ -15,7 +15,7 @@ namespace DevWeek.Architecture.MessageQueuing
 		public void Publish<T>(string exchangeName, string routingKey, T content)
 		{
 			string serializedContent = Newtonsoft.Json.JsonConvert.SerializeObject(content, Newtonsoft.Json.Formatting.Indented);
-            using (IModel model = this.ConnectionPool.GetConnection().CreateModel())
+        using (IModel model = this.ConnectionPool.GetConnection().CreateModel())
 			{
 				IBasicProperties props = model.CreateBasicProperties();
 				props.DeliveryMode = 2;
@@ -56,7 +56,7 @@ namespace DevWeek.Architecture.MessageQueuing
 					{
 						string serializedContent = Newtonsoft.Json.JsonConvert.SerializeObject(content, Newtonsoft.Json.Formatting.Indented);
 
-                        byte[] payload = Encoding.UTF8.GetBytes(serializedContent);
+                    byte[] payload = Encoding.UTF8.GetBytes(serializedContent);
 						model.BasicPublish(exchangeName, routingKey, props, payload);
 					}
 
@@ -187,4 +187,3 @@ namespace DevWeek.Architecture.MessageQueuing
 			}
 		}
 	}
-}

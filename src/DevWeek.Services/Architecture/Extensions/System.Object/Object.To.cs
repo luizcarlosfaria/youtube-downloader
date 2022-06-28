@@ -3,8 +3,8 @@
 // Licensed under MIT License (MIT)
 // License can be found here: https://zextensionmethods.codeplex.com/license
 
-namespace DevWeek.Architecture.Extensions
-{
+namespace DevWeek.Architecture.Extensions;
+
 	public static partial class OragonExtensions
 	{
 		public static T To<T>(this object @this)
@@ -18,4 +18,3 @@ namespace DevWeek.Architecture.Extensions
 			return @this as T;
 		}
 	}
-}

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace DevWeek.Architecture.Workflow
-{
+namespace DevWeek.Architecture.Workflow;
+
 	public class TransitionComprarer<TransitionType, StateType> : IEqualityComparer<TransitionType>
 		where StateType : IComparable
 		where TransitionType : Transition<StateType>
@@ -38,4 +38,3 @@ namespace DevWeek.Architecture.Workflow
 			return string.Concat(obj.GetOrigin(), "|", obj.GetDestination()).GetHashCode();
 		}
 	}
-}

@@ -1,8 +1,8 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace DevWeek.Architecture.Services
-{
+namespace DevWeek.Architecture.Services;
+
 	[Serializable]
 	public class ServiceStopException : Exception
 	{
@@ -25,4 +25,3 @@ namespace DevWeek.Architecture.Services
 		{
 		}
 	}
-}

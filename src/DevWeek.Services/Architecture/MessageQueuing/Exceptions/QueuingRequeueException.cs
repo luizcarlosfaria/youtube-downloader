@@ -1,7 +1,7 @@
 ﻿using System;
 
-namespace DevWeek.Architecture.MessageQueuing.Exceptions
-{
+namespace DevWeek.Architecture.MessageQueuing.Exceptions;
+
 	public class QueuingRequeueException : BaseQueuingException
 	{
 		public QueuingRequeueException()
@@ -19,4 +19,3 @@ namespace DevWeek.Architecture.MessageQueuing.Exceptions
 		{
 		}
 	}
-}

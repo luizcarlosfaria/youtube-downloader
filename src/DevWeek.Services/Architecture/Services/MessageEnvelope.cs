@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace DevWeek.Architecture.Services
-{
+namespace DevWeek.Architecture.Services;
+
 	public class MessageEnvelope
 	{
 		public Dictionary<string, object> Arguments { get; set; }
@@ -11,4 +11,3 @@ namespace DevWeek.Architecture.Services
 
 		public Exception Exception { get; set; }
 	}
-}

@@ -1,7 +1,7 @@
 ﻿using System;
 
-namespace DevWeek.Architecture.MessageQueuing
-{
+namespace DevWeek.Architecture.MessageQueuing;
+
 	[Serializable]
 	public class RejectionException : Exception
 	{
@@ -29,4 +29,3 @@ namespace DevWeek.Architecture.MessageQueuing
 
 		public string QueueName { get; set; }
 	}
-}

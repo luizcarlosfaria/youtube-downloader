@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace DevWeek.Architecture.Services.SpringServices
-{
+namespace DevWeek.Architecture.Services.SpringServices;
+
 	/// <summary>
 	/// Serviço de startup automático de serviços
 	/// </summary>
@@ -84,4 +84,3 @@ namespace DevWeek.Architecture.Services.SpringServices
 			Desc
 		}
 	}
-}

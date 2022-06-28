@@ -2,8 +2,8 @@
 using System.Runtime.Serialization;
 using System.Xml.Serialization;
 
-namespace DevWeek.Architecture.Business
-{
+namespace DevWeek.Architecture.Business;
+
 	[DataContract]
 	public abstract class MongoEntity : Entity
 	{
@@ -13,4 +13,3 @@ namespace DevWeek.Architecture.Business
 		[XmlIgnore]
 		public string ID { get; set; }
 	}
-}

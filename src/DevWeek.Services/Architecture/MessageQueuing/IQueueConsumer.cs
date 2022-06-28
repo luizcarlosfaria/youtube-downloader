@@ -1,7 +1,7 @@
 ﻿using System;
 
-namespace DevWeek.Architecture.MessageQueuing
-{
+namespace DevWeek.Architecture.MessageQueuing;
+
 	public interface IQueueConsumer : IDisposable
 	{
 		IConsumerCountManager ConsumerCountManager { get; }
@@ -16,4 +16,3 @@ namespace DevWeek.Architecture.MessageQueuing
 
 		IMessageProcessingWorker MessageProcessingWorker { get; set; }
 	}
-}

@@ -1,5 +1,5 @@
-namespace DevWeek.Architecture.Services
-{
+namespace DevWeek.Architecture.Services;
+
 	public interface IService
 	{
 		string Name
@@ -11,4 +11,3 @@ namespace DevWeek.Architecture.Services
 
 		void Stop();
 	}
-}

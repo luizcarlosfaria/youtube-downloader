@@ -1,7 +1,7 @@
 ﻿using System;
 
-namespace DevWeek.Architecture.MessageQueuing
-{
+namespace DevWeek.Architecture.MessageQueuing;
+
 	public interface IQueueConsumerWorker : IDisposable
 	{
 		bool ModelIsClosed { get; }
@@ -12,4 +12,3 @@ namespace DevWeek.Architecture.MessageQueuing
 
 		void Nack(ulong deliveryTag, bool requeue = false);
 	}
-}

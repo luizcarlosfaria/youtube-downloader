@@ -6,8 +6,8 @@ using Spring.Objects.Support;
 using System;
 using System.Reflection;
 
-namespace DevWeek.Architecture.MessageQueuing
-{
+namespace DevWeek.Architecture.MessageQueuing;
+
 	public class SimpleMessageProcessingWorker : IService, IMessageProcessingWorker, IInitializingObject, IDisposable
 	{
 		[Required]
@@ -92,4 +92,3 @@ namespace DevWeek.Architecture.MessageQueuing
 			this.Stop();
 		}
 	}
-}

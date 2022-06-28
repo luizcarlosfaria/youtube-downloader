@@ -7,8 +7,8 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace DevWeek.Architecture.MessageQueuing
-{
+namespace DevWeek.Architecture.MessageQueuing;
+
 	public class AdvancedMessageProcessingWorker : SimpleMessageProcessingWorker
 	{
 		public int InvokeRetryCount { get; set; }
@@ -153,4 +153,3 @@ namespace DevWeek.Architecture.MessageQueuing
 			}
 		}
 	}
-}

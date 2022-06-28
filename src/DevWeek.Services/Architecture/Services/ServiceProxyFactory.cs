@@ -4,8 +4,8 @@ using Spring.Objects.Factory;
 using Spring.Objects.Factory.Config;
 using System;
 
-namespace DevWeek.Architecture.Services
-{
+namespace DevWeek.Architecture.Services;
+
 	public class ServiceProxyFactory : IInitializingObject, IConfigurableFactoryObject, IMethodInterceptor
 	{
 		public bool IsSingleton { get { return true; } }
@@ -44,4 +44,3 @@ namespace DevWeek.Architecture.Services
 			return invocation.Proceed();
 		}
 	}
-}

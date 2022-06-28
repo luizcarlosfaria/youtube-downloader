@@ -1,7 +1,7 @@
 ﻿using Spring.Objects.Factory.Attributes;
 
-namespace DevWeek.Architecture.MessageQueuing
-{
+namespace DevWeek.Architecture.MessageQueuing;
+
 	public class QueueInfo
 	{
 		[Required]
@@ -13,4 +13,3 @@ namespace DevWeek.Architecture.MessageQueuing
 		[Required]
 		public string QueueName { get; set; }
 	}
-}

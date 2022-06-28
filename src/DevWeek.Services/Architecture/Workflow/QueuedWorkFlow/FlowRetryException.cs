@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace DevWeek.Architecture.Workflow.QueuedWorkFlow.Exceptions
-{
+namespace DevWeek.Architecture.Workflow.QueuedWorkFlow.Exceptions;
+
 	[Serializable]
 	public class FlowRetryException : DevWeek.Architecture.Business.BusinessException
 	{
@@ -34,4 +34,3 @@ namespace DevWeek.Architecture.Workflow.QueuedWorkFlow.Exceptions
 		{
 		}
 	}
-}

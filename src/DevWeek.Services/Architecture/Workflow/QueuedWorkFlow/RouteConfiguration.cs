@@ -1,7 +1,7 @@
 ﻿using DevWeek.Architecture.MessageQueuing;
 
-namespace DevWeek.Architecture.Workflow.QueuedWorkFlow
-{
+namespace DevWeek.Architecture.Workflow.QueuedWorkFlow;
+
 	public class AmqpBasedRoute
 	{
 		public string ExchangeName { get; set; }
@@ -32,4 +32,3 @@ namespace DevWeek.Architecture.Workflow.QueuedWorkFlow
 			this.Bind(queueClient);
 		}
 	}
-}

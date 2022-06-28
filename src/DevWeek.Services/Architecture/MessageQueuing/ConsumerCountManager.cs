@@ -2,8 +2,8 @@
 using Spring.Objects.Factory.Attributes;
 using System;
 
-namespace DevWeek.Architecture.MessageQueuing
-{
+namespace DevWeek.Architecture.MessageQueuing;
+
 	public class ConsumerCountManager : IConsumerCountManager
 	{
 		[Required]
@@ -42,4 +42,3 @@ namespace DevWeek.Architecture.MessageQueuing
 			return scalingAmount;
 		}
 	}
-}

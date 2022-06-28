@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace DevWeek.Architecture.MessageQueuing
-{
+namespace DevWeek.Architecture.MessageQueuing;
+
 	public interface IQueueClient : IDisposable
 	{
 		void Publish<T>(string exchangeName, string routingKey, T content);
@@ -31,4 +31,3 @@ namespace DevWeek.Architecture.MessageQueuing
 
 		uint GetConsumerCount(string queueName);
 	}
-}

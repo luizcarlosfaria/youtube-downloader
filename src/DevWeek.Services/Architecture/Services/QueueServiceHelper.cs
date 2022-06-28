@@ -2,8 +2,8 @@
 using System.Linq;
 using System.Reflection;
 
-namespace DevWeek.Architecture.Services
-{
+namespace DevWeek.Architecture.Services;
+
 	public class QueueServiceHelper
 	{
 		public static string GetQueueName(MethodInfo methodInfo)
@@ -25,4 +25,3 @@ namespace DevWeek.Architecture.Services
 			return returnValue;
 		}
 	}
-}

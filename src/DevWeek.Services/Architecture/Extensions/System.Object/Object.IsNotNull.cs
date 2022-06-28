@@ -3,8 +3,8 @@
 // Licensed under MIT License (MIT)
 // License can be found here: https://zextensionmethods.codeplex.com/license
 
-namespace DevWeek.Architecture.Extensions
-{
+namespace DevWeek.Architecture.Extensions;
+
 	public static partial class OragonExtensions
 	{
 		/// <id>624E8C82-F0EB-4699-8198-32FDE2746478</id>
@@ -28,4 +28,3 @@ namespace DevWeek.Architecture.Extensions
 			return @this != null;
 		}
 	}
-}

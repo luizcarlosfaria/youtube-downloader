@@ -1,5 +1,5 @@
-﻿namespace DevWeek.Architecture.MessageQueuing
-{
+﻿namespace DevWeek.Architecture.MessageQueuing;
+
 	public interface IMessageFeedbackSender
 	{
 		ulong DeliveryTag { get; }
@@ -10,4 +10,3 @@
 
 		void Nack(bool requeue);
 	}
-}

@@ -8,8 +8,8 @@ using RestSharp;
 using Spring.Objects.Factory.Attributes;
 
 
-namespace DevWeek.Architecture.MessageQueuing.RabbitMQManagement.GetQueues.Model
-{
+namespace DevWeek.Architecture.MessageQueuing.RabbitMQManagement.GetQueues.Model;
+
 	public class MessagesDetails
 	{
 		public double rate { get; set; }
@@ -125,5 +125,3 @@ namespace DevWeek.Architecture.MessageQueuing.RabbitMQManagement.GetQueues.Model
 		public string node { get; set; }
 		public MessageStats message_stats { get; set; }
 	}
-
-}

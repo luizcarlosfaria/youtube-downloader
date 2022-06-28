@@ -5,8 +5,8 @@
 
 using System;
 
-namespace DevWeek.Architecture.Extensions
-{
+namespace DevWeek.Architecture.Extensions;
+
 	public static partial class OragonExtensions
 	{
 		public static System.Type GetReturnValueType(this System.Reflection.MethodInfo methodInfo)
@@ -23,4 +23,3 @@ namespace DevWeek.Architecture.Extensions
 			return outType;
 		}
 	}
-}
