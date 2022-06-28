@@ -23,25 +23,25 @@ public class RunnerBuider
     public RunnerBuider Arg(string arg) { args.Append(" " + arg + " "); return this; }
 
 
-    public (string output, string error, int exitCode) Run()
+    public Task<ExecutionResult> RunAsync()
     {
         var processStartInfo = new ProcessStartInfo(this.processName, this.args.ToString());
         return this.Run(processStartInfo, true);
     }
 
-    protected (string output, string error, int exitCode) Run(ProcessStartInfo processStartInfo, bool throwExceptionOnFalure = true)
+    protected async Task<ExecutionResult> Run(ProcessStartInfo processStartInfo, bool throwExceptionOnFalure = true)
     {
-        (string standardOutput, string standardError, int exitCode) = this.PermissiveRun(processStartInfo);
+        ExecutionResult executionResult = await this.PermissiveRunAsync(processStartInfo);
 
-        if (exitCode != 0 && throwExceptionOnFalure)
+        if (executionResult.ExitCode != 0 && throwExceptionOnFalure)
         {
-            throw new ApplicationException("Download Failure", new Exception(standardError + Environment.NewLine + standardOutput));
+            throw new ApplicationException("Download Failure", new Exception(executionResult.StandardError + Environment.NewLine + executionResult.StandardOutput));
         }
 
-        return (standardOutput, standardError, exitCode);
+        return executionResult;
     }
 
-    protected (string output, string error, int exitCode) PermissiveRun(ProcessStartInfo processStartInfo)
+    protected async Task<ExecutionResult> PermissiveRunAsync(ProcessStartInfo processStartInfo)
     {
         processStartInfo.RedirectStandardError = true;
         processStartInfo.RedirectStandardOutput = true;
@@ -50,11 +50,27 @@ public class RunnerBuider
 
         process.WaitForExit();
 
-        string standardError = process.StandardError.ReadToEndAsync().GetAwaiter().GetResult();
-        string standardOutput = process.StandardOutput.ReadToEndAsync().GetAwaiter().GetResult();
+        string standardError = await process.StandardError.ReadToEndAsync();
+        string standardOutput = await process.StandardOutput.ReadToEndAsync();
 
-        return (standardOutput, standardError, process.ExitCode);
+        return new ExecutionResult(standardOutput, standardError, process.ExitCode);
     }
 
 
+}
+
+public class ExecutionResult
+{
+    public string StandardError { get; }
+
+    public string StandardOutput { get; }
+
+    public int ExitCode { get; }
+
+    public ExecutionResult( string standardOutput, string standardError, int exitCode)
+    {
+        this.StandardError = standardError;
+        this.StandardOutput = standardOutput;
+        this.ExitCode = exitCode;
+    }
 }

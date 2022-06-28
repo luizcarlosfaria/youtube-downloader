@@ -26,7 +26,7 @@ public class VideoDownloaderPipelineActivity : MediaBaseActivity, IPipelineActiv
     {
         string newDirectory = this.TryCreateDownloadDirectory(download);
 
-        string videoLocalFullPath = this.DownloadFromYoutubeToLocalFileSystem(download, newDirectory);
+        string videoLocalFullPath = await this.DownloadFromYoutubeToLocalFileSystemAsync(download, newDirectory);
 
         download.MinioVideoStorage = new()
         {
@@ -55,16 +55,16 @@ public class VideoDownloaderPipelineActivity : MediaBaseActivity, IPipelineActiv
        );
     }
 
-    private string DownloadFromYoutubeToLocalFileSystem(Download download, string newDirectory)
+    private async Task<string> DownloadFromYoutubeToLocalFileSystemAsync(Download download, string newDirectory)
     {
         string mediaFilePath = Path.Combine(newDirectory, $"{download.Id}.mp4");
 
-        (string output, string error, int exitCode) = new RunnerBuider()
+        ExecutionResult executionResult  = await (new RunnerBuider()
             .Process("yt-dlp")
             .Arg($"--output {mediaFilePath}")
             .Arg($"--format mp4")
             .Arg($"{download.OriginalMediaUrl}")
-            .Run();
+            .RunAsync());
 
         return Directory.GetFiles(newDirectory).Single();
     }

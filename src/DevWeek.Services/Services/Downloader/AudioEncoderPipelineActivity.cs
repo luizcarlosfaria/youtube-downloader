@@ -33,7 +33,7 @@ public class AudioEncoderPipelineActivity : MediaBaseActivity, IPipelineActivity
 
         await this.DownloadFromS3Async(download.MinioVideoStorage, videoLocalFullPath);
 
-        string audioLocalFullPath = this.EncodeToMp3(download, videoLocalFullPath);
+        string audioLocalFullPath = await this.EncodeToMp3Async(download, videoLocalFullPath);
 
         download.MinioAudioStorage = new()
         {
@@ -61,18 +61,18 @@ public class AudioEncoderPipelineActivity : MediaBaseActivity, IPipelineActivity
        );
     }
 
-    private string EncodeToMp3(Download download, string videoLocalFullPath)
+    private async Task<string> EncodeToMp3Async(Download download, string videoLocalFullPath)
     {
         string mp3FileName = Path.Combine(this.SharedPath, Path.Combine(download.Id, $"{download.Id}.mp3"));
 
-        (string output, string error, int exitCode) = new RunnerBuider()
+        ExecutionResult executionResult = await (new RunnerBuider()
             .Process("ffmpeg")
             .Arg($"-i {videoLocalFullPath}")
             .Arg($"{mp3FileName}")
-            .Run();
+            .RunAsync());
 
         if (File.Exists(mp3FileName) == false)
-            throw new InvalidOperationException("Operation is not completed " + output);
+            throw new InvalidOperationException("Operation is not completed " + executionResult.StandardOutput);
 
         return mp3FileName;
     }
