@@ -33,19 +33,19 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.Build.Framework" Version="17.2.0" />
-        <PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.0-preview.4.22229.4" />
-        <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="7.0.0-preview.4.22229.4" />
-        <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="7.0.0-preview.4.22229.4" />
-        <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0.0-preview.4.22229.4" />
-        <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.15.1" />
-        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.0-preview.4.22259.1" />
+        <PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.0-preview.5.22301.12" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="7.0.0-preview.5.22301.12" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="7.0.0-preview.5.22301.12" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0.0-preview.5.22301.12" />
+        <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.16.1" />
+        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.0-preview.5.22313.5" />
         <PackageReference Include="Minio.NetCore" Version="1.1.1" />
-        <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.2-beta1" />
         <PackageReference Include="Polly" Version="7.2.3" />
-        <PackageReference Include="RabbitMQ.Client" Version="6.3.0" />
+        <PackageReference Include="RabbitMQ.Client" Version="6.4.0" />
         <PackageReference Include="Spring.Aop" Version="3.0.0" />
         <PackageReference Include="Spring.Core" Version="3.0.0" />
-        <PackageReference Include="StackExchange.Redis" Version="2.5.61" />
+        <PackageReference Include="StackExchange.Redis" Version="2.6.45" />
     </ItemGroup>
 
     <ItemGroup>
