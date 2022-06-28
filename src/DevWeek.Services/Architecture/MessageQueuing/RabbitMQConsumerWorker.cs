@@ -105,12 +105,12 @@ public class RabbitMQConsumerWorker : IQueueConsumerWorker
         if (messageObject != null)
         {
             //Create messageFeedbackSender instance with corresponding model and deliveryTag
-            IMessageFeedbackSender messageFeedbackSender = new RabbitMQMessageFeedbackSender(model, basicDeliverEventArgs.DeliveryTag);
+            IMessageFeedbackSender messageFeedbackSender = new RabbitMQMessageFeedbackSender(this.model, basicDeliverEventArgs.DeliveryTag);
 
             try
             {
                 //Call given messageProcessingWorker's OnMessage method to proceed with message processing
-                messageProcessingWorker.OnMessage(messageObject, messageFeedbackSender);
+                this.messageProcessingWorker.OnMessage(messageObject, messageFeedbackSender);
 
                 //If message has been processed with no errors but no Acknoledgement has been given
                 if (!messageFeedbackSender.MessageAcknoledged)
@@ -139,7 +139,7 @@ public class RabbitMQConsumerWorker : IQueueConsumerWorker
     {
         this.consumerTag = this.model.BasicConsume(this.queueName, false, this.consumer);
 
-        while (!cancellationTokenSource.IsCancellationRequested)
+        while (!this.cancellationTokenSource.IsCancellationRequested)
         {
             Thread.Sleep(TimeSpan.FromSeconds(1));
         }
@@ -148,12 +148,12 @@ public class RabbitMQConsumerWorker : IQueueConsumerWorker
 
     public void Ack(ulong deliveryTag)
     {
-        model.BasicAck(deliveryTag, false);
+        this.model.BasicAck(deliveryTag, false);
     }
 
     public void Nack(ulong deliveryTag, bool requeue = false)
     {
-        model.BasicNack(deliveryTag, false, requeue);
+        this.model.BasicNack(deliveryTag, false, requeue);
     }
 
     public void Dispose()

@@ -1,12 +1,12 @@
 ﻿namespace DevWeek.Architecture.MessageQueuing;
 
-	public interface IMessageFeedbackSender
-	{
-		ulong DeliveryTag { get; }
+public interface IMessageFeedbackSender
+{
+    ulong DeliveryTag { get; }
 
-		bool MessageAcknoledged { get; }
+    bool MessageAcknoledged { get; }
 
-		void Ack();
+    void Ack();
 
-		void Nack(bool requeue);
-	}
+    void Nack(bool requeue);
+}

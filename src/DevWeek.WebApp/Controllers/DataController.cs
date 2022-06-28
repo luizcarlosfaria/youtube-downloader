@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using DevWeek.Services.Downloader;
-using Microsoft.AspNetCore.Http;
+﻿using DevWeek.Services.Downloader;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using RabbitMQ.Client;
 using StackExchange.Redis;
 
@@ -34,13 +28,13 @@ public class DataController : Controller
     {
         download.Finished = null;
         download.Created = DateTime.Now;
-      
+
         string objectInJson = System.Text.Json.JsonSerializer.Serialize(download);
         byte[] objectInByteArray = System.Text.Encoding.UTF8.GetBytes(objectInJson);
 
         this.rabbitMQ.BasicPublish(
-            exchange: configuration.GetSection("DevWeek:RabbitMQ:DownloadPipeline:Exchange").Get<string>(),
-            routingKey: configuration.GetSection("DevWeek:RabbitMQ:DownloadPipeline:RouteKey").Get<string>(),
+            exchange: this.configuration.GetSection("DevWeek:RabbitMQ:DownloadPipeline:Exchange").Get<string>(),
+            routingKey: this.configuration.GetSection("DevWeek:RabbitMQ:DownloadPipeline:RouteKey").Get<string>(),
             basicProperties: null,
             body: objectInByteArray
             );
@@ -51,7 +45,7 @@ public class DataController : Controller
     public ActionResult Get()
     {
         //evitando desserialização desnecessária
-        string[] values = redis.GetDatabase(0).ListRange(this.downloadListKey).Select(it => it.ToString()).ToArray();
-        return  this.Content($"[{string.Join(",", values)}]", "application/json");
+        string[] values = this.redis.GetDatabase(0).ListRange(this.downloadListKey).Select(it => it.ToString()).ToArray();
+        return this.Content($"[{string.Join(",", values)}]", "application/json");
     }
 }

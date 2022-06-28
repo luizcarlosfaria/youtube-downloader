@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -9,18 +7,18 @@ namespace DevWeek.Architecture.FluentRunner;
 public class RunnerBuider
 {
     private string processName;
-    private StringBuilder args = new();
+    private readonly StringBuilder args = new();
 
 
     public RunnerBuider()
     {
 
     }
-        
+
 
     public RunnerBuider Process(string processName) { this.processName = processName; return this; }
 
-    public RunnerBuider Arg(string arg) { args.Append(" " + arg + " "); return this; }
+    public RunnerBuider Arg(string arg) { this.args.Append(" " + arg + " "); return this; }
 
 
     public Task<ExecutionResult> RunAsync()
@@ -67,7 +65,7 @@ public class ExecutionResult
 
     public int ExitCode { get; }
 
-    public ExecutionResult( string standardOutput, string standardError, int exitCode)
+    public ExecutionResult(string standardOutput, string standardError, int exitCode)
     {
         this.StandardError = standardError;
         this.StandardOutput = standardOutput;

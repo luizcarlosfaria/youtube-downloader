@@ -1,11 +1,8 @@
 ﻿using Minio;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Linq;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
-using MongoDB.Driver.Core;
+using System;
+using System.Linq;
 
 namespace DevWeek.Services;
 
@@ -20,7 +17,7 @@ public class ResourceBootstrapService
 
     public string[] MongoRequiredCollections { get; set; }
     public string[] MinioBucketNames { get; set; }
-   
+
 
     public TimeSpan LockTimeout { get; set; }
     public string DistributedLockKey { get; set; }
@@ -82,5 +79,5 @@ public class ResourceBootstrapService
     }
 
 
-   
+
 }

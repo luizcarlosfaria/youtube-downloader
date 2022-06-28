@@ -6,184 +6,184 @@ using System.Text;
 
 namespace DevWeek.Architecture.MessageQueuing;
 
-	public class RabbitMQClient : IQueueClient
-	{
+public class RabbitMQClient : IQueueClient
+{
 
-		[Required]
-		private RabbitMQConnectionPool ConnectionPool { get; set; }
+    [Required]
+    private RabbitMQConnectionPool ConnectionPool { get; set; }
 
-		public void Publish<T>(string exchangeName, string routingKey, T content)
-		{
-			string serializedContent = Newtonsoft.Json.JsonConvert.SerializeObject(content, Newtonsoft.Json.Formatting.Indented);
+    public void Publish<T>(string exchangeName, string routingKey, T content)
+    {
+        string serializedContent = Newtonsoft.Json.JsonConvert.SerializeObject(content, Newtonsoft.Json.Formatting.Indented);
         using (IModel model = this.ConnectionPool.GetConnection().CreateModel())
-			{
-				IBasicProperties props = model.CreateBasicProperties();
-				props.DeliveryMode = 2;
-				byte[] payload = Encoding.UTF8.GetBytes(serializedContent);
-				model.BasicPublish(exchangeName, routingKey, props, payload);
-			}
-		}
+        {
+            IBasicProperties props = model.CreateBasicProperties();
+            props.DeliveryMode = 2;
+            byte[] payload = Encoding.UTF8.GetBytes(serializedContent);
+            model.BasicPublish(exchangeName, routingKey, props, payload);
+        }
+    }
 
-		public void BatchPublish<T>(string exchangeName, string routingKey, IEnumerable<T> contentList)
-		{
-			using (IModel model = this.ConnectionPool.GetConnection().CreateModel())
-			{
-				IBasicProperties props = model.CreateBasicProperties();
-				props.DeliveryMode = 2;
+    public void BatchPublish<T>(string exchangeName, string routingKey, IEnumerable<T> contentList)
+    {
+        using (IModel model = this.ConnectionPool.GetConnection().CreateModel())
+        {
+            IBasicProperties props = model.CreateBasicProperties();
+            props.DeliveryMode = 2;
 
-				foreach (var content in contentList)
-				{
-					string serializedContent = Newtonsoft.Json.JsonConvert.SerializeObject(content, Newtonsoft.Json.Formatting.Indented);
+            foreach (var content in contentList)
+            {
+                string serializedContent = Newtonsoft.Json.JsonConvert.SerializeObject(content, Newtonsoft.Json.Formatting.Indented);
 
-					byte[] payload = Encoding.UTF8.GetBytes(serializedContent);
-					model.BasicPublish(exchangeName, routingKey, props, payload);
-				}
-			}
-		}
+                byte[] payload = Encoding.UTF8.GetBytes(serializedContent);
+                model.BasicPublish(exchangeName, routingKey, props, payload);
+            }
+        }
+    }
 
-		public void BatchPublishTransactional<T>(string exchangeName, string routingKey, IEnumerable<T> contentList)
-		{
-			using (IModel model = this.ConnectionPool.GetConnection().CreateModel())
-			{
-				try
-				{
-					model.TxSelect();
+    public void BatchPublishTransactional<T>(string exchangeName, string routingKey, IEnumerable<T> contentList)
+    {
+        using (IModel model = this.ConnectionPool.GetConnection().CreateModel())
+        {
+            try
+            {
+                model.TxSelect();
 
-					IBasicProperties props = model.CreateBasicProperties();
-					props.DeliveryMode = 2;
+                IBasicProperties props = model.CreateBasicProperties();
+                props.DeliveryMode = 2;
 
-					foreach (var content in contentList)
-					{
-						string serializedContent = Newtonsoft.Json.JsonConvert.SerializeObject(content, Newtonsoft.Json.Formatting.Indented);
+                foreach (var content in contentList)
+                {
+                    string serializedContent = Newtonsoft.Json.JsonConvert.SerializeObject(content, Newtonsoft.Json.Formatting.Indented);
 
                     byte[] payload = Encoding.UTF8.GetBytes(serializedContent);
-						model.BasicPublish(exchangeName, routingKey, props, payload);
-					}
+                    model.BasicPublish(exchangeName, routingKey, props, payload);
+                }
 
-					model.TxCommit();
-				}
-				catch (Exception)
-				{
-					if (model.IsOpen)
-					{
-						model.TxRollback();
-					}
-					
-					throw;
-				}
-			}
-		}
+                model.TxCommit();
+            }
+            catch (Exception)
+            {
+                if (model.IsOpen)
+                {
+                    model.TxRollback();
+                }
 
-		public void QueueDeclare(string queueName, bool durable = true, bool exclusive = false, bool autoDelete = false, IDictionary<string, object> arguments = null)
-		{
-			using (IModel model = this.ConnectionPool.GetConnection().CreateModel())
-			{
-				model.QueueDeclare(queueName, durable, exclusive, autoDelete, arguments);
-			}
-		}
+                throw;
+            }
+        }
+    }
 
-		public void QueueDeclarePassive(string queueName)
-		{
-			using (IModel model = this.ConnectionPool.GetConnection().CreateModel())
-			{
-				model.QueueDeclarePassive(queueName);
-			}
-		}
+    public void QueueDeclare(string queueName, bool durable = true, bool exclusive = false, bool autoDelete = false, IDictionary<string, object> arguments = null)
+    {
+        using (IModel model = this.ConnectionPool.GetConnection().CreateModel())
+        {
+            model.QueueDeclare(queueName, durable, exclusive, autoDelete, arguments);
+        }
+    }
 
-		public void QueueBind(string queueName, string exchangeName, string routingKey)
-		{
-			using (IModel model = this.ConnectionPool.GetConnection().CreateModel())
-			{
-				model.QueueBind(queueName, exchangeName, routingKey);
-			}
-		}
+    public void QueueDeclarePassive(string queueName)
+    {
+        using (IModel model = this.ConnectionPool.GetConnection().CreateModel())
+        {
+            model.QueueDeclarePassive(queueName);
+        }
+    }
 
-		public void ExchangeDeclare(string exchangeName, bool passive = false)
-		{
-			using (IModel model = this.ConnectionPool.GetConnection().CreateModel())
-			{
-				if (passive)
-				{
-					model.ExchangeDeclarePassive(exchangeName);
-				}
-				else
-				{
-					model.ExchangeDeclare(exchangeName, ExchangeType.Topic, true);
-				}
-			}
-		}
+    public void QueueBind(string queueName, string exchangeName, string routingKey)
+    {
+        using (IModel model = this.ConnectionPool.GetConnection().CreateModel())
+        {
+            model.QueueBind(queueName, exchangeName, routingKey);
+        }
+    }
 
-		public bool QueueExists(string queueName)
-		{
-			using (IModel model = this.ConnectionPool.GetConnection().CreateModel())
-			{
-				try
-				{
-					model.QueueDeclarePassive(queueName);
-				}
-				catch (Exception)
-				{
-					return false;
-				}
+    public void ExchangeDeclare(string exchangeName, bool passive = false)
+    {
+        using (IModel model = this.ConnectionPool.GetConnection().CreateModel())
+        {
+            if (passive)
+            {
+                model.ExchangeDeclarePassive(exchangeName);
+            }
+            else
+            {
+                model.ExchangeDeclare(exchangeName, ExchangeType.Topic, true);
+            }
+        }
+    }
 
-				return true;
-			}
-		}
+    public bool QueueExists(string queueName)
+    {
+        using (IModel model = this.ConnectionPool.GetConnection().CreateModel())
+        {
+            try
+            {
+                model.QueueDeclarePassive(queueName);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
 
-		public void EnsureQueueExists(string queueName, bool durable = true, bool exclusive = false, bool autoDelete = false, IDictionary<string, object> arguments = null)
-		{
-			if (!this.QueueExists(queueName))
-			{
-				this.QueueDeclare(queueName, durable, exclusive, autoDelete, arguments);
-			}
-		}
+            return true;
+        }
+    }
 
-		public uint QueuePurge(string queueName)
-		{
-			using (IModel model = this.ConnectionPool.GetConnection().CreateModel())
-			{
-				uint returnValue = model.QueuePurge(queueName);
-				return returnValue;
-			}
-		}
+    public void EnsureQueueExists(string queueName, bool durable = true, bool exclusive = false, bool autoDelete = false, IDictionary<string, object> arguments = null)
+    {
+        if (!this.QueueExists(queueName))
+        {
+            this.QueueDeclare(queueName, durable, exclusive, autoDelete, arguments);
+        }
+    }
 
-		public uint GetMessageCount(string queueName)
-		{
-			using (IModel model = this.ConnectionPool.GetConnection().CreateModel())
-			{
-				QueueDeclareOk queueDeclareOk = model.QueueDeclarePassive(queueName);
+    public uint QueuePurge(string queueName)
+    {
+        using (IModel model = this.ConnectionPool.GetConnection().CreateModel())
+        {
+            uint returnValue = model.QueuePurge(queueName);
+            return returnValue;
+        }
+    }
 
-				return queueDeclareOk.MessageCount;
-			}
-		}
+    public uint GetMessageCount(string queueName)
+    {
+        using (IModel model = this.ConnectionPool.GetConnection().CreateModel())
+        {
+            QueueDeclareOk queueDeclareOk = model.QueueDeclarePassive(queueName);
 
-		public uint GetConsumerCount(string queueName)
-		{
-			using (IModel model = this.ConnectionPool.GetConnection().CreateModel())
-			{
-				QueueDeclareOk queueDeclareOk = model.QueueDeclarePassive(queueName);
+            return queueDeclareOk.MessageCount;
+        }
+    }
 
-				return queueDeclareOk.ConsumerCount;
-			}
-		}
+    public uint GetConsumerCount(string queueName)
+    {
+        using (IModel model = this.ConnectionPool.GetConnection().CreateModel())
+        {
+            QueueDeclareOk queueDeclareOk = model.QueueDeclarePassive(queueName);
 
-		public IQueueConsumer GetConsumer(string queueName, IConsumerCountManager consumerCountManager, IMessageProcessingWorker messageProcessingWorker, Type expectedType, IMessageRejectionHandler messageRejectionHandler)
-		{
-			return new RabbitMQConsumer(
-				connectionPool: this.ConnectionPool,
-				queueName: queueName,
-				expectedType: expectedType,
-				messageProcessingWorker: messageProcessingWorker,
-				consumerCountManager: consumerCountManager,
-				messageRejectionHandler: messageRejectionHandler);
-		}
+            return queueDeclareOk.ConsumerCount;
+        }
+    }
 
-		public void Dispose()
-		{
-			if (this.ConnectionPool != null)
-			{
-				this.ConnectionPool.Dispose();
-				this.ConnectionPool = null;
-			}
-		}
-	}
+    public IQueueConsumer GetConsumer(string queueName, IConsumerCountManager consumerCountManager, IMessageProcessingWorker messageProcessingWorker, Type expectedType, IMessageRejectionHandler messageRejectionHandler)
+    {
+        return new RabbitMQConsumer(
+            connectionPool: this.ConnectionPool,
+            queueName: queueName,
+            expectedType: expectedType,
+            messageProcessingWorker: messageProcessingWorker,
+            consumerCountManager: consumerCountManager,
+            messageRejectionHandler: messageRejectionHandler);
+    }
+
+    public void Dispose()
+    {
+        if (this.ConnectionPool != null)
+        {
+            this.ConnectionPool.Dispose();
+            this.ConnectionPool = null;
+        }
+    }
+}

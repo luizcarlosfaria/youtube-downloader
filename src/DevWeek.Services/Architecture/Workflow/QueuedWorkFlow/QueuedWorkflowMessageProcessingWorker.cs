@@ -4,11 +4,8 @@ using DevWeek.Architecture.Workflow.QueuedWorkFlow.Exceptions;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics.Contracts;
-using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace DevWeek.Architecture.Workflow.QueuedWorkFlow;
@@ -24,12 +21,12 @@ public class QueuedWorkflowMessageProcessingWorker : IMessageProcessingWorker
     /// <summary>
     /// Property to define an IQueueClient
     /// </summary>
-    private IQueueClient _queueClient;
+    private readonly IQueueClient _queueClient;
 
     /// <summary>
     /// Property to define your business service or process. This is a object to reduce the coupling between business and infrastructure classes
     /// </summary>
-    private object _listenerObject;
+    private readonly object _listenerObject;
 
     /// <summary>
     /// Property to define the name of method that contains your business implementation inside a ListenerObject
@@ -45,16 +42,16 @@ public class QueuedWorkflowMessageProcessingWorker : IMessageProcessingWorker
     /// <summary>
     /// Define a full configured route, used to ensure queue, exchange and binding to send response messages
     /// </summary>		
-    private AmqpBasedRoute _successResponseRoute;
+    private readonly AmqpBasedRoute _successResponseRoute;
 
     /// <summary>
     /// Define a full configured route, used to ensure queue, exchange and binding to send failure response messages
     /// </summary>
-    private AmqpBasedRoute _failureResponseRoute;
+    private readonly AmqpBasedRoute _failureResponseRoute;
 
-    private ExceptionStrategy _errorFlowStrategy;
+    private readonly ExceptionStrategy _errorFlowStrategy;
 
-    private bool _canUseRequestAsResponse;
+    private readonly bool _canUseRequestAsResponse;
 
     public QueuedWorkflowMessageProcessingWorker(IQueueClient queueClient, object listenerObject, MethodInfo listenerMethod, QueuedTransition queuedTransition, QueuedTransition nextQueuedTransition, bool createZombieQueues)
     {
@@ -140,7 +137,7 @@ public class QueuedWorkflowMessageProcessingWorker : IMessageProcessingWorker
     public void OnMessage(object request, IMessageFeedbackSender feedbackSender)
     {
 
-        RetryEntryPoint:
+    RetryEntryPoint:
 
         InvokeResult invokeResult = this.InvokeListenerMethodOnListenerObject(request);
 

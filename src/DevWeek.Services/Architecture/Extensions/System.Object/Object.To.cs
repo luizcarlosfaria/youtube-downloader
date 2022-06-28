@@ -5,16 +5,16 @@
 
 namespace DevWeek.Architecture.Extensions;
 
-	public static partial class OragonExtensions
-	{
-		public static T To<T>(this object @this)
-		{
-			return (T)@this;
-		}
+public static partial class OragonExtensions
+{
+    public static T To<T>(this object @this)
+    {
+        return (T)@this;
+    }
 
-		public static T SafeTo<T>(this object @this)
-			where T : class
-		{
-			return @this as T;
-		}
-	}
+    public static T SafeTo<T>(this object @this)
+        where T : class
+    {
+        return @this as T;
+    }
+}

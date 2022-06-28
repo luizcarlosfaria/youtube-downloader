@@ -2,7 +2,7 @@
 
 namespace DevWeek.Architecture.Business;
 
-	[DataContract]
-	public abstract class Entity
-	{
-	}
+[DataContract]
+public abstract class Entity
+{
+}

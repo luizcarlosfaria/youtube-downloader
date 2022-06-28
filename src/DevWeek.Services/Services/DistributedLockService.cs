@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using StackExchange.Redis;
+﻿using StackExchange.Redis;
+using System;
 
 namespace DevWeek.Services;
 
@@ -68,10 +66,10 @@ public class DistributedLockService
     /// </summary>
     public class DistributedLock : IDisposable
     {
-        private ConnectionMultiplexer redisClient;
-        private TimeSpan lockTimeOut;
-        private TimeSpan waitingLockCycle;
-        private IDatabase db;
+        private readonly ConnectionMultiplexer redisClient;
+        private readonly TimeSpan lockTimeOut;
+        private readonly TimeSpan waitingLockCycle;
+        private readonly IDatabase db;
 
         /// <summary>
         /// Redis database Index

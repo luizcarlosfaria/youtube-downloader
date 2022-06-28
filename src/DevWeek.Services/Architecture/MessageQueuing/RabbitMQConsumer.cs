@@ -1,7 +1,6 @@
 ﻿using RabbitMQ.Client;
 using System;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace DevWeek.Architecture.MessageQueuing;
 
@@ -19,7 +18,7 @@ public class RabbitMQConsumer : IQueueConsumer
 
     public IConsumerCountManager ConsumerCountManager { get { return this._consumerCountManager; } }
 
-    private object _scalingAmountSyncLock = new object();
+    private readonly object _scalingAmountSyncLock = new object();
 
 
     private readonly CancellationTokenSource _cancellationTokenSource;
@@ -27,7 +26,7 @@ public class RabbitMQConsumer : IQueueConsumer
     private volatile int _scalingAmount;
     private volatile bool _isStopped;
     private volatile int _consumerWorkersCount;
-    private volatile IConsumerCountManager _consumerCountManager;
+    private readonly IConsumerCountManager _consumerCountManager;
 
     public RabbitMQConsumer(RabbitMQConnectionPool connectionPool, string queueName, Type expectedType, IMessageProcessingWorker messageProcessingWorker, IConsumerCountManager consumerCountManager, IMessageRejectionHandler messageRejectionHandler)
     {
@@ -189,12 +188,12 @@ public class RabbitMQConsumer : IQueueConsumer
             }
             return queueInfo;
         }
-        catch (Exception ex)
+        catch (Exception)
         {
 
             throw;
         }
-        
+
     }
 
     private uint GetMessageCount(IModel model)

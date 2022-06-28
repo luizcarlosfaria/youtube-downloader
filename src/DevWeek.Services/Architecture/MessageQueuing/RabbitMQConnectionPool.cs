@@ -38,7 +38,7 @@ public class RabbitMQConnectionPool : IDisposable
             using IModel model = connection.CreateModel();
 
             model.Close();
-            
+
         }
         catch (Exception)
         {

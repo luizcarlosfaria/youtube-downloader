@@ -1,6 +1,6 @@
 ﻿namespace DevWeek.Architecture.MessageQueuing;
 
-	public enum ExceptionHandlingStrategy
-	{
-		Retry, Requeue, Discard
-	}
+public enum ExceptionHandlingStrategy
+{
+    Retry, Requeue, Discard
+}

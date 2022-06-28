@@ -1,9 +1,7 @@
 ﻿using DevWeek.Services.Downloader.Validators;
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace DevWeek.Services.Downloader;
@@ -24,7 +22,7 @@ public class EntryPointRegisterPipelineActivity : IPipelineActivity
     {
         if (download.OriginalMediaUrl == null)
             throw new ArgumentNullException($"The url '{download.OriginalMediaUrl}' is null #invalidUrl");
-        
+
         this.ValidateUrl(download.OriginalMediaUrl);
 
         this.metadataUpdater.Insert(download);
@@ -53,6 +51,6 @@ public class EntryPointRegisterPipelineActivity : IPipelineActivity
 
 
 
-   
+
 
 }

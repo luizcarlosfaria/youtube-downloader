@@ -1,8 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Spring.Context.Support;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace DevWeek;
 
@@ -40,7 +38,7 @@ public class ContextBuilder
         {
             Spring.Objects.Factory.Support.GenericObjectDefinition objectDefinition = new Spring.Objects.Factory.Support.GenericObjectDefinition
             {
-                ObjectType = typeof(String),
+                ObjectType = typeof(string),
                 FactoryMethodName = "Copy"
             };
             objectDefinition.ConstructorArgumentValues.AddIndexedArgumentValue(0, currentConfiguration.Value);

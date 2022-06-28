@@ -1,12 +1,8 @@
-﻿using System;
-using System.Linq;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Text;
-using System.Threading.Tasks;
+﻿using DevWeek.Architecture.FluentRunner;
 using Minio;
-using DevWeek.Architecture.FluentRunner;
+using System;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace DevWeek.Services.Downloader;
 

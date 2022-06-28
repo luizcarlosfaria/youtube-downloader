@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using DevWeek.Models;
 using Microsoft.AspNetCore.Mvc;
-using DevWeek.Models;
+using System.Diagnostics;
 
 namespace DevWeek.Controllers;
 
@@ -12,21 +8,21 @@ public class HomeController : Controller
 {
     public IActionResult Index()
     {
-        return View();
+        return this.View();
     }
 
     public IActionResult Sobre()
     {
-        return View();
+        return this.View();
     }
 
     public IActionResult Contato()
     {
-        return View();
+        return this.View();
     }
 
     public IActionResult Error()
     {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        return this.View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? this.HttpContext.TraceIdentifier });
     }
 }

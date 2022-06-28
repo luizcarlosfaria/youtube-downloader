@@ -2,17 +2,17 @@
 
 namespace DevWeek.Architecture.MessageQueuing;
 
-	public interface IQueueConsumer : IDisposable
-	{
-		IConsumerCountManager ConsumerCountManager { get; }
+public interface IQueueConsumer : IDisposable
+{
+    IConsumerCountManager ConsumerCountManager { get; }
 
-		void Start();
+    void Start();
 
-		void Stop();
+    void Stop();
 
-		uint GetMessageCount();
+    uint GetMessageCount();
 
-		uint GetConsumerCount();
+    uint GetConsumerCount();
 
-		IMessageProcessingWorker MessageProcessingWorker { get; set; }
-	}
+    IMessageProcessingWorker MessageProcessingWorker { get; set; }
+}

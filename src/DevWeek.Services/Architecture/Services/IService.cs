@@ -1,13 +1,13 @@
 namespace DevWeek.Architecture.Services;
 
-	public interface IService
-	{
-		string Name
-		{
-			get;
-		}
+public interface IService
+{
+    string Name
+    {
+        get;
+    }
 
-		void Start();
+    void Start();
 
-		void Stop();
-	}
+    void Stop();
+}

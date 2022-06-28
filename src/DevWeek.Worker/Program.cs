@@ -1,20 +1,12 @@
-﻿using System;
-using System.Linq;
-using System.Collections.Generic;
-using System.Net.NetworkInformation;
+﻿using Polly;
+using System;
 using System.Threading.Tasks;
-using System.IO;
-using System.Diagnostics;
-using Minio;
-using DevWeek.Services.Downloader;
-using Polly;
-using System.Security.Policy;
 
 namespace DevWeek;
 
-class Program
+internal class Program
 {
-    static void Main(string[] args)
+    private static void Main(string[] args)
     {
         Spring.Context.Support.AbstractApplicationContext appContext = null;
 
@@ -30,7 +22,7 @@ class Program
             appContext = ContextBuilder.BuildContext();
         });
 
-      
+
         Task.Run(() =>
         {
             while (true)
@@ -41,7 +33,8 @@ class Program
 
         });
 
-        AppDomain.CurrentDomain.ProcessExit += (sender, e) => {
+        AppDomain.CurrentDomain.ProcessExit += (sender, e) =>
+        {
             Console.WriteLine("Fim!");
         };
 

@@ -3,153 +3,151 @@ using Spring.Objects.Support;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace DevWeek.Architecture.MessageQueuing;
 
-	public class AdvancedMessageProcessingWorker : SimpleMessageProcessingWorker
-	{
-		public int InvokeRetryCount { get; set; }
+public class AdvancedMessageProcessingWorker : SimpleMessageProcessingWorker
+{
+    public int InvokeRetryCount { get; set; }
 
-		public int InvokeRetryWaitMilliseconds { get; set; }
+    public int InvokeRetryWaitMilliseconds { get; set; }
 
-		public ExceptionHandlingStrategy ExceptionHandlingStrategy { get; set; }
+    public ExceptionHandlingStrategy ExceptionHandlingStrategy { get; set; }
 
-		public AdvancedMessageProcessingWorker()
-		{
-			this.InvokeRetryCount = 1;
-			this.InvokeRetryWaitMilliseconds = 0;
-			this.ExceptionHandlingStrategy = ExceptionHandlingStrategy.Requeue;
-		}
+    public AdvancedMessageProcessingWorker()
+    {
+        this.InvokeRetryCount = 1;
+        this.InvokeRetryWaitMilliseconds = 0;
+        this.ExceptionHandlingStrategy = ExceptionHandlingStrategy.Requeue;
+    }
 
-		public override void OnMessage(object message, IMessageFeedbackSender feedbackSender)
-		{
-			MethodInvoker methodInvoker = new MethodInvoker();
-			methodInvoker.TargetObject = this.Service;
-			methodInvoker.TargetMethod = this.ServiceMethod;
-			methodInvoker.Arguments = new object[] { message };
-			methodInvoker.Prepare();
+    public override void OnMessage(object message, IMessageFeedbackSender feedbackSender)
+    {
+        MethodInvoker methodInvoker = new MethodInvoker();
+        methodInvoker.TargetObject = this.Service;
+        methodInvoker.TargetMethod = this.ServiceMethod;
+        methodInvoker.Arguments = new object[] { message };
+        methodInvoker.Prepare();
 
-			bool invocationSuccess = false;
-			var exceptions = new List<Exception>();
+        bool invocationSuccess = false;
+        var exceptions = new List<Exception>();
 
-			int tryCount = 0;
+        int tryCount = 0;
 
-			while (tryCount == 0 || (!invocationSuccess && this.ShouldRetry(tryCount, exceptions)))
-			{
-				if (tryCount > 0 && this.InvokeRetryWaitMilliseconds > 0)
-				{
-					Thread.Sleep(this.InvokeRetryWaitMilliseconds);
-				}
+        while (tryCount == 0 || (!invocationSuccess && this.ShouldRetry(tryCount, exceptions)))
+        {
+            if (tryCount > 0 && this.InvokeRetryWaitMilliseconds > 0)
+            {
+                Thread.Sleep(this.InvokeRetryWaitMilliseconds);
+            }
 
-				tryCount++;
+            tryCount++;
 
-				this.TryInvoke(methodInvoker, exceptions, out invocationSuccess);
-			}
-				
-			if(invocationSuccess)
-			{
-				feedbackSender.Ack();
-			}
-			else if(this.ShouldRequeue(exceptions))
-			{
-				feedbackSender.Nack(true);
-			}
-			else
-			{
-				feedbackSender.Nack(false);
-			}
-		}
+            this.TryInvoke(methodInvoker, exceptions, out invocationSuccess);
+        }
 
-		private ExceptionHandlingStrategy? GetStrategyByExceptions(List<Exception> exceptions)
-		{
-			if(exceptions.Any())
-			{
-				if (exceptions.Last() is QueuingRetryException || exceptions.Last().InnerException is QueuingRetryException)
-				{
-					return ExceptionHandlingStrategy.Retry;
-				}
-				else if (exceptions.Last() is QueuingRequeueException || exceptions.Last().InnerException is QueuingRequeueException)
-				{
-					return ExceptionHandlingStrategy.Requeue;
-				}
-				else if (exceptions.Last() is QueuingDiscardException || exceptions.Last().InnerException is QueuingDiscardException)
-				{
-					return ExceptionHandlingStrategy.Discard;
-				}
-			}
+        if (invocationSuccess)
+        {
+            feedbackSender.Ack();
+        }
+        else if (this.ShouldRequeue(exceptions))
+        {
+            feedbackSender.Nack(true);
+        }
+        else
+        {
+            feedbackSender.Nack(false);
+        }
+    }
 
-			return null;
-		}
+    private ExceptionHandlingStrategy? GetStrategyByExceptions(List<Exception> exceptions)
+    {
+        if (exceptions.Any())
+        {
+            if (exceptions.Last() is QueuingRetryException || exceptions.Last().InnerException is QueuingRetryException)
+            {
+                return ExceptionHandlingStrategy.Retry;
+            }
+            else if (exceptions.Last() is QueuingRequeueException || exceptions.Last().InnerException is QueuingRequeueException)
+            {
+                return ExceptionHandlingStrategy.Requeue;
+            }
+            else if (exceptions.Last() is QueuingDiscardException || exceptions.Last().InnerException is QueuingDiscardException)
+            {
+                return ExceptionHandlingStrategy.Discard;
+            }
+        }
 
-		private bool ShouldRetry(int tryCount, List<Exception> exceptions)
-		{
-			if(tryCount >= this.InvokeRetryCount)
-			{
-				return false;
-			}
+        return null;
+    }
 
-			ExceptionHandlingStrategy? strategyByExceptions = this.GetStrategyByExceptions(exceptions);
+    private bool ShouldRetry(int tryCount, List<Exception> exceptions)
+    {
+        if (tryCount >= this.InvokeRetryCount)
+        {
+            return false;
+        }
 
-			if (strategyByExceptions != null)
-			{
-				if(strategyByExceptions == ExceptionHandlingStrategy.Retry)
-				{
-					return true;
-				}
-				else if(strategyByExceptions == ExceptionHandlingStrategy.Discard)
-				{
-					return false;
-				}
-			}
+        ExceptionHandlingStrategy? strategyByExceptions = this.GetStrategyByExceptions(exceptions);
 
-			if(this.ExceptionHandlingStrategy == ExceptionHandlingStrategy.Retry)
-			{
-				return true;
-			}
+        if (strategyByExceptions != null)
+        {
+            if (strategyByExceptions == ExceptionHandlingStrategy.Retry)
+            {
+                return true;
+            }
+            else if (strategyByExceptions == ExceptionHandlingStrategy.Discard)
+            {
+                return false;
+            }
+        }
 
-			return false;
-		}
+        if (this.ExceptionHandlingStrategy == ExceptionHandlingStrategy.Retry)
+        {
+            return true;
+        }
 
-		private bool ShouldRequeue(List<Exception> exceptions)
-		{
-			ExceptionHandlingStrategy? strategyByExceptions = this.GetStrategyByExceptions(exceptions);
+        return false;
+    }
 
-			if(strategyByExceptions != null)
-			{
-				if(strategyByExceptions == ExceptionHandlingStrategy.Requeue)
-				{
-					return true;
-				}
-				else if(strategyByExceptions == ExceptionHandlingStrategy.Discard)
-				{
-					return false;
-				}
-			}
+    private bool ShouldRequeue(List<Exception> exceptions)
+    {
+        ExceptionHandlingStrategy? strategyByExceptions = this.GetStrategyByExceptions(exceptions);
 
-			if(this.ExceptionHandlingStrategy == ExceptionHandlingStrategy.Requeue)
-			{
-				return true;
-			}
+        if (strategyByExceptions != null)
+        {
+            if (strategyByExceptions == ExceptionHandlingStrategy.Requeue)
+            {
+                return true;
+            }
+            else if (strategyByExceptions == ExceptionHandlingStrategy.Discard)
+            {
+                return false;
+            }
+        }
 
-			return false;
-		}
+        if (this.ExceptionHandlingStrategy == ExceptionHandlingStrategy.Requeue)
+        {
+            return true;
+        }
 
-		private void TryInvoke(MethodInvoker methodInvoker, List<Exception> exceptions, out bool invocationSuccess)
-		{
-			invocationSuccess = false;
+        return false;
+    }
 
-			try
-			{
-				methodInvoker.Invoke();
+    private void TryInvoke(MethodInvoker methodInvoker, List<Exception> exceptions, out bool invocationSuccess)
+    {
+        invocationSuccess = false;
 
-				invocationSuccess = true;
-			}
-			catch (Exception exception)
-			{
-				exceptions.Add(exception);
-			}
-		}
-	}
+        try
+        {
+            methodInvoker.Invoke();
+
+            invocationSuccess = true;
+        }
+        catch (Exception exception)
+        {
+            exceptions.Add(exception);
+        }
+    }
+}

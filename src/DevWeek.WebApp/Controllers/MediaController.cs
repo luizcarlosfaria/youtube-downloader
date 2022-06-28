@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace DevWeek.WebApp.Controllers;
 
@@ -22,7 +16,7 @@ public class MediaController : Controller
     private async Task<System.IO.MemoryStream> GetMedia(string bucket, string url)
     {
         System.IO.MemoryStream streamToReturn = new System.IO.MemoryStream();
-        await minioClient.GetObjectAsync(bucket, System.IO.Path.GetFileName(url), (stream) =>
+        await this.minioClient.GetObjectAsync(bucket, System.IO.Path.GetFileName(url), (stream) =>
         {
             stream.CopyTo(streamToReturn);
         });
@@ -34,8 +28,8 @@ public class MediaController : Controller
     [HttpGet("{bucket}/{target}/{*address}")]
     public async Task<IActionResult> GetMedia(string target, string bucket, string address)
     {
-        this.Response.Headers.Add("Accept-Ranges", "bytes"); 
-    
+        this.Response.Headers.Add("Accept-Ranges", "bytes");
+
 
         string type = null;
         if (target == "stream")
@@ -46,7 +40,7 @@ public class MediaController : Controller
             return this.NotFound();
 
         System.IO.MemoryStream streamToReturn = await this.GetMedia(bucket, address);
-        var response = File(streamToReturn, type);
+        var response = this.File(streamToReturn, type);
         return response;
     }
 
